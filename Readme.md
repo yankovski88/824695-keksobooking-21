@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Юрий Янковский](https://up.htmlacademy.ru/javascript/21/user/824695).
-* Наставник: `Неизвестно`.
+* Наставник: [Белик Павел](https://htmlacademy.ru/profile/id84572).
 
 ---
 
