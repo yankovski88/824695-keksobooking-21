@@ -43,3 +43,26 @@ git push --set-upstream origin module1-task1
 git checkout master //переходишь в мастер
 git pull academy master //но academy master я не знаю почему вводим
 
+cd ~/WebstormProjects/ssh
+ssh-keygen -t rsa -b 4096 -C "boets003@mail.ru"
+name: github-code
+ENTER
+ENTER
+ssh -T -i ~/ssh/github-code git@github.com
+git stash пишешь когда не хочешь делать коммит, но хочешь сохронитьь изменения
+git stash pop вернуть их обратно
+
+ssh -T -i ~/.ssh/id_rsa git@github.com
+cd ~/824695-code-and-magick-21/
+git checkout master
+git pull academy master
+git remote add academy git@github.com:htmlacademy-javascript/824695-code-and-magick-21.git
+git pull academy master
+git push origin master
+
+в настройках вебшторма вкладка terminal нужно выбрать путь до C:\Program Files\Git\bin\bash.exe
+во вкладке vcs/git вставить путь C:\Program Files\Git\bin\git.exe
+
+npm i eslint@6.0.0 --save-dev
+
+
