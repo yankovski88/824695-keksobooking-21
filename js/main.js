@@ -13,12 +13,13 @@ const LOCATION_Y_MIN = 130;
 const mapBlock = document.querySelector(`.map`);
 const offers = [];
 
-function getRandomIntArr(arr, max) {
-  const arrRandom = [];
-  const randomNumber = Math.floor(Math.random() * Math.floor(max));
-  for (let i = 1; i <= randomNumber; i++) {
-    arrRandom.push(arr[i]);
+function getRandomPartOfArr(arr) {
+  const set = new Set();
+  const randomNumber = getRandomInt(arr.length);
+  for (let i = 0; i < randomNumber; i++) {
+    set.add(arr[getRandomInt(arr.length)]);
   }
+  const arrRandom = Array.from(set);
   return arrRandom;
 }
 
@@ -40,16 +41,16 @@ for (let i = 0; i < OBJECT_TOTAL; i++) {
     },
     "offer": {
       "title": `Предложение ${i + 1}`,
-      "address": `600, 350`,
-      "price": 1000 + i,
+      "address": `${getRandomMinMax(0, mapBlock.clientHeight)}, ${getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX)}`,
+      "price": `${getRandomMinMax(1000, 10000)}`,
       "type": OFFER_TYPES[getRandomInt(OFFER_TYPES.length)],
       "rooms": getRandomInt(4),
       "guests": getRandomInt(4),
       "checkin": OFFER_TIMES[getRandomInt(OFFER_TIMES.length)],
       "checkout": OFFER_TIMES[getRandomInt(OFFER_TIMES.length)],
-      "features": getRandomIntArr(OFFER_FEATURES, OFFER_FEATURES.length),
+      "features": getRandomPartOfArr(OFFER_FEATURES),
       "description": `Описание ${i}`,
-      "photos": getRandomIntArr(OFFER_PHOTOS, OFFER_FEATURES.length),
+      "photos": getRandomPartOfArr(OFFER_PHOTOS),
     },
     "location": {
       "x": getRandomMinMax(0, mapBlock.clientHeight),
