@@ -14,13 +14,13 @@ const mapBlock = document.querySelector(`.map`);
 const offers = [];
 
 function getRandomPartOfArr(arr) {
-  const set = new Set();
-  const randomNumber = getRandomInt(arr.length);
+  const arrCopy = arr.slice();
+  const randomNumber = getRandomInt(arrCopy.length);
   for (let i = 0; i < randomNumber; i++) {
-    set.add(arr[getRandomInt(arr.length)]);
+    const randomNumberDel = getRandomInt(arrCopy.length);
+    arrCopy.splice(randomNumberDel, 1);
   }
-  const arrRandom = Array.from(set);
-  return arrRandom;
+  return arrCopy;
 }
 
 
