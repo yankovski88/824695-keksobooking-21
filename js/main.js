@@ -1,7 +1,12 @@
 "use strict";
 
 const OBJECT_TOTAL = 8;
-const OFFER_TYPES = [`Дворец`, `Квартира`, `Дом`, `Бунгало`];
+const OFFER_TYPES = {
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalow: `Бунгало`,
+};
 const OFFER_TIMES = [`12:00`, `13:00`, `14:00`];
 const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const ROOMS_MAX = 4;
@@ -35,39 +40,39 @@ const getRandomMinMax = function (min, max) {
   return random;
 };
 
+
 const getArrClassNameHtmlAll = function (tegHtmlAll) {
-  const arrItem = [];
+  const arrItems = [];
   tegHtmlAll.forEach((item) => {
-    arrItem.push(item.className);
+    arrItems.push(item.className);
   });
-  return arrItem;
+  return arrItems;
 };
 
-
-const getNameFeaturesHtml = function (arrItemCopy) {
-  const arrF = [];
-  const arrFTotal = [];
-  for (let i = 0; i < arrItemCopy.length; i++) {
-    for (let j = arrItemCopy[i].length - 1; j >= 0; j--) {
-      if (arrItemCopy[i][j] === `-`) {
-        arrF.reverse();
-        arrFTotal.push(arrF.join(``));
-        arrF.splice(0, arrF.length);
+const getArrNamesOfOfferFeaturesHtml = function (arrItemsCopy) {
+  const arrNames = [];
+  const arrNamesTotal = [];
+  for (let i = 0; i < arrItemsCopy.length; i++) {
+    for (let j = arrItemsCopy[i].length - 1; j >= 0; j--) {
+      if (arrItemsCopy[i][j] === `-`) {
+        arrNames.reverse();
+        arrNamesTotal.push(arrNames.join(``));
+        arrNames.splice(0, arrNames.length);
         break;
       } else {
-        arrF.push(arrItemCopy[i][j]);
+        arrNames.push(arrItemsCopy[i][j]);
       }
     }
   }
-  return arrFTotal;
+  return arrNamesTotal;
 };
 
-const arrFeatureVsArrFeatureHtmlInsertInHtmlAndDel = function (offerFeatures, allArrFeatureHtml, cardTemplateLi) {
-  for (let i = 0; i < offerFeatures.length; i++) {
-    for (let j = 0; j < allArrFeatureHtml.length; j++) {
+const comparisonArrsAddHidden = function (arrOfferFeatures, arrOfferFeaturesHtml, cardTemplateLi) {
+  for (let i = 0; i < arrOfferFeatures.length; i++) {
+    for (let j = 0; j < arrOfferFeaturesHtml.length; j++) {
       cardTemplateLi[j].classList.add(`hidden`);
-      if (offerFeatures[i] === allArrFeatureHtml[j]) {
-        cardTemplateLi[j].textContent = offerFeatures[i];
+      if (arrOfferFeatures[i] === arrOfferFeaturesHtml[j]) {
+        cardTemplateLi[j].textContent = arrOfferFeatures[i];
       }
       if (cardTemplateLi[j].textContent) {
         cardTemplateLi[j].classList.remove(`hidden`);
@@ -77,16 +82,50 @@ const arrFeatureVsArrFeatureHtmlInsertInHtmlAndDel = function (offerFeatures, al
 };
 
 
+const getRandomValueOfObject = function (object) {
+  const valueOfObject = Object.values(object);
+  const randomNumber = getRandomInt(valueOfObject.length);
+  const randomValue = valueOfObject[randomNumber];
+  return randomValue;
+};
+
+const getLocationX = function (string) {
+  const arrX = [];
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] !== `,`) {
+      arrX.push(string[i]);
+    } else {
+      break;
+    }
+  }
+  return arrX.join(``);
+};
+
+const getLocationY = function (string) {
+  const arrY = [];
+  for (let i = string.length - 1; i > 0; i--) {
+    if (string[i] !== ` `) {
+      arrY.push(string[i]);
+    } else {
+      break;
+    }
+  }
+  return arrY.join(``);
+};
+
+
 for (let i = 0; i < OBJECT_TOTAL; i++) {
+  const locationX = getRandomMinMax(1, mapBlock.clientHeight);
+  const locationY = getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX);
   offers.push({
     "author": {
       "avatar": `img/avatars/user0${i + 1}.png`,
     },
     "offer": {
       "title": `Предложение ${i + 1}`,
-      "address": [getRandomMinMax(1, mapBlock.clientHeight), getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX)],
+      "address": `${locationX}, ${locationY}`,
       "price": `${getRandomMinMax(1000, 10000)} ₽/ночь`,
-      "type": OFFER_TYPES[getRandomInt(OFFER_TYPES.length)],
+      "type": `${getRandomValueOfObject(OFFER_TYPES)}`,
       "rooms": getRandomMinMax(1, ROOMS_MAX),
       "guests": getRandomMinMax(1, GUESTS_MAX),
       "checkin": OFFER_TIMES[getRandomInt(OFFER_TIMES.length)],
@@ -96,8 +135,8 @@ for (let i = 0; i < OBJECT_TOTAL; i++) {
       "photos": getRandomPartOfArr(OFFER_PHOTOS),
     },
     "location": {
-      "x": getRandomMinMax(1, mapBlock.clientHeight),
-      "y": getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX),
+      "x": `${locationX}`,
+      "y": `${locationY}`,
     },
   });
 }
@@ -135,7 +174,7 @@ const createCard = function (obj) {
     cardTemplate.querySelector(`.popup__title`).classList.add(`hidden`);
   }
   if (obj.offer.address[0] && obj.offer.address[1]) {
-    cardTemplate.querySelector(`.popup__text--address`).textContent = `${obj.offer.address[0]} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${obj.offer.address[1]}`;
+    cardTemplate.querySelector(`.popup__text--address`).textContent = `${getLocationX(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${getLocationY(obj.offer.address)}`;
   } else {
     cardTemplate.querySelector(`.popup__text--address`).classList.add(`hidden`);
   }
@@ -162,10 +201,10 @@ const createCard = function (obj) {
 
 
   const cardTemplateLi = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`);
-  const arrItem = getArrClassNameHtmlAll(cardTemplateLi);
-  const arrItemCopy = arrItem.slice();
-  const allArrFeatureHtml = getNameFeaturesHtml(arrItemCopy);
-  arrFeatureVsArrFeatureHtmlInsertInHtmlAndDel(obj.offer.features, allArrFeatureHtml, cardTemplateLi);
+  const arrItems = getArrClassNameHtmlAll(cardTemplateLi);
+  const arrItemsCopy = arrItems.slice();
+  const arrOfferFeaturesHtml = getArrNamesOfOfferFeaturesHtml(arrItemsCopy);
+  comparisonArrsAddHidden(obj.offer.features, arrOfferFeaturesHtml, cardTemplateLi);
 
   if (obj.offer.description) {
     cardTemplate.querySelector(`.popup__description`).textContent = `${obj.offer.description}`;
@@ -196,11 +235,8 @@ const createCard = function (obj) {
   return cardTemplate;
 };
 
-
 const fragmentCard = document.createDocumentFragment();
-for (let i = 0; i < offers.length; i++) {
-  fragmentCard.appendChild(createCard(offers[i]));
-}
+fragmentCard.appendChild(createCard(offers[0]));
 
 const mapCardHtml = document.querySelector(`.map`);
 mapCardHtml.insertBefore(fragmentCard, cardBeforeHtml);
