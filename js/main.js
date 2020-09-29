@@ -109,6 +109,7 @@ const getLastItemOfString = function (string) {
       break;
     }
   }
+  arr.reverse();
   return arr.join(``);
 };
 
@@ -116,6 +117,7 @@ const getLastItemOfString = function (string) {
 for (let i = 0; i < OBJECT_TOTAL; i++) {
   const locationX = getRandomMinMax(1, mapBlock.clientHeight);
   const locationY = getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX);
+  console.log(locationY);
   offers.push({
     "author": {
       "avatar": `img/avatars/user0${i + 1}.png`,
