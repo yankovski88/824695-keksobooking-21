@@ -41,76 +41,75 @@ const getRandomMinMax = function (min, max) {
 };
 
 
-const getArrClassNameHtmlAll = function (tegHtmlAll) {
-  const arrItems = [];
-  tegHtmlAll.forEach((item) => {
-    arrItems.push(item.className);
+const getArrClassNameHtml = function (elementHtml) {
+  const classNames = [];
+  elementHtml.forEach((item) => {
+    classNames.push(item.className);
   });
-  return arrItems;
+  return classNames;
 };
 
-const getArrNamesOfOfferFeaturesHtml = function (arrItemsCopy) {
-  const arrNames = [];
-  const arrNamesTotal = [];
-  for (let i = 0; i < arrItemsCopy.length; i++) {
-    for (let j = arrItemsCopy[i].length - 1; j >= 0; j--) {
-      if (arrItemsCopy[i][j] === `-`) {
-        arrNames.reverse();
-        arrNamesTotal.push(arrNames.join(``));
-        arrNames.splice(0, arrNames.length);
+const getArrOfTextBeforeDash = function (arr) {
+  const texts = [];
+  const allTexts = [];
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = arr[i].length - 1; j >= 0; j--) {
+      if (arr[i][j] === `-`) {
+        texts.reverse();
+        allTexts.push(texts.join(``));
+        allTexts.splice(0, texts.length);
         break;
       } else {
-        arrNames.push(arrItemsCopy[i][j]);
+        texts.push(arr[i][j]);
       }
     }
   }
-  return arrNamesTotal;
+  return allTexts;
 };
 
-const comparisonArrsAddHidden = function (arrOfferFeatures, arrOfferFeaturesHtml, cardTemplateLi) {
-  for (let i = 0; i < arrOfferFeatures.length; i++) {
-    for (let j = 0; j < arrOfferFeaturesHtml.length; j++) {
-      cardTemplateLi[j].classList.add(`hidden`);
-      if (arrOfferFeatures[i] === arrOfferFeaturesHtml[j]) {
-        cardTemplateLi[j].textContent = arrOfferFeatures[i];
+const comparisonArrsAndAddClassNameHidden = function (arr1, arr2, htmlElement) {
+  for (let i = 0; i < arr1.length; i++) {
+    for (let j = 0; j < arr2.length; j++) {
+      htmlElement[j].classList.add(`hidden`);
+      if (arr1[i] === arr2[j]) {
+        htmlElement[j].textContent = arr1[i];
       }
-      if (cardTemplateLi[j].textContent) {
-        cardTemplateLi[j].classList.remove(`hidden`);
+      if (htmlElement[j].textContent) {
+        htmlElement[j].classList.remove(`hidden`);
       }
     }
   }
 };
-
 
 const getRandomValueOfObject = function (object) {
-  const valueOfObject = Object.values(object);
-  const randomNumber = getRandomInt(valueOfObject.length);
-  const randomValue = valueOfObject[randomNumber];
+  const values = Object.values(object);
+  const randomNumber = getRandomInt(values.length);
+  const randomValue = values[randomNumber];
   return randomValue;
 };
 
-const getLocationX = function (string) {
-  const arrX = [];
+const getFirstItemOfString = function (string) {
+  const arr = [];
   for (let i = 0; i < string.length; i++) {
     if (string[i] !== `,`) {
-      arrX.push(string[i]);
+      arr.push(string[i]);
     } else {
       break;
     }
   }
-  return arrX.join(``);
+  return arr.join(``);
 };
 
-const getLocationY = function (string) {
-  const arrY = [];
+const getLastItemOfString = function (string) {
+  const arr = [];
   for (let i = string.length - 1; i > 0; i--) {
     if (string[i] !== ` `) {
-      arrY.push(string[i]);
+      arr.push(string[i]);
     } else {
       break;
     }
   }
-  return arrY.join(``);
+  return arr.join(``);
 };
 
 
@@ -162,7 +161,7 @@ for (let i = 0; i < offers.length; i++) {
 mapPinsHtml.appendChild(fragment);
 
 const card = document.querySelector(`#card`).content.querySelector(`.map__card`);
-const cardBeforeHtml = document.querySelector(`.map__filters-container`);
+const mapFiltersContainer = document.querySelector(`.map__filters-container`);
 
 const createCard = function (obj) {
 
@@ -174,7 +173,7 @@ const createCard = function (obj) {
     cardTemplate.querySelector(`.popup__title`).classList.add(`hidden`);
   }
   if (obj.offer.address[0] && obj.offer.address[1]) {
-    cardTemplate.querySelector(`.popup__text--address`).textContent = `${getLocationX(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${getLocationY(obj.offer.address)}`;
+    cardTemplate.querySelector(`.popup__text--address`).textContent = `${getFirstItemOfString(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${getLastItemOfString(obj.offer.address)}`;
   } else {
     cardTemplate.querySelector(`.popup__text--address`).classList.add(`hidden`);
   }
@@ -200,11 +199,11 @@ const createCard = function (obj) {
   }
 
 
-  const cardTemplateLi = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`);
-  const arrItems = getArrClassNameHtmlAll(cardTemplateLi);
-  const arrItemsCopy = arrItems.slice();
-  const arrOfferFeaturesHtml = getArrNamesOfOfferFeaturesHtml(arrItemsCopy);
-  comparisonArrsAddHidden(obj.offer.features, arrOfferFeaturesHtml, cardTemplateLi);
+  const cardTemplateLis = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`);
+  const ClassNames = getArrClassNameHtml(cardTemplateLis);
+  const CopyClassNames = ClassNames.slice();
+  const htmlOfferFeatures = getArrOfTextBeforeDash(CopyClassNames);
+  comparisonArrsAndAddClassNameHidden(obj.offer.features, htmlOfferFeatures, cardTemplateLis);
 
   if (obj.offer.description) {
     cardTemplate.querySelector(`.popup__description`).textContent = `${obj.offer.description}`;
@@ -212,19 +211,19 @@ const createCard = function (obj) {
     cardTemplate.querySelector(`.popup__description`).classList.add(`hidden`);
   }
 
-  const tegPhoto = cardTemplate.querySelector(`.popup__photos`);
-  const tegPhotoImg = cardTemplate.querySelector(`.popup__photos`).querySelector(`img`);
+  const popupPhoto = cardTemplate.querySelector(`.popup__photos`);
+  const popupPhotoImg = cardTemplate.querySelector(`.popup__photos`).querySelector(`img`);
 
   if (obj.offer.photos) {
     for (let i = 0; i < obj.offer.photos.length; i++) {
-      const tegPhotoImgClone = tegPhotoImg.cloneNode();
-      tegPhotoImgClone.src = obj.offer.photos[i];
-      tegPhotoImgClone.textContent = `clone`;
-      tegPhoto.appendChild(tegPhotoImgClone);
+      const popupPhotoImgClone = popupPhotoImg.cloneNode();
+      popupPhotoImgClone.src = obj.offer.photos[i];
+      popupPhotoImgClone.textContent = `clone`;
+      popupPhoto.appendChild(popupPhotoImgClone);
     }
-    tegPhoto.removeChild(tegPhotoImg);
+    popupPhoto.removeChild(popupPhotoImg);
   } else {
-    tegPhoto.classList.add(`hidden`);
+    popupPhoto.classList.add(`hidden`);
   }
 
   if (obj.author.avatar) {
@@ -238,5 +237,5 @@ const createCard = function (obj) {
 const fragmentCard = document.createDocumentFragment();
 fragmentCard.appendChild(createCard(offers[0]));
 
-const mapCardHtml = document.querySelector(`.map`);
-mapCardHtml.insertBefore(fragmentCard, cardBeforeHtml);
+const map = document.querySelector(`.map`);
+map.insertBefore(fragmentCard, mapFiltersContainer);
