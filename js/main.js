@@ -112,6 +112,23 @@ const getLastItemOfString = function (string) {
   return arr.join(``);
 };
 
+const getNumberOfString = function (string, stopStringItem) {
+  const arr = [];
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] !== stopStringItem) {
+      arr.push(string[i]);
+    } else {
+      break;
+    }
+  }
+  const stringNumber = arr.join(``);
+  const number = parseInt(stringNumber, 10);
+  return number;
+};
+
+const addAddress = function (address, left, top) {
+  address.value = `${left}, ${top}`;
+};
 
 for (let i = 0; i < OBJECT_TOTAL; i++) {
   const locationX = getRandomMinMax(1, mapBlock.clientHeight);
@@ -158,7 +175,9 @@ for (let i = 0; i < offers.length; i++) {
   fragment.appendChild(createPin(offers[i]));
 }
 
-mapPinsHtml.appendChild(fragment);
+const renderPin = function () {
+  mapPinsHtml.appendChild(fragment);
+};
 
 const card = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapFiltersContainer = document.querySelector(`.map__filters-container`);
@@ -238,4 +257,102 @@ const fragmentCard = document.createDocumentFragment();
 fragmentCard.appendChild(createCard(offers[0]));
 
 const map = document.querySelector(`.map`);
-map.insertBefore(fragmentCard, mapFiltersContainer);
+const renderCard = function () {
+  map.insertBefore(fragmentCard, mapFiltersContainer);
+};
+
+
+const mapPinMain = document.querySelector(`.map__pin--main`);
+const adFormFieldsets = document.querySelectorAll(`fieldset`);
+const mapFilter = document.querySelector(`.map__filters`);
+
+map.classList.add(`map--faded`);
+
+adFormFieldsets.forEach((item) => {
+  item.setAttribute(`disabled`, `true`);
+});
+
+mapFilter.classList.add(`ad-form--disabled`);
+
+const removeAdFormDisabled = function () {
+  mapFilter.classList.remove(`ad-form--disabled`);
+};
+
+const removeAdFormFieldsetsDisabled = function () {
+  adFormFieldsets.forEach((item) => {
+    item.removeAttribute(`disabled`);
+  });
+};
+
+
+const mapPin = document.querySelector(`.map__pin`);
+const mapPinImg = mapPin.querySelector(`img`);
+const mapPinImgWidth = mapPinImg.width;
+const mapPinImgHeight = mapPinImg.height;
+const address = document.querySelector(`#address`);
+const mapPinMainLeft = mapPinMain.style.left;
+const mapPinMainTop = mapPinMain.style.top;
+const elemStop = `p`;
+const widthMapPin = 10;
+const heightMapPin = 22;
+const leftMapPin = getNumberOfString(mapPinMainLeft, elemStop) + mapPinImgWidth + widthMapPin / 2;
+const topMapPin = getNumberOfString(mapPinMainTop, elemStop) + mapPinImgHeight + heightMapPin / 2;
+
+
+mapPinMain.addEventListener(`mousedown`, function (evt) {
+  if (evt.which === 1) {
+    map.classList.remove(`map--faded`);
+  }
+  removeAdFormDisabled();
+  removeAdFormFieldsetsDisabled();
+  renderPin();
+  renderCard();
+  addAddress(address, leftMapPin, topMapPin);
+});
+
+mapPinMain.addEventListener(`keydown`, function (evt) {
+  if (evt.code === `Enter`) {
+    map.classList.remove(`map--faded`);
+  }
+  removeAdFormDisabled();
+  removeAdFormFieldsetsDisabled();
+  renderPin();
+  renderCard();
+  addAddress(address, leftMapPin, topMapPin);
+});
+
+const capacity = document.querySelector(`#capacity`);
+const capacityOptions = capacity.querySelectorAll(`option`);
+
+const removeToArrDisabled = function (arr) {
+  arr.forEach((item) => {
+    item.removeAttribute(`disabled`);
+  });
+};
+
+removeToArrDisabled(capacityOptions);
+const roomNumber = document.querySelector(`#room_number`);
+roomNumber.addEventListener(`change`, function (evt) {
+
+  for (let i = 0; i < capacityOptions.length; i++) {
+    if (evt.target.value === `1`) {
+      removeToArrDisabled(capacityOptions);
+      capacityOptions[0].setAttribute(`disabled`, `true`);
+      capacityOptions[1].setAttribute(`disabled`, `true`);
+      capacityOptions[3].setAttribute(`disabled`, `true`);
+    } if (evt.target.value === `2`) {
+      removeToArrDisabled(capacityOptions);
+      capacityOptions[0].setAttribute(`disabled`, `true`);
+      capacityOptions[3].setAttribute(`disabled`, `true`);
+    } if (evt.target.value === `3`) {
+      removeToArrDisabled(capacityOptions);
+      capacityOptions[3].setAttribute(`disabled`, `true`);
+    } if (evt.target.value === `100`) {
+      removeToArrDisabled(capacityOptions);
+      capacityOptions[0].setAttribute(`disabled`, `true`);
+      capacityOptions[1].setAttribute(`disabled`, `true`);
+      capacityOptions[2].setAttribute(`disabled`, `true`);
+    }
+  }
+});
+
