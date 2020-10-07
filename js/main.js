@@ -112,21 +112,12 @@ const getLastItemOfString = function (string) {
   return arr.join(``);
 };
 
-const getNumberOfString = function (string, stopStringItem) {
-  const arr = [];
-  for (let i = 0; i < string.length; i++) {
-    if (string[i] !== stopStringItem) {
-      arr.push(string[i]);
-    } else {
-      break;
-    }
-  }
-  const stringNumber = arr.join(``);
+const getNumberOfString = function (stringNumber) {
   const number = parseInt(stringNumber, 10);
   return number;
 };
 
-const addAddress = function (address, left, top) {
+const fillAddress = function (address, left, top) {
   address.value = `${left}, ${top}`;
 };
 
@@ -171,13 +162,17 @@ const createPin = function (obj) {
 
 const mapPinsHtml = document.querySelector(`.map__pins`);
 const fragment = document.createDocumentFragment();
-for (let i = 0; i < offers.length; i++) {
-  fragment.appendChild(createPin(offers[i]));
-}
-
-const renderPin = function () {
-  mapPinsHtml.appendChild(fragment);
+const addCreatePinToFragment = function (fragmentItem, offersarr) {
+  for (let i = 0; i < offersarr.length; i++) {
+    fragmentItem.appendChild(createPin(offersarr[i]));
+  }
 };
+addCreatePinToFragment(fragment, offers);
+
+const renderPin = function (fragmentItem) {
+  mapPinsHtml.appendChild(fragmentItem);
+};
+
 
 const card = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapFiltersContainer = document.querySelector(`.map__filters-container`);
@@ -257,8 +252,12 @@ const fragmentCard = document.createDocumentFragment();
 fragmentCard.appendChild(createCard(offers[0]));
 
 const map = document.querySelector(`.map`);
-const renderCard = function () {
-  map.insertBefore(fragmentCard, mapFiltersContainer);
+// const renderCard = function () {
+//   map.insertBefore(fragmentCard, mapFiltersContainer);
+// };
+
+const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
+  map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
 };
 
 
@@ -266,13 +265,23 @@ const mapPinMain = document.querySelector(`.map__pin--main`);
 const adFormFieldsets = document.querySelectorAll(`fieldset`);
 const mapFilter = document.querySelector(`.map__filters`);
 
-map.classList.add(`map--faded`);
+const addMapFaded = function (item) {
+  item.classList.add(`map--faded`);
+};
+addMapFaded(map);
 
-adFormFieldsets.forEach((item) => {
-  item.setAttribute(`disabled`, `true`);
-});
+const addDisabled = function (arrItems) {
+  arrItems.forEach((item) => {
+    item.setAttribute(`disabled`, `true`);
+  });
+};
+addDisabled(adFormFieldsets);
 
-mapFilter.classList.add(`ad-form--disabled`);
+const addAdFormDisabled = function (item) {
+  item.classList.add(`ad-form--disabled`);
+};
+addAdFormDisabled(mapFilter);
+
 
 const removeAdFormDisabled = function () {
   mapFilter.classList.remove(`ad-form--disabled`);
@@ -284,7 +293,6 @@ const removeAdFormFieldsetsDisabled = function () {
   });
 };
 
-
 const mapPin = document.querySelector(`.map__pin`);
 const mapPinImg = mapPin.querySelector(`img`);
 const mapPinImgWidth = mapPinImg.width;
@@ -292,34 +300,46 @@ const mapPinImgHeight = mapPinImg.height;
 const address = document.querySelector(`#address`);
 const mapPinMainLeft = mapPinMain.style.left;
 const mapPinMainTop = mapPinMain.style.top;
-const elemStop = `p`;
 const widthMapPin = 10;
 const heightMapPin = 22;
-const leftMapPin = getNumberOfString(mapPinMainLeft, elemStop) + mapPinImgWidth + widthMapPin / 2;
-const topMapPin = getNumberOfString(mapPinMainTop, elemStop) + mapPinImgHeight + heightMapPin / 2;
 
+const getPosition = function (distance, widthItem, widthItemLow) {
+  const position = getNumberOfString(distance) + widthItem + widthItemLow / 2;
+  return position;
+};
 
-mapPinMain.addEventListener(`mousedown`, function (evt) {
-  if (evt.which === 1) {
-    map.classList.remove(`map--faded`);
-  }
-  removeAdFormDisabled();
-  removeAdFormFieldsetsDisabled();
-  renderPin();
-  renderCard();
-  addAddress(address, leftMapPin, topMapPin);
-});
+const leftMapPin = getPosition(mapPinMainLeft, mapPinImgWidth, widthMapPin);
+const topMapPin = getPosition(mapPinMainTop, mapPinImgHeight, heightMapPin);
 
-mapPinMain.addEventListener(`keydown`, function (evt) {
-  if (evt.code === `Enter`) {
-    map.classList.remove(`map--faded`);
-  }
-  removeAdFormDisabled();
-  removeAdFormFieldsetsDisabled();
-  renderPin();
-  renderCard();
-  addAddress(address, leftMapPin, topMapPin);
-});
+const mousedownMapPinMain = function () {
+  mapPinMain.addEventListener(`mousedown`, function (evt) {
+    if (evt.which === 1) {
+      map.classList.remove(`map--faded`);
+    }
+    removeAdFormDisabled();
+    removeAdFormFieldsetsDisabled();
+    renderPin(fragment);
+    renderCard(fragmentCard, mapFiltersContainer);
+    fillAddress(address, leftMapPin, topMapPin);
+    checkRoomAndGuest();
+  });
+};
+mousedownMapPinMain();
+
+const keydownmapPinMain = function () {
+  mapPinMain.addEventListener(`keydown`, function (evt) {
+    if (evt.code === `Enter`) {
+      map.classList.remove(`map--faded`);
+    }
+    removeAdFormDisabled();
+    removeAdFormFieldsetsDisabled();
+    renderPin(fragment);
+    renderCard(fragmentCard, mapFiltersContainer);
+    fillAddress(address, leftMapPin, topMapPin);
+    checkRoomAndGuest();
+  });
+};
+keydownmapPinMain();
 
 const capacity = document.querySelector(`#capacity`);
 const capacityOptions = capacity.querySelectorAll(`option`);
@@ -331,28 +351,91 @@ const removeToArrDisabled = function (arr) {
 };
 
 removeToArrDisabled(capacityOptions);
-const roomNumber = document.querySelector(`#room_number`);
-roomNumber.addEventListener(`change`, function (evt) {
 
-  for (let i = 0; i < capacityOptions.length; i++) {
-    if (evt.target.value === `1`) {
-      removeToArrDisabled(capacityOptions);
-      capacityOptions[0].setAttribute(`disabled`, `true`);
-      capacityOptions[1].setAttribute(`disabled`, `true`);
-      capacityOptions[3].setAttribute(`disabled`, `true`);
-    } if (evt.target.value === `2`) {
-      removeToArrDisabled(capacityOptions);
-      capacityOptions[0].setAttribute(`disabled`, `true`);
-      capacityOptions[3].setAttribute(`disabled`, `true`);
-    } if (evt.target.value === `3`) {
-      removeToArrDisabled(capacityOptions);
-      capacityOptions[3].setAttribute(`disabled`, `true`);
-    } if (evt.target.value === `100`) {
-      removeToArrDisabled(capacityOptions);
-      capacityOptions[0].setAttribute(`disabled`, `true`);
-      capacityOptions[1].setAttribute(`disabled`, `true`);
-      capacityOptions[2].setAttribute(`disabled`, `true`);
+
+const checkRoomAndGuest = function () {
+  const roomNumber = document.querySelector(`#room_number`);
+
+
+  const MESSAGE_ROOMS_ERROR = `
+1 комната — «для 1 гостя»;
+2 комнаты — «для 2 гостей» или «для 1 гостя»;
+3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
+100 комнат — «не для гостей».`;
+
+  let room = roomNumber.value;
+  let guest = capacity.value;
+  let romIndex = room - 1;
+  const MAX_ROOM = 3;
+  const NO_FOR_GUEST = `0`;
+  const capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]];
+
+  const checkRoomDefault = function () {
+    if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+      roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
+    } else {
+      roomNumber.setCustomValidity(``);
     }
-  }
-});
+  };
+  checkRoomDefault();
+
+  const checkRoom = function () {
+    roomNumber.addEventListener(`change`, function () {
+      const roomValue = roomNumber.value;
+      room = roomValue;
+      if (room > MAX_ROOM) {
+        room = NO_FOR_GUEST;
+        romIndex = capacitys.length - 1;
+      } else {
+        romIndex = room - 1;
+      }
+      if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+        roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
+      } else {
+        roomNumber.setCustomValidity(``);
+      }
+    });
+  };
+  checkRoom();
+
+  const checkCapacity = function () {
+    capacity.addEventListener(`change`, function () {
+      const guestValue = capacity.value;
+      guest = guestValue;
+      if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+        roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
+      } else {
+        roomNumber.setCustomValidity(``);
+      }
+    });
+  };
+  checkCapacity();
+};
+
+// roomNumber.addEventListener(`change`, function (evt) {
+//   for (let i = 0; i < capacityOptions.length; i++) {
+//     if (evt.target.value === `1`) {
+//       removeToArrDisabled(capacityOptions);
+//       capacityOptions[0].setAttribute(`disabled`, `true`);
+//       capacityOptions[1].setAttribute(`disabled`, `true`);
+//       capacityOptions[3].setAttribute(`disabled`, `true`);
+//     } if (evt.target.value === `2`) {
+//       removeToArrDisabled(capacityOptions);
+//       capacityOptions[0].setAttribute(`disabled`, `true`);
+//       capacityOptions[3].setAttribute(`disabled`, `true`);
+//     } if (evt.target.value === `3`) {
+//       removeToArrDisabled(capacityOptions);
+//       capacityOptions[3].setAttribute(`disabled`, `true`);
+//     } if (evt.target.value === `100`) {
+//       removeToArrDisabled(capacityOptions);
+//       capacityOptions[0].setAttribute(`disabled`, `true`);
+//       capacityOptions[1].setAttribute(`disabled`, `true`);
+//       capacityOptions[2].setAttribute(`disabled`, `true`);
+//     }
+//   }
+// });
+
+const price = document.querySelector(`#price`);
+price.setAttribute(`max`, `1000000`);
+
 
