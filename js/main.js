@@ -414,29 +414,6 @@ const checkRoomAndGuest = function () {
   checkCapacity();
 };
 
-// roomNumber.addEventListener(`change`, function (evt) {
-//   for (let i = 0; i < capacityOptions.length; i++) {
-//     if (evt.target.value === `1`) {
-//       removeToArrDisabled(capacityOptions);
-//       capacityOptions[0].setAttribute(`disabled`, `true`);
-//       capacityOptions[1].setAttribute(`disabled`, `true`);
-//       capacityOptions[3].setAttribute(`disabled`, `true`);
-//     } if (evt.target.value === `2`) {
-//       removeToArrDisabled(capacityOptions);
-//       capacityOptions[0].setAttribute(`disabled`, `true`);
-//       capacityOptions[3].setAttribute(`disabled`, `true`);
-//     } if (evt.target.value === `3`) {
-//       removeToArrDisabled(capacityOptions);
-//       capacityOptions[3].setAttribute(`disabled`, `true`);
-//     } if (evt.target.value === `100`) {
-//       removeToArrDisabled(capacityOptions);
-//       capacityOptions[0].setAttribute(`disabled`, `true`);
-//       capacityOptions[1].setAttribute(`disabled`, `true`);
-//       capacityOptions[2].setAttribute(`disabled`, `true`);
-//     }
-//   }
-// });
-
 const title = document.querySelector(`#title`);
 title.setAttribute(`minlength`, `30`);
 const price = document.querySelector(`#price`);
