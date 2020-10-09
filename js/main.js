@@ -113,8 +113,8 @@ const getLastItemOfString = function (string) {
 };
 
 const getNumberOfString = function (stringNumber) {
-  const number = parseInt(stringNumber, 10);
-  return number;
+  const numberItem = parseInt(stringNumber, 10);
+  return numberItem;
 };
 
 const fillAddress = function (address, left, top) {
