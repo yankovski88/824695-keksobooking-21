@@ -164,7 +164,9 @@ const mapPinsHtml = document.querySelector(`.map__pins`);
 const fragment = document.createDocumentFragment();
 const addCreatePinToFragment = function (fragmentItem, offersarr) {
   for (let i = 0; i < offersarr.length; i++) {
-    fragmentItem.appendChild(createPin(offersarr[i]));
+    const fragmentPin = createPin(offersarr[i]);
+    fragmentPin.setAttribute(`data-index`, i);
+    fragmentItem.appendChild(fragmentPin);
   }
 };
 addCreatePinToFragment(fragment, offers);
@@ -178,8 +180,6 @@ const card = document.querySelector(`#card`).content.querySelector(`.map__card`)
 const mapFiltersContainer = document.querySelector(`.map__filters-container`);
 
 const createCard = function (obj) {
-
-
   const cardTemplate = card.cloneNode(true);
   if (obj.offer.title) {
     cardTemplate.querySelector(`.popup__title`).textContent = obj.offer.title;
@@ -249,7 +249,9 @@ const createCard = function (obj) {
 };
 
 const fragmentCard = document.createDocumentFragment();
-fragmentCard.appendChild(createCard(offers[0]));
+for (let i = 0; i < offers.length; i++) {
+  fragmentCard.appendChild(createCard(offers[i]));
+}
 
 const map = document.querySelector(`.map`);
 
@@ -257,6 +259,42 @@ const map = document.querySelector(`.map`);
 const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
   map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
 };
+
+
+map.addEventListener(`click`, function (evt) {
+  let target = evt.target;
+  if (target.tagName === `IMG`) {
+    target = target.parentNode;
+  }
+
+  if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) {
+    if (map.querySelector(`.map__card`)) {
+      map.removeChild(map.querySelector(`.map__card`));
+    } else {
+      renderCard(createCard(offers[target.dataset.index]), mapFiltersContainer);// map.children[1]
+
+      const popupClose = document.querySelector(`.popup__close`);
+      const mapCard = map.querySelector(`.map__card`);
+      const removeMapCard = function () {
+        map.removeChild(mapCard);
+      };
+      popupClose.addEventListener(`click`, function () {
+        removeMapCard();
+      });
+      popupClose.addEventListener(`keydown`, function () {
+        if (evt.target.code === 13) {
+          removeMapCard();
+        }
+      });
+    }
+  }
+});
+
+map.addEventListener(`keydown`, function (evt) {
+  if ((evt.key === `Escape`) && (map.querySelector(`.map__card`))) {
+    map.removeChild(map.querySelector(`.map__card`));
+  }
+});
 
 
 const mapPinMain = document.querySelector(`.map__pin--main`);
@@ -317,7 +355,7 @@ const mousedownMapPinMain = function () {
     removeAdFormDisabled();
     removeAdFormFieldsetsDisabled();
     renderPin(fragment);
-    renderCard(fragmentCard, mapFiltersContainer);
+    // renderCard(fragmentCard, mapFiltersContainer);
     fillAddress(address, leftMapPin, topMapPin);
     checkRoomAndGuest();
     setMinPrice();
@@ -334,7 +372,7 @@ const keydownmapPinMain = function () {
     removeAdFormDisabled();
     removeAdFormFieldsetsDisabled();
     renderPin(fragment);
-    renderCard(fragmentCard, mapFiltersContainer);
+    // renderCard(fragmentCard, mapFiltersContainer);
     fillAddress(address, leftMapPin, topMapPin);
     checkRoomAndGuest();
     setMinPrice();
