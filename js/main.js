@@ -271,30 +271,34 @@ map.addEventListener(`click`, function (evt) {
     if (map.querySelector(`.map__card`)) {
       map.removeChild(map.querySelector(`.map__card`));
     } else {
-      renderCard(createCard(offers[target.dataset.index]), mapFiltersContainer);// map.children[1]
+      renderCard(createCard(offers[target.dataset.index]), mapFiltersContainer);
 
       const popupClose = document.querySelector(`.popup__close`);
       const mapCard = map.querySelector(`.map__card`);
-      const removeMapCard = function () {
+      const removeChildMapCard = function () {
         map.removeChild(mapCard);
       };
-      popupClose.addEventListener(`click`, function () {
-        removeMapCard();
-      });
-      popupClose.addEventListener(`keydown`, function () {
+      const onPopupCloseClick = function () {
+        removeChildMapCard();
+      };
+      popupClose.addEventListener(`click`, onPopupCloseClick);
+
+      const onpPopupCloseEnterPress = function () {
         if (evt.target.code === 13) {
-          removeMapCard();
+          removeChildMapCard();
         }
-      });
+      };
+      popupClose.addEventListener(`keydown`, onpPopupCloseEnterPress);
     }
   }
 });
 
-map.addEventListener(`keydown`, function (evt) {
+const onMapEscapePress = function (evt) {
   if ((evt.key === `Escape`) && (map.querySelector(`.map__card`))) {
     map.removeChild(map.querySelector(`.map__card`));
   }
-});
+};
+map.addEventListener(`keydown`, onMapEscapePress);
 
 
 const mapPinMain = document.querySelector(`.map__pin--main`);
@@ -355,7 +359,6 @@ const mousedownMapPinMain = function () {
     removeAdFormDisabled();
     removeAdFormFieldsetsDisabled();
     renderPin(fragment);
-    // renderCard(fragmentCard, mapFiltersContainer);
     fillAddress(address, leftMapPin, topMapPin);
     checkRoomAndGuest();
     setMinPrice();
@@ -372,7 +375,6 @@ const keydownmapPinMain = function () {
     removeAdFormDisabled();
     removeAdFormFieldsetsDisabled();
     renderPin(fragment);
-    // renderCard(fragmentCard, mapFiltersContainer);
     fillAddress(address, leftMapPin, topMapPin);
     checkRoomAndGuest();
     setMinPrice();
