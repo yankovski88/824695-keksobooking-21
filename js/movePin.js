@@ -1,8 +1,7 @@
 'use strict';
-
+// не двигается, не знаю почему
 const mapPinMain = document.querySelector(`.map__pin--main`);
 mapPinMain.addEventListener(`mousedown`, function (evt) {
-  // console.log(`на меня нажали`);
   evt.preventDefault();
 
   let startCoords = {
@@ -10,7 +9,6 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
     y: evt.clientY,
   };
   const onMapPinMainMouseMove = function (evtMove) {
-    // console.log(`меня двигают`);
     evtMove.preventDefault();
     const shift = {
       x: startCoords.x - evtMove.clientX,
