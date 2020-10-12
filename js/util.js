@@ -1,6 +1,5 @@
 "use strict";
 (function () {
-// util
   function getRandomPartOfArr(arr) {
     const arrCopy = arr.slice();
     const randomNumber = getRandomInt(arrCopy.length);
@@ -100,18 +99,18 @@
   const fillAddress = function (address, left, top) {
     address.value = `${left}, ${top}`;
   };
-// end util
-window.util = {
-  getArrOfTextBeforeDash,
-  getArrClassNameHtml,
-  getRandomMinMax,
-  getRandomInt,
-  getRandomPartOfArr,
-  fillAddress,
-  getNumberOfString,
-  getLastItemOfString,
-  getFirstItemOfString,
-  getRandomValueOfObject,
-  comparisonArrsAndAddClassNameHidden
-}
+
+  window.util = {
+    getArrOfTextBeforeDash,
+    getArrClassNameHtml,
+    getRandomMinMax,
+    getRandomInt,
+    getRandomPartOfArr,
+    fillAddress,
+    getNumberOfString,
+    getLastItemOfString,
+    getFirstItemOfString,
+    getRandomValueOfObject,
+    comparisonArrsAndAddClassNameHidden,
+  };
 })();

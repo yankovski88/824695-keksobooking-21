@@ -1,7 +1,6 @@
-'se strict';
+'use strict';
 
 (function () {
-  //render pin
   const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   const createPin = function (obj) {
@@ -27,12 +26,10 @@
   const renderPin = function (fragmentItem) {
     mapPinsHtml.appendChild(fragmentItem);
   };
-window.pin = {
-  addCreatePinToFragment,
-  fragment,
-  mapPinsHtml,
-  createPin,
-  pin,
-  renderPin
-}
+  window.pin = {
+    fragment,
+    mapPinsHtml,
+    pin,
+    renderPin,
+  };
 })();

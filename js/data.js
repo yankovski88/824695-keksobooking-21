@@ -20,7 +20,7 @@
   const mapBlock = document.querySelector(`.map`);
   const offers = [];
 
-// data
+  // data
   for (let i = 0; i < OBJECT_TOTAL; i++) {
     const locationX = window.util.getRandomMinMax(1, mapBlock.clientHeight);
     const locationY = window.util.getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX);
@@ -59,6 +59,6 @@
     LOCATION_Y_MAX,
     LOCATION_Y_MIN,
     OFFER_PHOTOS,
-    GUESTS_MAX
-  }
+    GUESTS_MAX,
+  };
 })();
