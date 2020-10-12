@@ -126,9 +126,7 @@
       }
     };
 
-    timein.addEventListener(`change`, function () {
-      setTimein();
-    });
+    timein.addEventListener(`change`, setTimein);
 
     const setTimeout = function () {
       for (let i = 0; i < timeoutOptions.length; i++) {
@@ -137,9 +135,7 @@
         }
       }
     };
-    timeout.addEventListener(`change`, function () {
-      setTimeout();
-    });
+    timeout.addEventListener(`change`, setTimeout);
   };
 
   window.form = {
