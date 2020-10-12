@@ -102,7 +102,8 @@
     window.pin.renderPin(window.pin.fragment);
     window.util.fillAddress(address, leftMapPin, topMapPin);
     window.form.checkRoomAndGuest();
-    window.form.setMinPrice();
+    // window.form.setMinPrice();
+    window.form.onTypeChange();
     window.form.setTimeinAndTimeout();
   };
 
@@ -117,7 +118,8 @@
     window.pin.renderPin(window.pin.fragment);
     window.util.fillAddress(address, leftMapPin, topMapPin);
     window.form.checkRoomAndGuest();
-    window.form.setMinPrice();
+    // window.form.setMinPrice();
+    window.form.onTypeChange();
     window.form.setTimeinAndTimeout();
   };
   mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);
