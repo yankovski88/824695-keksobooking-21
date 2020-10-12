@@ -1,6 +1,6 @@
 "use strict";
 (function () {
-  window.card.map.addEventListener(`click`, function (evt) {
+  const onMapClick = function (evt) {
     let target = evt.target;
     if (target.tagName === `IMG`) {
       target = target.parentNode;
@@ -23,15 +23,16 @@
         };
         popupClose.addEventListener(`click`, onPopupCloseClick);
 
-        const onpPopupCloseEnterPress = function () {
+        const onPopupCloseEnterPress = function () {
           if (evt.target.code === 13) {
             removeChildMapCard();
           }
         };
-        popupClose.addEventListener(`keydown`, onpPopupCloseEnterPress);
+        popupClose.addEventListener(`keydown`, onPopupCloseEnterPress);
       }
     }
-  });
+  };
+  window.card.map.addEventListener(`click`, onMapClick);
 
 
   const onMapEscapePress = function (evt) {
@@ -92,35 +93,33 @@
   const leftMapPin = getPosition(mapPinMainLeft, mapPinImgWidth, widthMapPin);
   const topMapPin = getPosition(mapPinMainTop, mapPinImgHeight, heightMapPin);
 
-  const mousedownMapPinMain = function () {
-    mapPinMain.addEventListener(`mousedown`, function (evt) {
-      if (evt.which === 1) {
-        window.card.map.classList.remove(`map--faded`);
-      }
-      removeAdFormDisabled();
-      removeAdFormFieldsetsDisabled();
-      window.pin.renderPin(window.pin.fragment);
-      window.util.fillAddress(address, leftMapPin, topMapPin);
-      window.form.checkRoomAndGuest();
-      window.form.setMinPrice();
-      window.form.setTimeinAndTimeout();
-    });
+  const onMapPinMainMousedown = function (evt) {
+    if (evt.which === 1) {
+      window.card.map.classList.remove(`map--faded`);
+    }
+    removeAdFormDisabled();
+    removeAdFormFieldsetsDisabled();
+    window.pin.renderPin(window.pin.fragment);
+    window.util.fillAddress(address, leftMapPin, topMapPin);
+    window.form.checkRoomAndGuest();
+    window.form.setMinPrice();
+    window.form.setTimeinAndTimeout();
   };
-  mousedownMapPinMain();
 
-  const keydownmapPinMain = function () {
-    mapPinMain.addEventListener(`keydown`, function (evt) {
-      if (evt.code === `Enter`) {
-        window.card.map.classList.remove(`map--faded`);
-      }
-      removeAdFormDisabled();
-      removeAdFormFieldsetsDisabled();
-      window.pin.renderPin(window.pin.fragment);
-      window.util.fillAddress(address, leftMapPin, topMapPin);
-      window.form.checkRoomAndGuest();
-      window.form.setMinPrice();
-      window.form.setTimeinAndTimeout();
-    });
+  mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
+
+  const onMapPinMainKeydown = function (evt) {
+    if (evt.code === `Enter`) {
+      window.card.map.classList.remove(`map--faded`);
+    }
+    removeAdFormDisabled();
+    removeAdFormFieldsetsDisabled();
+    window.pin.renderPin(window.pin.fragment);
+    window.util.fillAddress(address, leftMapPin, topMapPin);
+    window.form.checkRoomAndGuest();
+    window.form.setMinPrice();
+    window.form.setTimeinAndTimeout();
   };
-  keydownmapPinMain();
+  mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);
+
 })();

@@ -38,37 +38,35 @@
     };
     checkRoomDefault();
 
-    const checkRoom = function () {
-      roomNumber.addEventListener(`change`, function () {
-        const roomValue = roomNumber.value;
-        room = roomValue;
-        if (room > MAX_ROOM) {
-          room = NO_FOR_GUEST;
-          romIndex = capacitys.length - 1;
-        } else {
-          romIndex = room - 1;
-        }
-        if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
-          roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-        } else {
-          roomNumber.setCustomValidity(``);
-        }
-      });
+    const onRoomNumberChange = function () {
+      const roomValue = roomNumber.value;
+      room = roomValue;
+      if (room > MAX_ROOM) {
+        room = NO_FOR_GUEST;
+        romIndex = capacitys.length - 1;
+      } else {
+        romIndex = room - 1;
+      }
+      if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+        roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
+      } else {
+        roomNumber.setCustomValidity(``);
+      }
     };
-    checkRoom();
+    roomNumber.addEventListener(`change`, onRoomNumberChange);
 
-    const checkCapacity = function () {
-      capacity.addEventListener(`change`, function () {
-        const guestValue = capacity.value;
-        guest = guestValue;
-        if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
-          roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-        } else {
-          roomNumber.setCustomValidity(``);
-        }
-      });
+    // везде где есть обработчики вставил фнкции по ссылке. Это правильно или нужно было оставить как былом(отдельной функцией)?
+    // ну и приходится менять название функции на название обработчика с checkCapacity на onCapacityChange
+    const onCapacityChange = function () {
+      const guestValue = capacity.value;
+      guest = guestValue;
+      if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+        roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
+      } else {
+        roomNumber.setCustomValidity(``);
+      }
     };
-    checkCapacity();
+    capacity.addEventListener(`change`, onCapacityChange);
   };
 
   const title = document.querySelector(`#title`);
@@ -84,22 +82,22 @@
     return itemValue;
   };
 
-  const setMinPrice = function () {
-    const type = document.querySelector(`#type`);
-    const types = type.querySelectorAll(`option`);
-    const titles = getArrValueFromHtml(types);
-    const prices = [0, 1000, 5000, 10000];
-    type.addEventListener(`change`, function () {
-      const titleValue = type.value;
-      for (let i = 0; i < titles.length; i++) {
-        if (titleValue === titles[i]) {
-          price.setAttribute(`placeholder`, `от ${prices[i]}`);
-          price.setAttribute(`min`, `${prices[i]}`);
-        }
-      }
-    });
-  };
 
+  const type = document.querySelector(`#type`);
+  const types = type.querySelectorAll(`option`);
+  const titles = getArrValueFromHtml(types);
+  const prices = [0, 1000, 5000, 10000];
+
+  const onTypeChange = function () {
+    const titleValue = type.value;
+    for (let i = 0; i < titles.length; i++) {
+      if (titleValue === titles[i]) {
+        price.setAttribute(`placeholder`, `от ${prices[i]}`);
+        price.setAttribute(`min`, `${prices[i]}`);
+      }
+    }
+  };
+  type.addEventListener(`change`, onTypeChange);
 
   const MAX_PRICE = 1000000;
   price.setAttribute(`required`, `required`);
@@ -118,7 +116,7 @@
   const timeoutOptions = timeout.querySelectorAll(`option`);
 
   const setTimeinAndTimeout = function () {
-    const setTimein = function () {
+    const onTimeinChange = function () {
       for (let i = 0; i < timeinOptions.length; i++) {
         if (timeinOptions[i].value === timein.value) {
           timeout.value = timein[i].value;
@@ -126,24 +124,23 @@
       }
     };
 
-    timein.addEventListener(`change`, setTimein);
+    timein.addEventListener(`change`, onTimeinChange);
 
-    const setTimeout = function () {
+    const onTimeoutChange = function () {
       for (let i = 0; i < timeoutOptions.length; i++) {
         if (timeoutOptions[i].value === timeout.value) {
           timein.value = timeout[i].value;
         }
       }
     };
-    timeout.addEventListener(`change`, setTimeout);
+    timeout.addEventListener(`change`, onTimeoutChange);
   };
 
   window.form = {
     setTimeinAndTimeout,
-    setMinPrice,
     capacityOptions,
     capacity,
-    checkRoomAndGuest
+    checkRoomAndGuest,
   };
 })();
 
