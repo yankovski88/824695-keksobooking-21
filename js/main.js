@@ -19,111 +19,11 @@ const LOCATION_Y_MIN = 130;
 const LOCATION_Y_MAX = 630;
 const mapBlock = document.querySelector(`.map`);
 const offers = [];
-
-function getRandomPartOfArr(arr) {
-  const arrCopy = arr.slice();
-  const randomNumber = getRandomInt(arrCopy.length);
-  for (let i = 0; i < randomNumber; i++) {
-    const randomNumberDel = getRandomInt(arrCopy.length);
-    arrCopy.splice(randomNumberDel, 1);
-  }
-  return arrCopy;
-}
-
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-const getRandomMinMax = function (min, max) {
-  const random = Math.floor(min + Math.random() * (max + 1 - min));
-  return random;
-};
-
-
-const getArrClassNameHtml = function (elementHtml) {
-  const classNames = [];
-  elementHtml.forEach((item) => {
-    classNames.push(item.className);
-  });
-  return classNames;
-};
-
-const getArrOfTextBeforeDash = function (arr) {
-  const texts = [];
-  const allTexts = [];
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = arr[i].length - 1; j >= 0; j--) {
-      if (arr[i][j] === `-`) {
-        texts.reverse();
-        allTexts.push(texts.join(``));
-        allTexts.splice(0, texts.length);
-        break;
-      } else {
-        texts.push(arr[i][j]);
-      }
-    }
-  }
-  return allTexts;
-};
-
-const comparisonArrsAndAddClassNameHidden = function (arr1, arr2, htmlElement) {
-  for (let i = 0; i < arr1.length; i++) {
-    for (let j = 0; j < arr2.length; j++) {
-      htmlElement[j].classList.add(`hidden`);
-      if (arr1[i] === arr2[j]) {
-        htmlElement[j].textContent = arr1[i];
-      }
-      if (htmlElement[j].textContent) {
-        htmlElement[j].classList.remove(`hidden`);
-      }
-    }
-  }
-};
-
-const getRandomValueOfObject = function (object) {
-  const values = Object.values(object);
-  const randomNumber = getRandomInt(values.length);
-  const randomValue = values[randomNumber];
-  return randomValue;
-};
-
-const getFirstItemOfString = function (string) {
-  const arr = [];
-  for (let i = 0; i < string.length; i++) {
-    if (string[i] !== `,`) {
-      arr.push(string[i]);
-    } else {
-      break;
-    }
-  }
-  return arr.join(``);
-};
-
-const getLastItemOfString = function (string) {
-  const arr = [];
-  for (let i = string.length - 1; i > 0; i--) {
-    if (string[i] !== ` `) {
-      arr.push(string[i]);
-    } else {
-      break;
-    }
-  }
-  return arr.join(``);
-};
-
-const getNumberOfString = function (stringNumber) {
-  const numberItem = parseInt(stringNumber, 10);
-  return numberItem;
-};
-
-const fillAddress = function (address, left, top) {
-  address.value = `${left}, ${top}`;
-};
-
+//going change
+// data
 for (let i = 0; i < OBJECT_TOTAL; i++) {
-  const locationX = getRandomMinMax(1, mapBlock.clientHeight);
-  const locationY = getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX);
+  const locationX = window.util.getRandomMinMax(1, mapBlock.clientHeight);
+  const locationY = window.util.getRandomMinMax(LOCATION_Y_MIN, LOCATION_Y_MAX);
   offers.push({
     "author": {
       "avatar": `img/avatars/user0${i + 1}.png`,
@@ -131,15 +31,15 @@ for (let i = 0; i < OBJECT_TOTAL; i++) {
     "offer": {
       "title": `Предложение ${i + 1}`,
       "address": `${locationX}, ${locationY}`,
-      "price": `${getRandomMinMax(1000, 10000)} ₽/ночь`,
-      "type": `${getRandomValueOfObject(OFFER_TYPES)}`,
-      "rooms": getRandomMinMax(1, ROOMS_MAX),
-      "guests": getRandomMinMax(1, GUESTS_MAX),
-      "checkin": OFFER_TIMES[getRandomInt(OFFER_TIMES.length)],
-      "checkout": OFFER_TIMES[getRandomInt(OFFER_TIMES.length)],
-      "features": getRandomPartOfArr(OFFER_FEATURES),
+      "price": `${window.util.getRandomMinMax(1000, 10000)} ₽/ночь`,
+      "type": `${window.util.getRandomValueOfObject(OFFER_TYPES)}`,
+      "rooms": window.util.getRandomMinMax(1, ROOMS_MAX),
+      "guests": window.util.getRandomMinMax(1, GUESTS_MAX),
+      "checkin": OFFER_TIMES[window.util.getRandomInt(OFFER_TIMES.length)],
+      "checkout": OFFER_TIMES[window.util.getRandomInt(OFFER_TIMES.length)],
+      "features": window.util.getRandomPartOfArr(OFFER_FEATURES),
       "description": `Описание ${i + 1}`,
-      "photos": getRandomPartOfArr(OFFER_PHOTOS),
+      "photos": window.util.getRandomPartOfArr(OFFER_PHOTOS),
     },
     "location": {
       "x": `${locationX}`,
@@ -148,7 +48,8 @@ for (let i = 0; i < OBJECT_TOTAL; i++) {
   });
 }
 
-
+//end data
+//render pin
 const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
 const createPin = function (obj) {
@@ -174,8 +75,9 @@ addCreatePinToFragment(fragment, offers);
 const renderPin = function (fragmentItem) {
   mapPinsHtml.appendChild(fragmentItem);
 };
+//end pin
 
-
+//card
 const card = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapFiltersContainer = document.querySelector(`.map__filters-container`);
 
@@ -187,7 +89,7 @@ const createCard = function (obj) {
     cardTemplate.querySelector(`.popup__title`).classList.add(`hidden`);
   }
   if (obj.offer.address[0] && obj.offer.address[1]) {
-    cardTemplate.querySelector(`.popup__text--address`).textContent = `${getFirstItemOfString(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${getLastItemOfString(obj.offer.address)}`;
+    cardTemplate.querySelector(`.popup__text--address`).textContent = `${window.util.getFirstItemOfString(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${window.util.getLastItemOfString(obj.offer.address)}`;
   } else {
     cardTemplate.querySelector(`.popup__text--address`).classList.add(`hidden`);
   }
@@ -214,10 +116,10 @@ const createCard = function (obj) {
 
 
   const cardTemplateLis = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`);
-  const ClassNames = getArrClassNameHtml(cardTemplateLis);
+  const ClassNames = window.util.getArrClassNameHtml(cardTemplateLis);
   const CopyClassNames = ClassNames.slice();
-  const htmlOfferFeatures = getArrOfTextBeforeDash(CopyClassNames);
-  comparisonArrsAndAddClassNameHidden(obj.offer.features, htmlOfferFeatures, cardTemplateLis);
+  const htmlOfferFeatures = window.util.getArrOfTextBeforeDash(CopyClassNames);
+  window.util.comparisonArrsAndAddClassNameHidden(obj.offer.features, htmlOfferFeatures, cardTemplateLis);
 
   if (obj.offer.description) {
     cardTemplate.querySelector(`.popup__description`).textContent = `${obj.offer.description}`;
@@ -260,12 +162,14 @@ const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
   map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
 };
 
+// end card
 
 map.addEventListener(`click`, function (evt) {
   let target = evt.target;
   if (target.tagName === `IMG`) {
     target = target.parentNode;
   }
+
 
   if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) {
     if (map.querySelector(`.map__card`)) {
@@ -333,6 +237,7 @@ const removeAdFormFieldsetsDisabled = function () {
   });
 };
 
+//активация сайта
 const mapPin = document.querySelector(`.map__pin`);
 const mapPinImg = mapPin.querySelector(`img`);
 const mapPinImgWidth = mapPinImg.width;
@@ -344,7 +249,7 @@ const widthMapPin = 10;
 const heightMapPin = 22;
 
 const getPosition = function (distance, widthItem, widthItemLow) {
-  const position = getNumberOfString(distance) + widthItem + widthItemLow / 2;
+  const position = window.util.getNumberOfString(distance) + widthItem + widthItemLow / 2;
   return position;
 };
 
@@ -383,6 +288,7 @@ const keydownmapPinMain = function () {
 };
 keydownmapPinMain();
 
+//valid form
 const capacity = document.querySelector(`#capacity`);
 const capacityOptions = capacity.querySelectorAll(`option`);
 
@@ -482,6 +388,7 @@ const setMinPrice = function () {
     }
   });
 };
+
 
 const MAX_PRICE = 1000000;
 price.setAttribute(`required`, `required`);
