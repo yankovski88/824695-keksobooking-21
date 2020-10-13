@@ -92,7 +92,6 @@
 
   const leftMapPin = getPosition(mapPinMainLeft, mapPinImgWidth, widthMapPin);
   const topMapPin = getPosition(mapPinMainTop, mapPinImgHeight, heightMapPin);
-
   const onMapPinMainMousedown = function (evt) {
     if (evt.which === 1) {
       window.card.map.classList.remove(`map--faded`);
