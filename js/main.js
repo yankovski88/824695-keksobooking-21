@@ -75,24 +75,6 @@
     });
   };
 
-  const mapPin = document.querySelector(`.map__pin`);
-  const mapPinImg = mapPin.querySelector(`img`);
-  const mapPinImgWidth = mapPinImg.width;
-  const mapPinImgHeight = mapPinImg.height;
-  const address = document.querySelector(`#address`);
-  const mapPinMainLeft = mapPinMain.style.left;
-  const mapPinMainTop = mapPinMain.style.top;
-  const widthMapPin = 10;
-  const heightMapPin = 22;
-
-  const getPosition = function (distance, widthItem, widthItemLow) {
-    const position = window.util.getNumberOfString(distance) + widthItem + widthItemLow / 2;
-    return position;
-  };
-
-  const leftMapPin = getPosition(mapPinMainLeft, mapPinImgWidth, widthMapPin);
-  const topMapPin = getPosition(mapPinMainTop, mapPinImgHeight, heightMapPin);
-
   const onMapPinMainMousedown = function (evt) {
     if (evt.which === 1) {
       window.card.map.classList.remove(`map--faded`);
@@ -100,13 +82,13 @@
     removeAdFormDisabled();
     removeAdFormFieldsetsDisabled();
     window.pin.renderPin(window.pin.fragment);
-    window.util.fillAddress(address, leftMapPin, topMapPin);
     window.form.checkRoomAndGuest();
-    window.form.setMinPrice();
+    window.form.onTypeChange();
     window.form.setTimeinAndTimeout();
   };
 
   mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
+
 
   const onMapPinMainKeydown = function (evt) {
     if (evt.code === `Enter`) {
@@ -115,9 +97,8 @@
     removeAdFormDisabled();
     removeAdFormFieldsetsDisabled();
     window.pin.renderPin(window.pin.fragment);
-    window.util.fillAddress(address, leftMapPin, topMapPin);
     window.form.checkRoomAndGuest();
-    window.form.setMinPrice();
+    window.form.onTypeChange();
     window.form.setTimeinAndTimeout();
   };
   mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);

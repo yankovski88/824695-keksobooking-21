@@ -141,6 +141,7 @@
     capacityOptions,
     capacity,
     checkRoomAndGuest,
+    onTypeChange
   };
 })();
 
