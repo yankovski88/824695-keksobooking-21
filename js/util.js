@@ -96,9 +96,6 @@
     return parseInt(stringNumber, 10);
   };
 
-  const fillAddress = function (address, left, top) {
-    address.value = `${left}, ${top}`;
-  };
 
   window.util = {
     getArrOfTextBeforeDash,
@@ -106,7 +103,6 @@
     getRandomMinMax,
     getRandomInt,
     getRandomPartOfArr,
-    fillAddress,
     getNumberOfString,
     getLastItemOfString,
     getFirstItemOfString,
