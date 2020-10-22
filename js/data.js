@@ -19,7 +19,7 @@
   const LOCATION_Y_MAX = 630;
   const mapBlock = document.querySelector(`.map`);
   const offers = [];
-
+  // console.log(window.backend.dataWisardsAva);
   // data
   for (let i = 0; i < OBJECT_TOTAL; i++) {
     const locationX = window.util.getRandomMinMax(1, mapBlock.clientHeight);
