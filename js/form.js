@@ -221,6 +221,28 @@ const onErrorButtonClick = function () {
   document.removeEventListener(`keydown`, onErrorButtonPressEsc)
   document.removeEventListener(`click`, onAroundOfErrorButtonClick)
 };
+
+// сделал обработчик клика на очистку формы
+const onFormClick = function () {
+  form.reset();
+  adFormReset.removeEventListener(`click`, onFormClick);
+  adFormReset.removeEventListener(`keydown`, onFormPressEnter);
+
+};
+// может не надо здесь удалять оброботчики по ссылке?
+const onFormPressEnter = function (evt) {
+  if(evt.keyCode = 13){
+    form.reset();
+    adFormReset.removeEventListener(`click`, onFormClick);
+    adFormReset.removeEventListener(`keydown`, onFormPressEnter);
+  }
+};
+
+// добаить обработчик очистки формы
+  const adFormReset = document.querySelector(`.ad-form__reset`); // клик по этой кнопке
+  adFormReset.addEventListener(`click`, onFormClick);
+  adFormReset.addEventListener(`keydown`, onFormPressEnter);
+
   window.form = {
     setTimeinAndTimeout,
     capacityOptions,
