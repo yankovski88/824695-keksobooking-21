@@ -27,7 +27,7 @@
     xhr.send();
   };
 
-const save = function (data, onSuccess, onError) {
+const save = function (data, onSuccess, onErrorSave) {
   const xhr = new XMLHttpRequest();
   const URL = `https://21.javascript.pages.academy/keksobooking`;
   xhr.responseType = 'json';
@@ -35,13 +35,16 @@ const save = function (data, onSuccess, onError) {
     if(xhr.status === 200){
       onSuccess();
     } else {
-      onError(`Статус ответа: ${xhr.status} ${xhr.statusText}`);
+      onErrorSave();
     }
   });
   xhr.addEventListener(`timeout`, function () {
-    onError(`Отправка не успела выполниться за ` + xhr.timeout + `мс`);
+    onErrorSave();
   });
-  xhr.timeout = 10000;
+  xhr.addEventListener(`error`, function () {
+    onErrorSave();
+  });
+  xhr.timeout = 1;
   xhr.open(`POST`, URL);
   xhr.send(data);
 };
