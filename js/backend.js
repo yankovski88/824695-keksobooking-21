@@ -27,8 +27,28 @@
     xhr.send();
   };
 
+const save = function (data, onSuccess, onError) {
+  const xhr = new XMLHttpRequest();
+  const URL = `https://21.javascript.pages.academy/keksobooking`;
+  xhr.responseType = 'json';
+  xhr.addEventListener(`load`, function () {
+    if(xhr.status === 200){
+      onSuccess();
+    } else {
+      onError(`Статус ответа: ${xhr.status} ${xhr.statusText}`);
+    }
+  });
+  xhr.addEventListener(`timeout`, function () {
+    onError(`Отправка не успела выполниться за ` + xhr.timeout + `мс`);
+  });
+  xhr.timeout = 10000;
+  xhr.open(`POST`, URL);
+  xhr.send(data);
+};
+  // save();
 
   window.backend = {
     load,
+    save
   };
 })();

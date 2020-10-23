@@ -1,6 +1,5 @@
 'use strict';
 
-
 (function () {
   const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
@@ -55,6 +54,7 @@
     mapPinsHtml,
     pin,
     renderPin,
+    onError,
   };
 
 })();

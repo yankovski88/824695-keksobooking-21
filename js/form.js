@@ -136,6 +136,52 @@
     timeout.addEventListener(`change`, onTimeoutChange);
   };
 
+  const mapPins = document.querySelector(`.map__pins`);
+  const mapOverlay = document.querySelector(`.map__overlay`); // вставить сюда когда карта заблокируется
+
+// после того как форма отправится любым способом, то вызовитесь следующие колбеки
+  const form = document.querySelector(`.ad-form`);
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), onSuccess, window.pin.onError);
+    evt.preventDefault(); // отменил отправку формы по умолчанию
+  });
+
+  const success = document.querySelector(`#success`).content.querySelector(`.success`); // нашел шаблон для вставки
+  const successTemplate = success.cloneNode(true); // обязательно клонируем шаблон, без клона не вставится в html
+  const onSuccess = function () {
+// if (){}
+    // не помню для чего добавляли в фрагмент клоны, наверное создали фрагмент в него через цикл добавли клоны и вставили
+    // одним фрагментом в html.
+    // const fragmentSuccess = document.createDocumentFragment();
+    // fragmentSuccess.appendChild(successTemplate);
+    // mapPins.appendChild(fragmentSuccess);
+
+    mapPins.appendChild(successTemplate); // Добавил нод в Html
+    document.addEventListener(`keydown`, onSuccessPressEsc); // добавивл обработчик по ссылке
+                                                        // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
+    document.addEventListener(`click`, onSuccessClick) // обработчик на клик, удаляет себя и обработик на ESC
+  };
+
+
+  // Добавляю удаление сообщения об успешной отправке через ESC
+  const onSuccessPressEsc = function (evt) {
+    if(evt.keyCode === 27){
+      console.log(`слышу что жмут ESC`);
+      successTemplate.remove();
+      document.removeEventListener(`keydown`, onSuccessPressEsc);
+      document.removeEventListener(`click`, onSuccessClick);
+
+    }
+  };
+  const onSuccessClick = function () {
+    console.log(`слышу клики`);
+    successTemplate.remove();
+    document.removeEventListener(`click`, onSuccessClick);
+    document.removeEventListener(`keydown`, onSuccessPressEsc)
+
+  };
+
+
   window.form = {
     setTimeinAndTimeout,
     capacityOptions,
