@@ -149,19 +149,12 @@
   const success = document.querySelector(`#success`).content.querySelector(`.success`); // нашел шаблон для вставки
   const successTemplate = success.cloneNode(true); // обязательно клонируем шаблон, без клона не вставится в html
   const onSuccess = function () {
-    // if (){}
-    // не помню для чего добавляли в фрагмент клоны, наверное создали фрагмент в него через цикл добавли клоны и вставили
-    // одним фрагментом в html.
-    // const fragmentSuccess = document.createDocumentFragment();
-    // fragmentSuccess.appendChild(successTemplate);
-    // mapPins.appendChild(fragmentSuccess);
 
     mapPins.appendChild(successTemplate); // Добавил нод в Html
     document.addEventListener(`keydown`, onSuccessPressEsc); // добавивл обработчик по ссылке
     // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
     document.addEventListener(`click`, onSuccessClick); // обработчик на клик, удаляет себя и обработик на ESC
     form.reset();
-    // window.map.deactivationPage();
     window.main.addAdFormDisabled(form); // дизейбл формы
     window.main.addMapFaded(window.card.map);
 
@@ -254,10 +247,6 @@
   adFormReset.addEventListener(`click`, onFormClick);
   adFormReset.addEventListener(`keydown`, onFormPressEnter);
 
-  // Добавляю функцию активации формы
-  // const activationForm = function () {
-  //   form.classList.contains(``)
-  // };
   window.form = {
     setTimeinAndTimeout,
     capacityOptions,
