@@ -3,7 +3,7 @@
 (function () {
   const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
-  const createPin = function (obj) {
+  const createPin = function (obj) { // по этому макету создается метка
     const pinTemplate = pin.cloneNode(true);
     pinTemplate.querySelector(`img`).src = obj.author.avatar;
     pinTemplate.querySelector(`img`).alt = obj.offer.title;
@@ -13,7 +13,7 @@
   };
 
   const mapOverlay = document.querySelector(`.map__overlay`);
-  const onError = function (errorMessage) {
+  const onError = function (errorMessage) { // всплывающее окно с ошибкой
     const node = document.createElement(`div`);
     node.style = `
     z-index: 100; 
@@ -29,9 +29,8 @@
     node.style.color = `red`;
     node.style.fontSize = `50px`;
 
-
     node.textContent = errorMessage;
-    mapOverlay.appendChild(node);
+    mapOverlay.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
   };
 
   const fragment = document.createDocumentFragment();
@@ -42,19 +41,19 @@
       fragment.appendChild(fragmentPin);
     }
   };
-  window.backend.load(onLoad, onError);
+  window.backend.load(onLoad, onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+  // а потом уже будет рисовать функция renderPin
 
-  const mapPinsHtml = document.querySelector(`.map__pins`);
-
-  const renderPin = function (fragmentItem) {
-    mapPinsHtml.appendChild(fragmentItem);
+  const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
+  const renderPin = function (fragmentItem) { // отрисовать метки
+    window.backend.load(onLoad, onError);
+    mapPinsHtml.appendChild(fragmentItem); // одним фрагментом Pin вствили в html
   };
   window.pin = {
     fragment,
-    mapPinsHtml,
     pin,
     renderPin,
-    onError,
+    onError
   };
 
 })();

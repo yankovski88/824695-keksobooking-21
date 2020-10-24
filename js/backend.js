@@ -4,6 +4,7 @@
   const URL_DATA = `https://21.javascript.pages.academy/keksobooking/data`;
   const TIMEOUT_IN_MS = 10000;
 
+  // Делаем запрос по данным там вся информация по объявлениям и координатам меток
   const load = function (onLoad, onError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
@@ -27,27 +28,28 @@
     xhr.send();
   };
 
-const save = function (data, onSuccess, onErrorSave) {
-  const xhr = new XMLHttpRequest();
-  const URL = `https://21.javascript.pages.academy/keksobooking`;
-  xhr.responseType = 'json';
-  xhr.addEventListener(`load`, function () {
-    if(xhr.status === 200){
-      onSuccess();
-    } else {
+  // отправляю форму
+  const save = function (data, onSuccess, onErrorSave) {
+    const xhr = new XMLHttpRequest();
+    const URL = `https://21.javascript.pages.academy/keksobooking`;
+    xhr.responseType = `json`;
+    xhr.addEventListener(`load`, function () {
+      if (xhr.status === 200) {
+        onSuccess();
+      } else {
+        onErrorSave();
+      }
+    });
+    xhr.addEventListener(`timeout`, function () {
       onErrorSave();
-    }
-  });
-  xhr.addEventListener(`timeout`, function () {
-    onErrorSave();
-  });
-  xhr.addEventListener(`error`, function () {
-    onErrorSave();
-  });
-  xhr.timeout = 1;
-  xhr.open(`POST`, URL);
-  xhr.send(data);
-};
+    });
+    xhr.addEventListener(`error`, function () {
+      onErrorSave();
+    });
+    xhr.timeout = 10000;
+    xhr.open(`POST`, URL);
+    xhr.send(data);
+  };
   // save();
 
   window.backend = {

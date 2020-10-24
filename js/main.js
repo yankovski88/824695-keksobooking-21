@@ -28,11 +28,12 @@
             removeChildMapCard();
           }
         };
-        popupClose.addEventListener(`keydown`, onPopupCloseEnterPress);
+        popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
+        // если удалять то сробатывает область видимости
       }
     }
   };
-  window.card.map.addEventListener(`click`, onMapClick);
+  window.card.map.addEventListener(`click`, onMapClick); // думаю этот колбек надо удалять
 
 
   const onMapEscapePress = function (evt) {
@@ -40,7 +41,7 @@
       window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
     }
   };
-  window.card.map.addEventListener(`keydown`, onMapEscapePress);
+  window.card.map.addEventListener(`keydown`, onMapEscapePress); // также мне кажется нужно удалять колбек
 
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
@@ -50,7 +51,7 @@
   const addMapFaded = function (item) {
     item.classList.add(`map--faded`);
   };
-  addMapFaded(window.card.map);
+  addMapFaded(window.card.map); // дизэйбл карты
 
   const addDisabled = function (arrItems) {
     arrItems.forEach((item) => {
@@ -62,11 +63,11 @@
   const addAdFormDisabled = function (item) {
     item.classList.add(`ad-form--disabled`);
   };
-  addAdFormDisabled(mapFilter);
+  // addAdFormDisabled(); // дизэйбл формы
 
 
-  const removeAdFormDisabled = function () {
-    mapFilter.classList.remove(`ad-form--disabled`);
+  const removeAdFormDisabled = function (item) {
+    item.classList.remove(`ad-form--disabled`);
   };
 
   const removeAdFormFieldsetsDisabled = function () {
@@ -74,33 +75,51 @@
       item.removeAttribute(`disabled`);
     });
   };
-
+  const form = document.querySelector(`.ad-form`);
   const onMapPinMainMousedown = function (evt) {
     if (evt.which === 1) {
       window.card.map.classList.remove(`map--faded`);
     }
-    removeAdFormDisabled();
+    removeAdFormDisabled(form);
     removeAdFormFieldsetsDisabled();
     window.pin.renderPin(window.pin.fragment);
     window.form.checkRoomAndGuest();
     window.form.onTypeChange();
     window.form.setTimeinAndTimeout();
+    mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown);
+
   };
-
-  mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
-
+  if (window.card.map.classList.contains(`map--faded`)) {
+    mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
+  } else {
+    mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown);
+  }
 
   const onMapPinMainKeydown = function (evt) {
     if (evt.code === `Enter`) {
       window.card.map.classList.remove(`map--faded`);
     }
-    removeAdFormDisabled();
+    removeAdFormDisabled(form);
     removeAdFormFieldsetsDisabled();
     window.pin.renderPin(window.pin.fragment);
     window.form.checkRoomAndGuest();
     window.form.onTypeChange();
     window.form.setTimeinAndTimeout();
+    mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
+    // теперь ничего не будет вызываться когда вызввано
   };
-  mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);
+  if (window.card.map.classList.contains(`map--faded`)) {
+    mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);
+  } else {
+    mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown);
+  }
 
+
+  window.main = {
+    addMapFaded,
+    addAdFormDisabled,
+    mapFilter,
+    mapPinMain,
+    onMapPinMainMousedown
+  };
 })();
