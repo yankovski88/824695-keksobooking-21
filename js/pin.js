@@ -40,20 +40,22 @@
       fragmentPin.setAttribute(`data-index`, i);
       fragment.appendChild(fragmentPin);
     }
+    // console.log(`перебираю массив загрузки`);
   };
   window.backend.load(onLoad, onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
   // а потом уже будет рисовать функция renderPin
 
   const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
-  const renderPin = function (fragmentItem) { // отрисовать метки
-    window.backend.load(onLoad, onError);
-    mapPinsHtml.appendChild(fragmentItem); // одним фрагментом Pin вствили в html
+  const renderPin = function () { // отрисовать метки
+    // window.backend.load(onLoad, onError);
+    mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html
   };
   window.pin = {
     fragment,
     pin,
     renderPin,
-    onError
+    onError,
+    onLoad
   };
 
 })();
