@@ -73,24 +73,24 @@
     return cardTemplate;
   };
 
-  const fragmentCard = document.createDocumentFragment();
-  for (let i = 0; i < window.data.offers.length; i++) {
-    fragmentCard.appendChild(createCard(window.data.offers[i]));
-  }
-
   const map = document.querySelector(`.map`);
 
 
   const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
     map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
+
+  // map это родитель для нового элемента
+    // insertBefore(newElement, referenceElement)
+    // newElement это элемент для вставки
+    // referenceElement элемент перед которым будет вставлен newElement
   };
 
   window.card = {
     createCard,
     mapFiltersContainer,
     card,
-    fragmentCard,
     renderCard,
-    map
+    map,
+
   };
 })();
