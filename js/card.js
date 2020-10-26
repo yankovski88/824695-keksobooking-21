@@ -74,37 +74,18 @@
   };
 
 
-
-  // const fragment = document.createDocumentFragment();
-  // const onLoad = function (arr) {
-  //   for (let i = 0; i < arr.length - 1; i++) {
-  //     const fragmentPin = createPin(arr[i]);
-  //     fragmentPin.setAttribute(`data-index`, i);
-  //     fragment.appendChild(fragmentPin);
+  // const fragmentCardElement = document.createDocumentFragment(); // создаем большой фрагмент документа(Карточку) в который вставим
+  // // все строки остальных данных от карточки
+  //   for (let i = 0; i < arr.length - 1; i++) { // перебираем массив объектов полученных с сервара
+  //     const fragmentCard = createCard(arr[i]); // заполняем карточки
+  //     fragmentCard.setAttribute(`data-indexCard`, i); // в карточки добавляем индекс, для дальнейшего показа нужной карточки
+  //     fragmentCardElement.appendChild(fragmentCard); // appendChild() добавляет узел в конец списка дочерних элементов указанного родительского узла.
+  //     // в функцию createCard() закидываем по объекту
+  //     // map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
+  //     // console.log(arr[i].offer.title);
   //   }
-  //   // console.log(`перебираю массив загрузки`);
-  // };
-  // window.backend.load(onLoad, onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
-  // // а потом уже будет рисовать функция renderPin
 
 
-  const fragmentCardElement = document.createDocumentFragment(); // создаем большой фрагмент документа(Карточку) в который вставим
-  // все строки остальных данных от карточки
-  const onLoad = function (arr) { // в функцию вставляется массив объектов данных который загрузился с сервера через window.backend.load(onLoad, window.pin.onError);
-    console.log(arr);
-    for (let i = 0; i < arr.length - 1; i++) { // перебираем массив объектов полученных с сервара
-      const fragmentCard = createCard(arr[i]); // заполняем карточки
-      fragmentCard.setAttribute(`data-indexCard`, i); // в карточки добавляем индекс, для дальнейшего показа нужной карточки
-      fragmentCardElement.appendChild(fragmentCard); // appendChild() добавляет узел в конец списка дочерних элементов указанного родительского узла.
-
-      // в функцию createCard() закидываем по объекту
-      // map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
-      // console.log(arr[i].offer.title);
-
-    }
-  };
-
-  window.backend.load(onLoad, window.pin.onError); //
 
 
   const map = document.querySelector(`.map`);
@@ -124,9 +105,9 @@
     createCard,
     mapFiltersContainer,
     card,
-    fragmentCard,
+    // fragmentCard,
     renderCard,
     map,
-    onLoad
+
   };
 })();

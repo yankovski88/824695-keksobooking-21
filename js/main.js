@@ -12,12 +12,12 @@
         window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
       } else {
         //иначе создаем новую карточку
-        // window.card.renderCard(window.card.createCard(window.data.offers[target.dataset.index]), window.card.mapFiltersContainer);
-        window.card.renderCard(window.card.createCard(window.card.onLoad()), window.card.mapFiltersContainer);
-
         // [target.dataset.index] устанавливаем в карточки индекс, пока не знаю для чего
-        console.log(target.dataset.index);
-        window.card.renderCard();
+        const onLoad = function (arr) {
+          window.card.renderCard(window.card.createCard(arr[target.dataset.index]), window.card.mapFiltersContainer);
+        };
+        window.backend.load(onLoad, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+
 
         const popupClose = document.querySelector(`.popup__close`);
         const mapCard = window.card.map.querySelector(`.map__card`);
@@ -126,6 +126,6 @@
     addAdFormDisabled,
     mapFilter,
     mapPinMain,
-    onMapPinMainMousedown
+    onMapPinMainMousedown,
   };
 })();
