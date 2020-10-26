@@ -7,35 +7,33 @@
     }
 
 
-    if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) {// делаем проверку или это не главная метка
+    if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
       if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
         window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
       } else {
-        //иначе создаем новую карточку
+        // иначе создаем новую карточку
         // [target.dataset.index] устанавливаем в карточки индекс, пока не знаю для чего
         const onLoad = function (arr) {
           window.card.renderCard(window.card.createCard(arr[target.dataset.index]), window.card.mapFiltersContainer);
+          const popupClose = document.querySelector(`.popup__close`);
+          const mapCard = window.card.map.querySelector(`.map__card`);
+          const removeChildMapCard = function () {
+            window.card.map.removeChild(mapCard);
+          };
+          const onPopupCloseClick = function () {
+            removeChildMapCard();
+          };
+          popupClose.addEventListener(`click`, onPopupCloseClick);
+
+          const onPopupCloseEnterPress = function () {
+            if (evt.target.code === 13) {
+              removeChildMapCard();
+            }
+          };
+          popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
+          // если удалять то сробатывает область видимости
         };
         window.backend.load(onLoad, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
-
-
-        const popupClose = document.querySelector(`.popup__close`);
-        const mapCard = window.card.map.querySelector(`.map__card`);
-        const removeChildMapCard = function () {
-          window.card.map.removeChild(mapCard);
-        };
-        const onPopupCloseClick = function () {
-          removeChildMapCard();
-        };
-        popupClose.addEventListener(`click`, onPopupCloseClick);
-
-        const onPopupCloseEnterPress = function () {
-          if (evt.target.code === 13) {
-            removeChildMapCard();
-          }
-        };
-        popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
-        // если удалять то сробатывает область видимости
       }
     }
   };
