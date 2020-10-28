@@ -1,5 +1,6 @@
 "use strict";
 (function () {
+  // получить рандомную часть массива
   function getRandomPartOfArr(arr) {
     const arrCopy = arr.slice();
     const randomNumber = getRandomInt(arrCopy.length);
@@ -10,17 +11,18 @@
     return arrCopy;
   }
 
-
+// получить рандомное число из max
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
+  // получить рандомное число из min max
   const getRandomMinMax = function (min, max) {
     const random = Math.floor(min + Math.random() * (max + 1 - min));
     return random;
   };
 
-
+// получить массив названия классов от html
   const getArrClassNameHtml = function (elementHtml) {
     const classNames = [];
     elementHtml.forEach((item) => {
@@ -63,6 +65,7 @@
     }
   };
 
+  // получить рандомное значение из объекта
   const getRandomValueOfObject = function (object) {
     const values = Object.values(object);
     const randomNumber = window.util.getRandomInt(values.length);
@@ -70,6 +73,7 @@
     return randomValue;
   };
 
+  // получить первый итем строки до запятой
   const getFirstItemOfString = function (string) {
     const arr = [];
     for (let i = 0; i < string.length; i++) {
@@ -82,6 +86,7 @@
     return arr.join(``);
   };
 
+  // получить последний итем до пробела от строки
   const getLastItemOfString = function (string) {
     const arr = [];
     for (let i = string.length - 1; i > 0; i--) {
@@ -94,6 +99,7 @@
     return arr.join(``);
   };
 
+  // преобразовать строку в число
   const getNumberOfString = function (stringNumber) {
     return parseInt(stringNumber, 10);
   };

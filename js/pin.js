@@ -12,8 +12,8 @@
     return pinTemplate; // вернули метку
   };
 
-  const mapOverlay = document.querySelector(`.map__overlay`); // нашли место куда вставлять метки
-  // const onError = function (errorMessage) { // всплывающее окно с ошибкой
+  // const mapOverlay = document.querySelector(`.map__overlay`); // нашли место куда вставлять метки
+  // const onError = function ( errorMessage) { // всплывающее окно с ошибкой
   //   const node = document.createElement(`div`);
   //   node.style = `
   //   z-index: 100;
@@ -47,7 +47,6 @@
 
   const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
   const renderPin = function () { // отрисовать метки
-    // window.backend.load(onLoad, onError);
     mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html
   };
   window.pin = {

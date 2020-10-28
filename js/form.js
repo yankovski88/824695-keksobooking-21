@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  //+ все что связано с формой
   // здесь куча колбеков не знаю стоит ли удалять и когда стоит? если говорят, что надо удалять их всегда???
   const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
   const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
