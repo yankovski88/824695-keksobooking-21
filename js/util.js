@@ -29,6 +29,7 @@
     return classNames;
   };
 
+  //получить массив слов до тире
   const getArrOfTextBeforeDash = function (arr) {
     const texts = [];
     const allTexts = [];
@@ -47,6 +48,7 @@
     return allTexts;
   };
 
+  // сравниваем два массива и если есть совпадение то не скрываем, а если совпадение то к html элементу добавляем название плюса
   const comparisonArrsAndAddClassNameHidden = function (arr1, arr2, htmlElement) {
     for (let i = 0; i < arr1.length; i++) {
       for (let j = 0; j < arr2.length; j++) {

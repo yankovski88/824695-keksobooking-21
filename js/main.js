@@ -13,8 +13,8 @@
       } else {
         // иначе создаем новую карточку
         // [target.dataset.index] устанавливаем в карточки индекс, пока не знаю для чего
-        const onLoad = function (arr) {
-          window.card.renderCard(window.card.createCard(arr[target.dataset.index]), window.card.mapFiltersContainer);
+        const onLoadCard = function (arr) {
+          window.card.renderCard(window.card.createCard(arr[target.dataset.index]), window.card.mapFiltersContainer); // создаем карточку, перед определенным элементом html
           const popupClose = document.querySelector(`.popup__close`);
           const mapCard = window.card.map.querySelector(`.map__card`);
           const removeChildMapCard = function () {
@@ -33,7 +33,7 @@
           popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
           // если удалять то сробатывает область видимости
         };
-        window.backend.load(onLoad, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+        window.backend.load(onLoadCard, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
       }
     }
   };

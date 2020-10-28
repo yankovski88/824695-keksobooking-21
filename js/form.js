@@ -1,9 +1,10 @@
 'use strict';
 (function () {
   // здесь куча колбеков не знаю стоит ли удалять и когда стоит? если говорят, что надо удалять их всегда???
-  const capacity = document.querySelector(`#capacity`);
-  const capacityOptions = capacity.querySelectorAll(`option`);
+  const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
+  const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
 
+  // удаляем атрибут disabled в полученом массиве option
   const removeToArrDisabled = function (arr) {
     arr.forEach((item) => {
       item.removeAttribute(`disabled`);
