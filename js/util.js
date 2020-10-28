@@ -1,11 +1,15 @@
 "use strict";
+//+ функции которые можно использовать во всем проекте
 (function () {
+  // функция получает часть массива
   function getRandomPartOfArr(arr) {
-    const arrCopy = arr.slice();
-    const randomNumber = getRandomInt(arrCopy.length);
-    for (let i = 0; i < randomNumber; i++) {
-      const randomNumberDel = getRandomInt(arrCopy.length);
-      arrCopy.splice(randomNumberDel, 1);
+    const arrCopy = arr.slice(); // копируем массив
+    const randomNumber = getRandomInt(arrCopy.length); // берем рандомное число из длины массива
+    for (let i = 0; i < randomNumber; i++) { // пройти по массиву полученое число раз
+      const randomNumberDel = getRandomInt(arrCopy.length); // получить число которое надо удалить
+      arrCopy.splice(randomNumberDel, 1); // изменяем массив с помощью splice
+      // randomNumberDel начиная с этого индекса
+      // 1 это сколко элементов удалить
     }
     return arrCopy;
   }
@@ -108,5 +112,6 @@
     getFirstItemOfString,
     getRandomValueOfObject,
     comparisonArrsAndAddClassNameHidden,
+
   };
 })();

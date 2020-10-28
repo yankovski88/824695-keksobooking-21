@@ -11,6 +11,7 @@
     xhr.addEventListener(`load`, function () {
       if (xhr.status === 200) {
         onLoad(xhr.response); // в функцию поместили данные
+        // onLoad1(xhr.response);
         // console.log(xhr.response);
       } else {
         onError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);

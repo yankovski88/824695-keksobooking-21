@@ -34,20 +34,22 @@
   };
 
   const fragment = document.createDocumentFragment();
-  const onLoad = function (arr) {
+  const onLoadPin = function (arr) {
+    console.log(`запустил функцию onLoad2`, arr);
     for (let i = 0; i < arr.length - 1; i++) {
       const fragmentPin = createPin(arr[i]);
       fragmentPin.setAttribute(`data-index`, i);
       fragment.appendChild(fragmentPin);
     }
-    // console.log(`перебираю массив загрузки`);
+    // console.log(fragment);
   };
-  window.backend.load(onLoad, onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
-  // а потом уже будет рисовать функция renderPin
+window.backend.load(window.pin.onLoadPin, onError);
+
 
   const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
   const renderPin = function () { // отрисовать метки
     // window.backend.load(onLoad, onError);
+    console.log(`запуск renderPin`);
     mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html
   };
   window.pin = {
@@ -55,7 +57,7 @@
     pin,
     renderPin,
     onError,
-    onLoad
+    onLoadPin,
   };
 
 })();

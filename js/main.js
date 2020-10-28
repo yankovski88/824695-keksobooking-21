@@ -1,42 +1,56 @@
 "use strict";
 (function () {
+
+
+
+
+
+
+
   const onMapClick = function (evt) {
     let target = evt.target; // цель по которой был клик
     if (target.tagName === `IMG`) { // если таргет был с тегом IMG
       target = target.parentNode; // то переопределяем таргет на его родителя, с помощью target.parentNode
     }
-
-
     if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
       if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
         window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
       } else {
         // иначе создаем новую карточку
-        // [target.dataset.index] устанавливаем в карточки индекс, пока не знаю для чего
-        const onLoad = function (arr) {
-          window.card.renderCard(window.card.createCard(arr[target.dataset.index]), window.card.mapFiltersContainer);
-          const popupClose = document.querySelector(`.popup__close`);
-          const mapCard = window.card.map.querySelector(`.map__card`);
-          const removeChildMapCard = function () {
-            window.card.map.removeChild(mapCard);
-          };
-          const onPopupCloseClick = function () {
-            removeChildMapCard();
-          };
-          popupClose.addEventListener(`click`, onPopupCloseClick);
+        console.log(`запуск load`);
+        currentIndex = target.dataset.index;
 
-          const onPopupCloseEnterPress = function () {
-            if (evt.target.code === 13) {
-              removeChildMapCard();
-            }
-          };
-          popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
-          // если удалять то сробатывает область видимости
-        };
-        window.backend.load(onLoad, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+        window.backend.load(onLoad, function () {});
       }
     }
   };
+
+  // window.backend.load(window.pin.onLoadPin, window.pin.onError);
+
+  let currentIndex;
+
+  const onLoad = function (arr) {
+    window.card.renderCard(window.card.createCard(arr[currentIndex]), window.card.mapFiltersContainer);
+    const popupClose = document.querySelector(`.popup__close`);
+    const mapCard = window.card.map.querySelector(`.map__card`);
+    const removeChildMapCard = function () {
+      window.card.map.removeChild(mapCard);
+    };
+    const onPopupCloseClick = function () {
+      removeChildMapCard();
+    };
+    popupClose.addEventListener(`click`, onPopupCloseClick);
+
+    const onPopupCloseEnterPress = function (evt) {
+      if (evt.target.code === 13) {
+        removeChildMapCard();
+      }
+    };
+    popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
+    // если удалять то сробатывает область видимости
+  };
+
+
   window.card.map.addEventListener(`click`, onMapClick); // думаю этот колбек надо удалять
 
 
@@ -119,11 +133,16 @@
   }
 
 
+  // window.backend.load(onLoad, onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+  // а потом уже будет рисовать функция renderPin
+  window.backend.load(onLoad, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+
   window.main = {
     addMapFaded,
     addAdFormDisabled,
     mapFilter,
     mapPinMain,
     onMapPinMainMousedown,
+
   };
 })();
