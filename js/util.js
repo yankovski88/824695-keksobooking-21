@@ -11,7 +11,7 @@
     return arrCopy;
   }
 
-// получить рандомное число из max
+  // получить рандомное число из max
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
@@ -22,7 +22,7 @@
     return random;
   };
 
-// получить массив названия классов от html
+  // получить массив названия классов от html
   const getArrClassNameHtml = function (elementHtml) {
     const classNames = [];
     elementHtml.forEach((item) => {
@@ -31,7 +31,7 @@
     return classNames;
   };
 
-  //получить массив слов до тире
+  // получить массив слов до тире
   const getArrOfTextBeforeDash = function (arr) {
     const texts = [];
     const allTexts = [];

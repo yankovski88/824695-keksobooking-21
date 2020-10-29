@@ -12,7 +12,6 @@
     xhr.addEventListener(`load`, function () {
       if (xhr.status === STATUS) {
         onLoad(xhr.response); // в функцию поместили данные
-        // console.log(xhr.response);
       } else {
         onError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);
       }
@@ -52,7 +51,6 @@
     xhr.open(`POST`, URL);
     xhr.send(data);
   };
-  // save();
 
   window.backend = {
     load,

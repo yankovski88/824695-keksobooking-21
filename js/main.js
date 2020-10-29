@@ -41,7 +41,7 @@
   };
   window.card.map.addEventListener(`click`, onMapClick); // отслеживаем клик по метке и запускаем функцию по открытию карточки (думаю этот колбек надо удалять)
 
-// функция по закрытию карточки через esc
+  // функция по закрытию карточки через esc
   const onMapEscapePress = function (evt) {
     if ((evt.key === `Escape`) && (window.card.map.querySelector(`.map__card`))) {
       window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
@@ -74,7 +74,7 @@
   };
   // addAdFormDisabled(); // дизэйбл формы
 
-// удаление ad-form--disabled
+  // удаление ad-form--disabled
   const removeAdFormDisabled = function (item) {
     item.classList.remove(`ad-form--disabled`);
   };
@@ -88,7 +88,7 @@
 
   const form = document.querySelector(`.ad-form`);
 
-  //если был клик левой кнопки мыши на клавную метку
+  // если был клик левой кнопки мыши на клавную метку
   const onMapPinMainMousedown = function (evt) {
     if (evt.which === 1) {
       window.card.map.classList.remove(`map--faded`); // карта становится активной

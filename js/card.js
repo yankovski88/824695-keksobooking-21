@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-//+ прорисовка карты объявления
+// + прорисовка карты объявления
   const card = document.querySelector(`#card`).content.querySelector(`.map__card`); // нашел шаблон и подключился к нему
   const mapFiltersContainer = document.querySelector(`.map__filters-container`); // перед каким html элементов вставка
 
@@ -52,13 +52,13 @@
     }
 
     const popupPhoto = cardTemplate.querySelector(`.popup__photos`); // находим в карточке обертку тега Img в которую будем все вставлять
-    const popupPhotoImg = cardTemplate.querySelector(`.popup__photos`).querySelector(`img`); //находим сам тег img
+    const popupPhotoImg = cardTemplate.querySelector(`.popup__photos`).querySelector(`img`); // находим сам тег img
 
     if (obj.offer.photos) { // если фото есть
       for (let i = 0; i < obj.offer.photos.length; i++) { // перебираем фото
         const popupPhotoImgClone = popupPhotoImg.cloneNode(); // клонируем тег img для вставки фото
         popupPhotoImgClone.src = obj.offer.photos[i]; // в тег img вставляем ссылку
-        popupPhotoImgClone.textContent = `clone`;  // между тегом img пишем clone
+        popupPhotoImgClone.textContent = `clone`; // между тегом img пишем clone
         popupPhoto.appendChild(popupPhotoImgClone); // добавляем в обертку все теги img
       }
       popupPhoto.removeChild(popupPhotoImg); // удаляем  шаблонное фото
@@ -76,7 +76,7 @@
 
   const map = document.querySelector(`.map`); // находим место в которое надо вставить карточку
 
-// функция по вставке элемента перед другим элементом
+  // функция по вставке элемента перед другим элементом
   const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
     map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
 

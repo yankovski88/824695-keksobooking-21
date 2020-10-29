@@ -23,5 +23,5 @@
   };
   window.error = {
     onError
-  }
+  };
 })();

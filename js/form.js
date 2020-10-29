@@ -1,7 +1,9 @@
 'use strict';
 (function () {
-  //+ все что связано с формой
+  // + все что связано с формой
   // здесь куча колбеков не знаю стоит ли удалять и когда стоит? если говорят, что надо удалять их всегда???
+
+
   const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
   const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
 
@@ -18,13 +20,13 @@
   const checkRoomAndGuest = function () {
     const roomNumber = document.querySelector(`#room_number`);
 
-
+    // переменная с указанием информации что нет таких комант с гостями
     const MESSAGE_ROOMS_ERROR = `
 1 комната — «для 1 гостя»;
 2 комнаты — «для 2 гостей» или «для 1 гостя»;
 3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
 100 комнат — «не для гостей».`;
-
+    // идет работа по функция компанты и гости
     let room = roomNumber.value;
     let guest = capacity.value;
     let romIndex = room - 1;
@@ -91,6 +93,7 @@
   const titles = getArrValueFromHtml(types);
   const prices = [0, 1000, 5000, 10000];
 
+  // функция сравнения цены по типу жилья
   const onTypeChange = function () {
     const titleValue = type.value;
     for (let i = 0; i < titles.length; i++) {
@@ -144,8 +147,8 @@
   // после того как форма отправится любым способом, то вызовитесь следующие колбеки
   const form = document.querySelector(`.ad-form`);
   form.addEventListener(`submit`, function (evt) {
-    window.backend.save(new FormData(form), onSuccess, onErrorSave);
     evt.preventDefault(); // отменил отправку формы по умолчанию
+    window.backend.save(new FormData(form), onSuccess, onErrorSave);
   });
 
   const success = document.querySelector(`#success`).content.querySelector(`.success`); // нашел шаблон для вставки
@@ -249,12 +252,13 @@
   adFormReset.addEventListener(`click`, onFormClick);
   adFormReset.addEventListener(`keydown`, onFormPressEnter);
 
+
   window.form = {
     setTimeinAndTimeout,
     capacityOptions,
     capacity,
     checkRoomAndGuest,
-    onTypeChange
+    onTypeChange,
   };
 })();
 
