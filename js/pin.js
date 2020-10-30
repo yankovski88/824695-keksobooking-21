@@ -57,7 +57,6 @@
     let flatGuest = `any`; // будет значение которое выбрал пользователь по цене
 
 
-
     // функция наименования перменной по типу жилья
     const onTypeChangeFilter = function () {
       flatName = housingType.value;
@@ -121,19 +120,18 @@
 
       // функция по фильтру для типа квартиры
       const copyDataFlats = dataFlats.slice(); // скопировали запрос по массиву, чтобы не делать каждый раз запрос
-     const getTypeFlats = function (copyDataFlats, flatName) {
-       const filterTypeFlats = copyDataFlats.filter(function (copyDataFlats) { //фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
-         if (copyDataFlats.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
-           return copyDataFlats.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
-         }
-         else if (flatName === `any`) { // если выбрали все  то
-           return copyDataFlats.offer.type; // возвращаем все
-         }
-       });
-       return filterTypeFlats;
-     };
+      const getTypeFlats = function (copyDataFlats, flatName) {
+        const filterTypeFlats = copyDataFlats.filter(function (copyDataFlats) { //фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
+          if (copyDataFlats.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
+            return copyDataFlats.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
+          }
+          else if (flatName === `any`) { // если выбрали все  то
+            return copyDataFlats.offer.type; // возвращаем все
+          }
+        });
+        return filterTypeFlats;
+      };
       // console.log(getTypeFlats(copyDataFlats, flatName));
-
 
 
       const getFilterPriceFlats = function (copyDataFlats, flatPrice) {
@@ -161,7 +159,7 @@
           }
         });
 
-        return  filterPriceFlats;
+        return filterPriceFlats;
       };
       // console.log(getFilterPriceFlats(copyDataFlats, flatPrice));
       // const priceFlats = getTypeFlats(flatPrice);
@@ -224,18 +222,15 @@
       //
 
 
-
-
       const totalFilterFlats = getTypeFlats(copyDataFlats, flatName).concat(getFilterPriceFlats(copyDataFlats, flatPrice)); // создали обдщий массив
       // const totalFilterFlats = filterTypeFlats.concat(filterPriceFlats).concat(filterRoomFlats).concat(filterGuestFlats).concat(checkedWifi).concat(checkedDishwasher).concat(checkedParking).concat(checkedWasher).concat(checkedElevator).concat(checkedConditioner);
 
-      console.log(totalFilterFlats);
+      // console.log(totalFilterFlats);
 
       const uniqueTotalFilterFlats = totalFilterFlats.filter(function (item, index) { // удалили повторяющие квартиры друг с другом в фильтррах
         return totalFilterFlats.indexOf(item) === index;
       });
-      console.log(uniqueTotalFilterFlats);
-
+      // console.log(uniqueTotalFilterFlats);
 
 
       // const getTypeFlats = function (copyDataFlats, flatName) {
@@ -251,88 +246,66 @@
       //   return filterTypeFlats;
       // };
 
-
-      // const priceFilter = 'any';
-      // const colorFilter = 'red';
-      //
-      // [
-      //   {price: 100,   color: 'red'},
-      //   {price: 1000,  color: 'white'},
-      //   {price: 'any', color: 'blue'}
-      // ].filter(function(el) {
-      //   if (priceFilter !== 'any' && el.price !== priceFilter) {
-      //     return false;
-      //   }
-      //
-      //   if (colorFilter !== 'any' && el.color !== colorFilter) {
-      //     return false;
-      //   }
-      //
-      //   return true;
-      // });
 // console.log(uniqueTotalFilterFlats);
       // const getSortUniqueTotalFilterFlats = function () {
-        const sortUniqueTotalFilterFlats = uniqueTotalFilterFlats.filter(function (item) {
-          if (flatName !== 'any' && item.offer.type !== flatName) {
+      const sortUniqueTotalFilterFlats = uniqueTotalFilterFlats.filter(function (item) {
+        if (flatName !== 'any' && item.offer.type !== flatName) {
+          return false;
+        }
+
+
+        const mapPrice = {
+          any: `any`,
+          middleMin: 10000,
+          middleMax: 50000,
+          low: 10000,
+          high: 50000,
+        };
+
+        if (flatPrice === `middle`) {
+          console.log(`выбрано middle`);
+          console.log(item.offer.price);
+          console.log(item.offer.price <= mapPrice.middleMin);
+
+          if (flatPrice !== `any` && item.offer.price < mapPrice.middleMin) {
+            return false;
+          } // не получилось соединить эти 2 условия. Не знаю почему.
+          if (flatPrice !== `any` && item.offer.price >= mapPrice.middleMax) {
             return false;
           }
-
-
-          const mapPrice = {
-            any: `any`,
-            middleMin: 10000,
-            middleMax: 50000,
-            low: 10000,
-            high: 50000,
-          };
-          // if (flatPrice === `middle`) {
-          //   if (copyDataFlats.offer.price >= mapPrice.middleMin && copyDataFlats.offer.price < mapPrice.middleMax) {
-          //     return copyDataFlats.offer.price >= mapPrice.middleMin && copyDataFlats.offer.price < mapPrice.middleMax;
-          //   }
-          // }
-
-          // if (flatPrice === `any`) {
-          //   return copyDataFlats.offer.price;
-          // }
-
-          if (flatPrice === `middle`) {
-            console.log(`выбрано middle`);
-            console.log(item.offer.price);
-            console.log(item.offer.price <= mapPrice.middleMin);
-
-            if (flatPrice !== `any` && item.offer.price < mapPrice.middleMin) {
-              return false;
-            } // не получилось соединить эти 2 условия. Не знаю почему.
-            if (flatPrice !== `any` && item.offer.price >= mapPrice.middleMax) {
-              return false;
-            }
+        }
+        if (flatPrice === `low`) {
+          if (flatPrice !== 'any' && item.offer.price > mapPrice.low) {
+            return false;
           }
-          if (flatPrice === `low`) {
-            if (flatPrice !== 'any' && item.offer.price > mapPrice.low) {
-              return false;
-            }
+        }
+        if (flatPrice === `high`) {
+          if (flatPrice !== 'any' && item.offer.price <= mapPrice.high) {
+            return false;
           }
-          if(flatPrice === `high`) {
-            if (flatPrice !== 'any' && item.offer.price <= mapPrice.high) {
-              return false;
-            }
-          }
-            if(flatPrice === `any`) {
-              // if (flatPrice !== 'any' && item.offer.price <= mapPrice.high) {
-                return true;
-              // }
-          }
-          return true;
-        });
+        }
+        //   if(flatPrice !== `any`) {
+        //     // if (flatPrice !== 'any' && item.offer.price <= mapPrice.high) {
+        //       return false;
+        //     // }
+        // }
 
+        // console.log(flatRoom);
+        if (flatRoom !== 'any' && item.offer.rooms !== parseInt(flatRoom)) {
+          return false;
+        }
+
+        console.log(flatGuest);
+        if (flatGuest !== 'any' && item.offer.guests !== parseInt(flatGuest)) {
+          return false;
+        }
+
+
+        return true;
+      });
 
 
       console.log(sortUniqueTotalFilterFlats);
-
-
-
-
-
 
 
       // const sameCoatAndEyesWizards = wizards.filter(function (wizard) {
