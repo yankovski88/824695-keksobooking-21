@@ -1,3 +1,4 @@
+'use strict';
 (function () {
   const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
   let dataFlats = []; // записали массив данных чтобы постоянно не делать запрос

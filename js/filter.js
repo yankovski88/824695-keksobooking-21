@@ -62,61 +62,58 @@
     mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
       delCard(); // вставили функцию удаления карточки
 
-      const getTypeFlats = function (copyDataFlats, flatName) {
-        const filterTypeFlats = copyDataFlats.filter(function (copyDataFlats) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
-          if (copyDataFlats.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
-            return copyDataFlats.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
-          } else if (flatName === `any`) { // если выбрали все  то
-            return copyDataFlats.offer.type; // возвращаем все
-          }
-        });
-        return filterTypeFlats;
-      };
-
-      const getFilterPriceFlats = function (copyDataFlats, flatPrice) {
-        const filterPriceFlats = copyDataFlats.filter(function (copyDataFlats) {
-          const mapPrice = {
-            any: `any`,
-            middleMin: 10000,
-            middleMax: 50000,
-            low: 10000,
-            high: 50000,
-          };
-          if (flatPrice === `middle`) {
-            if (copyDataFlats.offer.price >= mapPrice.middleMin && copyDataFlats.offer.price < mapPrice.middleMax) {
-              return copyDataFlats.offer.price >= mapPrice.middleMin && copyDataFlats.offer.price < mapPrice.middleMax;
-            }
-          }
-          if (flatPrice === `low`) {
-            return copyDataFlats.offer.price < mapPrice.low;
-          }
-          if (flatPrice === `high`) {
-            return copyDataFlats.offer.price >= mapPrice.high;
-          }
-          if (flatPrice === `any`) {
-            return copyDataFlats.offer.price;
-          }
-        });
-
-        return filterPriceFlats;
-      };
-
-      const filterRoomFlats = copyDataFlats.filter(function (copyDataFlats) {
-        if (flatRoom !== `any`) {
-          const numberFlatRoom = parseInt(flatRoom);
-          return copyDataFlats.offer.rooms === numberFlatRoom;
-
-        } else {
-          return copyDataFlats.offer.rooms;
+      const filterTypeFlats = copyDataFlats.filter(function (item) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
+        if (item.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
+          return item.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
+        } else if (flatName === `any`) { // если выбрали все  то
+          return item.offer.type; // возвращаем все
         }
       });
 
-      const filterGuestFlats = copyDataFlats.filter(function (copyDataFlats) {
+      // const getFilterPriceFlats = function (copyDataFlats, flatPrice) {
+      const filterPriceFlats = copyDataFlats.filter(function (item) {
+        const mapPrice = {
+          any: `any`,
+          middleMin: 10000,
+          middleMax: 50000,
+          low: 10000,
+          high: 50000,
+        };
+        if (flatPrice === `middle`) {
+          if (item.offer.price >= mapPrice.middleMin && item.offer.price < mapPrice.middleMax) {
+            return item.offer.price >= mapPrice.middleMin && item.offer.price < mapPrice.middleMax;
+          }
+        }
+        if (flatPrice === `low`) {
+          return item.offer.price < mapPrice.low;
+        }
+        if (flatPrice === `high`) {
+          return item.offer.price >= mapPrice.high;
+        }
+        if (flatPrice === `any`) {
+          return item.offer.price;
+        }
+      });
+
+      //   return filterPriceFlats;
+      // };
+
+      const filterRoomFlats = copyDataFlats.filter(function (item) {
+        if (flatRoom !== `any`) {
+          const numberFlatRoom = parseInt(flatRoom);
+          return item.offer.rooms === numberFlatRoom;
+
+        } else {
+          return item.offer.rooms;
+        }
+      });
+
+      const filterGuestFlats = copyDataFlats.filter(function (item) {
         if (flatGuest !== `any`) {
           const numberFlatGuest = parseInt(flatGuest);
-          return copyDataFlats.offer.guests === numberFlatGuest;
+          return item.offer.guests === numberFlatGuest;
         } else {
-          return copyDataFlats.offer.guests;
+          return item.offer.guests;
         }
       });
 
@@ -136,7 +133,7 @@
       //       };
 
 
-      const totalFilterFlats = getTypeFlats(copyDataFlats, flatName).concat(getFilterPriceFlats(copyDataFlats, flatPrice).concat(filterRoomFlats).concat(filterGuestFlats)); // создали обдщий массив по выбраным фильтрам кроме features
+      const totalFilterFlats = filterTypeFlats.concat(filterPriceFlats).concat(filterRoomFlats).concat(filterGuestFlats); // создали обдщий массив по выбраным фильтрам кроме features
 
       const uniqueTotalFilterFlats = totalFilterFlats.filter(function (item, index) { // удалили повторяющие квартиры друг с другом в фильтррах
         return totalFilterFlats.indexOf(item) === index; // пока не понял этой записи
