@@ -199,6 +199,92 @@
         return filterFeatures;
       };
 
+// код возвращает все приимущества что выбрал пользователь
+      const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+      const featuresNodeList = document.querySelectorAll(`.map__checkbox`);
+      const activeFlatFeatures = [];
+      for(let j = 0; j<featuresNodeList.length; j++) {
+        // console.log(featuresNodeList[j]);
+        if (featuresNodeList[j].checked) {
+          activeFlatFeatures.push(allFeatures[j])
+        }
+      }
+      // console.log(activeFlatFeatures);
+
+
+      const allF = [`elevator`, `conditioner`]; // что выбрали
+
+      const arrM = copyDataFlats.filter(function (item) {
+        let countF = 0;
+        // console.log(index);
+        // console.log(item.offer.features.length);
+        for (let r = 0; r < activeFlatFeatures.length; r++) {
+          for (let i = 0; i < item.offer.features.length; i++) {
+            // console.log(`${activeFlatFeatures[r]}    ${item.offer.features[i]}`);
+            if (activeFlatFeatures[r] === item.offer.features[i]) {
+              countF++;
+            }
+          }
+        }
+        if(countF !== activeFlatFeatures.length){
+          // console.log(`check`);
+          return false
+        }
+        return true
+      });
+      console.log(arrM);
+
+
+
+      // for(let i = 0; i<copyDataFlats.length;i++){
+      //   console.log(copyDataFlats[i]);
+      // }
+      //
+      // for(let i = 0; i<copyDataFlats.length; i++){
+      //   console.log(arrObject[i].offer.features);
+      // }
+
+
+
+
+     //  let arrFeatureAndAll = [];
+     //  let count = 0;
+     //  for(let i = 0; i<arrFeature.length; i++){
+     //    for(let j = 0; j< copyDataFlats[j].offer.features.length; j++){
+     //      console.log(`${arrFeature[i]}    ${copyDataFlats[j].offer.features[j]}`);
+     //      console.log(j);
+     //      // for(let k = 0; k<copyDataFlats[k].offer.features; k++){
+     //        if(arrFeature[i] === copyDataFlats[j].offer.features[j]){
+     //          count++
+     //        }
+     //      // }
+     //      console.log(count);
+     //      if(count === arrFeature.length){
+     //        arrFeatureAndAll.push(copyDataFlats[j])
+     //      }
+     //    }
+     //  }
+     // console.log(arrFeatureAndAll);
+
+
+
+      // const allFeatures = [`elevator`, `conditioner`, "washer"]; // поля flat
+      // const all = [`elevator`, `conditioner`]; // что выбрали
+      // let count = 0;
+      // for(let i = 0; i<all.length; i++){
+      //   for(let j = 0; j< allFeatures.length; j++){
+      //     console.log(`${all[i]}    ${allFeatures[j]}`);
+      //     if(all[i] === allFeatures[j]){
+      //       count++
+      //     }
+      //   }
+      // }
+      // console.log(count);
+      // if(count === all.length){
+      //   console.log(`равен`);
+      // }
+
+
       const filterWifi = document.querySelector(`#filter-wifi`);
       const filterDishwasher = document.querySelector(`#filter-dishwasher`);
       const filterParking = document.querySelector(`#filter-parking`);
@@ -206,8 +292,8 @@
       const filterElevator = document.querySelector(`#filter-elevator`);
       const filterConditioner = document.querySelector(`#filter-conditioner`);
 
-      const allFilterFeatures = [filterWifi, filterDishwasher, filterParking, filterWasher, filterElevator, filterConditioner];
-      const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+      // const allFilterFeatures = [filterWifi, filterDishwasher, filterParking, filterWasher, filterElevator, filterConditioner];
+      // const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 
 
       const checkedWifi = getArrCheckedFeature(filterWifi, `wifi`);
@@ -216,15 +302,19 @@
       const checkedWasher = getArrCheckedFeature(filterWasher, `washer`);
       const checkedElevator = getArrCheckedFeature(filterElevator, `elevator`);
       const checkedConditioner = getArrCheckedFeature(filterConditioner, `conditioner`);
+// console.log(checkedConditioner);
 
 
-      // const filteredWizards = sameCoatWizards.concat(sameEyesWizards).concat(wizards);
-      //
 
 
-      const totalFilterFlats = getTypeFlats(copyDataFlats, flatName).concat(getFilterPriceFlats(copyDataFlats, flatPrice)); // создали обдщий массив
+
+
+
+
+
+      const totalFilterFlats = getTypeFlats(copyDataFlats, flatName).concat(getFilterPriceFlats(copyDataFlats, flatPrice).concat(filterRoomFlats).concat(filterGuestFlats)); // создали обдщий массив
       // const totalFilterFlats = filterTypeFlats.concat(filterPriceFlats).concat(filterRoomFlats).concat(filterGuestFlats).concat(checkedWifi).concat(checkedDishwasher).concat(checkedParking).concat(checkedWasher).concat(checkedElevator).concat(checkedConditioner);
-
+//.concat(copyDataFlats, flatRoom).concat(copyDataFlats, flatGuest)
       // console.log(totalFilterFlats);
 
       const uniqueTotalFilterFlats = totalFilterFlats.filter(function (item, index) { // удалили повторяющие квартиры друг с другом в фильтррах
@@ -264,7 +354,7 @@
 
         if (flatPrice === `middle`) {
           console.log(`выбрано middle`);
-          console.log(item.offer.price);
+          // console.log(item.offer.price);
           console.log(item.offer.price <= mapPrice.middleMin);
 
           if (flatPrice !== `any` && item.offer.price < mapPrice.middleMin) {
@@ -284,53 +374,129 @@
             return false;
           }
         }
-        //   if(flatPrice !== `any`) {
-        //     // if (flatPrice !== 'any' && item.offer.price <= mapPrice.high) {
-        //       return false;
-        //     // }
-        // }
 
         // console.log(flatRoom);
         if (flatRoom !== 'any' && item.offer.rooms !== parseInt(flatRoom)) {
           return false;
         }
 
-        console.log(flatGuest);
+        // console.log(flatGuest);
         if (flatGuest !== 'any' && item.offer.guests !== parseInt(flatGuest)) {
           return false;
         }
 
-
         return true;
       });
+console.log(sortUniqueTotalFilterFlats);
+
+      // const filterWifi = document.querySelector(`#filter-wifi`);
+      // const filterDishwasher = document.querySelector(`#filter-dishwasher`);
+      // const filterParking = document.querySelector(`#filter-parking`);
+      // const filterWasher = document.querySelector(`#filter-washer`);
+      // const filterElevator = document.querySelector(`#filter-elevator`);
 
 
-      console.log(sortUniqueTotalFilterFlats);
+      // const allFilterFeatures = [filterWifi, filterDishwasher, filterParking, filterWasher, filterElevator, filterConditioner];
+      // код который перебирает поле со всеми feature и добавляет в массив arrFeature все выбранные элементы
+      // const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+      // const featuresNodeList = document.querySelectorAll(`.map__checkbox`);
+      // const arrFeature = [];
+      // for(let j = 0; j<featuresNodeList.length; j++) {
+      //   console.log(featuresNodeList[j]);
+      //   if (featuresNodeList[j].checked) {
+      //       arrFeature.push(allFeatures[j])
+      //   }
+      // }
+      // console.log(arrFeature);
 
 
-      // const sameCoatAndEyesWizards = wizards.filter(function (wizard) {
-      //   return wizard.colorCoat === coatColor &&
-      //     wizard.colorEyes === eyesColor;
+      // Задача 2. Перебрать основной уникальный массив на вхождение этих преимущест в массиве allFeatures
+      //  const sortUniqueTotalFilterFlatsAddF = sortUniqueTotalFilterFlats.filter(function (item) {
+      //    // в каждом обекте найти features
+      //    // return item.length
+      //
+      //    for(let k = 0; k<arrFeature.length; k++){
+      //      for(let i = 0; i<item.offer.features.length; i++){
+      //        if(arrFeature[k] === item.offer.features[i]){
+      //          return item.offer.features[i];
+      //        }
+      //      }
+      //    }
+      //    // return filterFeatures;
+      //  });
+      // console.log(sortUniqueTotalFilterFlatsAddF);
+
+
+      // функция воозращает массив если было выбрано преимущество ножно Html Элемента
+//       const getArrCheckedFeatureUniq = function (elementHtml, elementChecked) {
+//         const filterFeatures = sortUniqueTotalFilterFlats.filter(function (item) {
+//             if (elementHtml.checked) {
+//               for (let i = 0; i < item.offer.features.length; i++) {
+//                 if (elementChecked === item.offer.features[i]) {
+//                   return item.offer.features[i];
+//                 }
+//               }
+//             }
+//           },
+//         );
+//         return filterFeatures;
+//       };
+//
+//       const checkedWifiU = getArrCheckedFeatureUniq(filterWifi, `wifi`);
+//       const checkedDishwasherU = getArrCheckedFeatureUniq(filterDishwasher, `dishwasher`);
+//       const checkedParkingU = getArrCheckedFeatureUniq(filterParking, `parking`);
+//       const checkedWasherU = getArrCheckedFeatureUniq(filterWasher, `washer`);
+//       const checkedElevatorU = getArrCheckedFeatureUniq(filterElevator, `elevator`);
+//       const checkedConditionerU = getArrCheckedFeatureUniq(filterConditioner, `conditioner`);
+//       console.log(checkedConditionerU);
+//       console.log(checkedElevatorU);
+// const aa = checkedConditionerU.concat(checkedElevatorU);
+// console.log(aa);
+//       const uniqueTotalFilterFlatsT = aa.filter(function (item, index) { // удалили повторяющие квартиры друг с другом в фильтррах
+//         return aa.indexOf(item) === index;
+//       });
+//
+//       console.log(uniqueTotalFilterFlatsT)
+
+      //
+      // const allFilterFeatures = [filterWifi, filterDishwasher, filterParking, filterWasher, filterElevator, filterConditioner];
+      // const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+      //
+      //
+
+// const sortUniqueTotalFilterFlatsAddFeature = sortUniqueTotalFilterFlats.concat(checkedWifiU).concat(checkedDishwasherU).concat(checkedParkingU).concat(checkedWasherU).concat(checkedElevatorU).concat(checkedConditionerU)
+//       const sortUniqueTotalFilterFlatsAddFeature = sortUniqueTotalFilterFlats.concat(checkedConditionerU);
+
+
+      // const uniqueTotalFilterFlatsU = sortUniqueTotalFilterFlatsAddFeature.filter(function (item, index) { // удалили повторяющие квартиры друг с другом в фильтррах
+      //   return sortUniqueTotalFilterFlatsAddFeature.indexOf(item) === index;
       // });
-      // const totalFilterFlats = filterTypeFlats.concat(filterPriceFlats).concat(filterRoomFlats).concat(filterGuestFlats).concat(checkedWifi).concat(checkedDishwasher).concat(checkedParking).concat(checkedWasher).concat(checkedElevator).concat(checkedConditioner);
-      // console.log(totalFilterFlats);
-      // console.log(uniqueTotalFilterFlats);
+      //
+      // console.log(uniqueTotalFilterFlatsU);
 
-
-      // const uniqueTotalFilterFlats = totalFilterFlats.filter(function(wiz, index) {
-      //   return totalFilterFlats.indexOf(wiz) === index;
-      // });
-
-      // console.log(uniqueTotalFilterFlats);
-      // const setTotalFilterFlats = new Set(totalFilterFlats);
-      // console.log(setTotalFilterFlats);
-      // const totalFilterFlatsTwo = [filterTypeFlats.concat(filterPriceFlats)];
-      // console.log(totalFilterFlatsTwo);
-      // const setTotalFilterFlatsTwo = new Set(totalFilterFlatsTwo);
-      // console.log(setTotalFilterFlatsTwo);
-
-      // console.log(setTotalFilterFlats);
-
+//       const sameCoatAndEyesWizards = wizards.filter(function (wizard) {
+//         return wizard.colorCoat === coatColor &&
+//           wizard.colorEyes === eyesColor;
+//       });
+//       const totalFilterFlats = filterTypeFlats.concat(filterPriceFlats).concat(filterRoomFlats).concat(filterGuestFlats).concat(checkedWifi).concat(checkedDishwasher).concat(checkedParking).concat(checkedWasher).concat(checkedElevator).concat(checkedConditioner);
+//       console.log(totalFilterFlats);
+//       console.log(uniqueTotalFilterFlats);
+//
+//
+//       const uniqueTotalFilterFlats = totalFilterFlats.filter(function(wiz, index) {
+//         return totalFilterFlats.indexOf(wiz) === index;
+//       });
+//
+//       console.log(uniqueTotalFilterFlats);
+//       const setTotalFilterFlats = new Set(totalFilterFlats);
+//       console.log(setTotalFilterFlats);
+//       const totalFilterFlatsTwo = [filterTypeFlats.concat(filterPriceFlats)];
+//       console.log(totalFilterFlatsTwo);
+//       const setTotalFilterFlatsTwo = new Set(totalFilterFlatsTwo);
+//       console.log(setTotalFilterFlatsTwo);
+//
+//       console.log(setTotalFilterFlats);
+//
 // const copyDataFlats = dataFlats.slice();
 // console.log(copyDataFlats);
 
