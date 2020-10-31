@@ -1,5 +1,7 @@
 "use strict";
 (function () {
+  const DEBOUNCE_INTERVAL = 500; // интервал задержки
+
   // удаление меток если было изменения фильтра
   const delPin = function () {
     const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
@@ -23,10 +25,31 @@
   };
 
 
-  const filterPin = function (arr) {
-    let copyDataFlats = []; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
-    copyDataFlats = arr;
+  // функция которая отрисовывает pin после изменения фильтра
+  const renderNewPin = function (newPins) {
+    delPin();
+    if (newPins.length < window.pin.MAX_PIN) {
+      for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
+        const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
+        fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
+        window.renderPinStart.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+        window.renderPinStart.renderPin(); // прорисовываем метки
+      }
+    } else if (newPins.length > window.pin.MAX_PIN) {
+      for (let i = 0; i < window.pin.MAX_PIN; i++) { // перебрать все данные которые получены и перенесены в переменную
+        const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
+        fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
+        window.renderPinStart.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+        window.renderPinStart.renderPin(); // прорисовываем метки
+      }
+    }
+  };
 
+
+  let lastTimeout;
+
+  const filterPin = function (arr) {
+    const copyDataFlats = arr; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
 
     let flatName = `any`; // будет значение которое выбрал пользователь по квартире
     let flatPrice = `any`; // будет значение которое выбрал пользователь по цене
@@ -120,21 +143,6 @@
         }
       });
 
-      // // функция воозращает массив если было выбрано преимущество ножно Html Элемента
-      //       const getArrCheckedFeature = function (elementHtml, elementChecked) {
-      //         const filterFeatures = copyDataFlats.filter(function (copyDataFlats) {
-      //             if (elementHtml.checked) {
-      //               for (let i = 0; i < copyDataFlats.offer.features.length; i++) {
-      //                 if (elementChecked === copyDataFlats.offer.features[i]) {
-      //                   return copyDataFlats.offer.features[i];
-      //                 }
-      //               }
-      //             }
-      //           },
-      //         );
-      //         return filterFeatures;
-      //       };
-
 
       const totalFilterFlats = filterTypeFlats.concat(filterPriceFlats).concat(filterRoomFlats).concat(filterGuestFlats); // создали обдщий массив по выбраным фильтрам кроме features
 
@@ -212,26 +220,17 @@
         return true; // если совпадаем вернуть, то вернуть этот массив для отрисовки Меток
       });
 
-      // функция которая отрисовывает pin после изменения фильтра
-      const renderNewPin = function (newPins) {
-        delPin();
-        if (newPins.length < window.pin.MAX_PIN) {
-          for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
-            const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
-            fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-            window.renderPinStart.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-            window.renderPinStart.renderPin(); // прорисовываем метки
-          }
-        } else if (newPins.length > window.pin.MAX_PIN) {
-          for (let i = 0; i < window.pin.MAX_PIN; i++) { // перебрать все данные которые получены и перенесены в переменную
-            const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
-            fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-            window.renderPinStart.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-            window.renderPinStart.renderPin(); // прорисовываем метки
-          }
-        }
-      };
-      renderNewPin(sortFeatures); // вызвали функцию для отрисовки новых меток после изменения фильтра
+      // если не сделать этот код, то будут рендерится метки несколько раз(в зависимости от кликов по фильтру) только с задержкой
+      if (lastTimeout) { // если в переменной есть идентификатор timeouta
+        clearTimeout(lastTimeout); // то мы удаляем timeout
+      } // т.е. если есть какоето действие мы должны его выждать, а потом только удалить
+      lastTimeout = setTimeout(function () { // setTimeout возвращает идентификатор усановленного timeouta
+        renderNewPin(sortFeatures);
+      }, DEBOUNCE_INTERVAL);
+
+
+      // window.debounce.debounceFilter(renderNewPin(sortFeatures))
+      // renderNewPin(sortFeatures); // вызвали функцию для отрисовки новых меток после изменения фильтра
     });
   };
 
