@@ -31,13 +31,6 @@
   // window.backend.load(onLoad, window.error.onError); // делаем запрос для заполнения данных для метки
 
 
-
-
-
-
-
-
-
   // const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
   // const renderPin = function () { // отрисовать метки
   //   mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html

@@ -1,5 +1,6 @@
 "use strict";
 (function () {
+  // удаление меток если было изменения фильтра
   const delPin = function () {
     const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
     // удаление всех меток кроме главной
@@ -12,7 +13,7 @@
   };
 
 
-  // удаление карточки если она открыта
+  // функция которая проверяет или карточка открыта, если открыта и есть измения фильтра то карточка закрывается
   const delCard = function () {
     const map = document.querySelector(`.map`); // нашел место где отображаются карточки
     if (map.querySelector(`.map__card`)) { // если карточка открыта
@@ -22,10 +23,9 @@
   };
 
 
-
   const filterPin = function (arr) {
     let copyDataFlats = []; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
-      copyDataFlats = arr;
+    copyDataFlats = arr;
 
 
     let flatName = `any`; // будет значение которое выбрал пользователь по квартире
@@ -33,13 +33,6 @@
     let flatRoom = `any`; // будет значение которое выбрал пользователь по цене
     let flatGuest = `any`; // будет значение которое выбрал пользователь по цене
 
-
-    // функция наименования перменной по типу жилья
-    // const onTypeChangeFilter = function () {
-    //   flatName = housingType.value;
-    // };
-
-    let arrTypes = []; // создали массив с выборкой типа жилья выбраного пользователем
     // делаем отслеживание кликов на типе квартир
     const housingType = document.querySelector(`#housing-type`); // находим поле с фильтром по типу жилья
     // следим за фильтрами если есть зименения то перписываем value фильтра
@@ -69,21 +62,11 @@
     mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
       delCard(); // вставили функцию удаления карточки
 
-      // функция по фильтру для типа квартиры
-      // const copyDataFlats = window.renderNewPin.dataFlats.slice(); // скопировали запрос по массиву, чтобы не делать каждый раз запрос
-//       let copyDataFlats = []; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
-//
-//       const onLoadNewPin = function (arr) {
-//         copyDataFlats = arr
-//       };
-//       window.backend.load(onLoadNewPin, window.error.onError); // делаем запрос для заполнения данных для метки
-// console.log(copyDataFlats);
       const getTypeFlats = function (copyDataFlats, flatName) {
-        const filterTypeFlats = copyDataFlats.filter(function (copyDataFlats) { //фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
+        const filterTypeFlats = copyDataFlats.filter(function (copyDataFlats) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
           if (copyDataFlats.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
             return copyDataFlats.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
-          }
-          else if (flatName === `any`) { // если выбрали все  то
+          } else if (flatName === `any`) { // если выбрали все  то
             return copyDataFlats.offer.type; // возвращаем все
           }
         });
@@ -137,33 +120,33 @@
         }
       });
 
-// функция воозращает массив если было выбрано преимущество ножно Html Элемента
-      const getArrCheckedFeature = function (elementHtml, elementChecked) {
-        const filterFeatures = copyDataFlats.filter(function (copyDataFlats) {
-            if (elementHtml.checked) {
-              for (let i = 0; i < copyDataFlats.offer.features.length; i++) {
-                if (elementChecked === copyDataFlats.offer.features[i]) {
-                  return copyDataFlats.offer.features[i];
-                }
-              }
-            }
-          },
-        );
-        return filterFeatures;
-      };
+      // // функция воозращает массив если было выбрано преимущество ножно Html Элемента
+      //       const getArrCheckedFeature = function (elementHtml, elementChecked) {
+      //         const filterFeatures = copyDataFlats.filter(function (copyDataFlats) {
+      //             if (elementHtml.checked) {
+      //               for (let i = 0; i < copyDataFlats.offer.features.length; i++) {
+      //                 if (elementChecked === copyDataFlats.offer.features[i]) {
+      //                   return copyDataFlats.offer.features[i];
+      //                 }
+      //               }
+      //             }
+      //           },
+      //         );
+      //         return filterFeatures;
+      //       };
 
 
-      const totalFilterFlats = getTypeFlats(copyDataFlats, flatName).concat(getFilterPriceFlats(copyDataFlats, flatPrice).concat(filterRoomFlats).concat(filterGuestFlats)); // создали обдщий массив
+      const totalFilterFlats = getTypeFlats(copyDataFlats, flatName).concat(getFilterPriceFlats(copyDataFlats, flatPrice).concat(filterRoomFlats).concat(filterGuestFlats)); // создали обдщий массив по выбраным фильтрам кроме features
 
       const uniqueTotalFilterFlats = totalFilterFlats.filter(function (item, index) { // удалили повторяющие квартиры друг с другом в фильтррах
-        return totalFilterFlats.indexOf(item) === index;
+        return totalFilterFlats.indexOf(item) === index; // пока не понял этой записи
       });
 
+      // сортируем уникальный массив, но походу первая часть сортировки лишняя
       const sortUniqueTotalFilterFlats = uniqueTotalFilterFlats.filter(function (item) {
-        if (flatName !== 'any' && item.offer.type !== flatName) {
+        if (flatName !== `any` && item.offer.type !== flatName) {
           return false;
         }
-
 
         const mapPrice = {
           any: `any`,
@@ -183,51 +166,51 @@
           }
         }
         if (flatPrice === `low`) {
-          if (flatPrice !== 'any' && item.offer.price > mapPrice.low) {
+          if (flatPrice !== `any` && item.offer.price > mapPrice.low) {
             return false;
           }
         }
         if (flatPrice === `high`) {
-          if (flatPrice !== 'any' && item.offer.price <= mapPrice.high) {
+          if (flatPrice !== `any` && item.offer.price <= mapPrice.high) {
             return false;
           }
         }
 
-        if (flatRoom !== 'any' && item.offer.rooms !== parseInt(flatRoom)) {
+        if (flatRoom !== `any` && item.offer.rooms !== parseInt(flatRoom)) {
           return false;
         }
 
-        if (flatGuest !== 'any' && item.offer.guests !== parseInt(flatGuest)) {
+        if (flatGuest !== `any` && item.offer.guests !== parseInt(flatGuest)) {
           return false;
         }
 
         return true;
       });
 
-// код возвращает все приимущества что выбрал пользователь
+      // код возвращает все приимущества что выбрал пользователь
       const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-      const featuresNodeList = document.querySelectorAll(`.map__checkbox`);
-      const activeFlatFeatures = [];
-      for (let j = 0; j < featuresNodeList.length; j++) {
-        if (featuresNodeList[j].checked) {
-          activeFlatFeatures.push(allFeatures[j]);
+      const featuresNodeList = document.querySelectorAll(`.map__checkbox`); // нашли поле со всеми features
+      const activeFlatFeatures = []; // сюда записываем приимущества которые выбрал пользователь
+      for (let j = 0; j < featuresNodeList.length; j++) { // делаем обход
+        if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив allFeatures
+          activeFlatFeatures.push(allFeatures[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
         }
       }
 
-
+      // сортируем основной уникальный массив на приимущества features
       const sortFeatures = sortUniqueTotalFilterFlats.filter(function (item) {
-        let countF = 0;
-        for (let r = 0; r < activeFlatFeatures.length; r++) {
-          for (let i = 0; i < item.offer.features.length; i++) {
-            if (activeFlatFeatures[r] === item.offer.features[i]) {
-              countF++;
+        let countFeature = 0; // счетчик нужен для сравнения или есть все совпадения
+        for (let r = 0; r < activeFlatFeatures.length; r++) { // перебираем все активные приимущества что выбрал пользователь
+          for (let i = 0; i < item.offer.features.length; i++) { // перебираем все примущества каждого объекта недважимости
+            if (activeFlatFeatures[r] === item.offer.features[i]) { // сравниваем каждое приимущество с каждым набором примущест каждого обхекта недвижимости
+              countFeature++; // если есть совадение то добавляем к счетчику
             }
           }
         }
-        if (countF !== activeFlatFeatures.length) {
-          return false;
+        if (countFeature !== activeFlatFeatures.length) { // если счетчик отличается от числа массива примуществ выбраного пользователем, то
+          return false; // означает не все приимущества есть в этом объекте недвижимости. Значит вернут  false
         }
-        return true;
+        return true; // если совпадаем вернуть, то вернуть этот массив для отрисовки Меток
       });
 
       // функция которая отрисовывает pin после изменения фильтра
