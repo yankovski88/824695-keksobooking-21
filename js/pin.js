@@ -199,40 +199,40 @@
         return filterFeatures;
       };
 
-// код возвращает все приимущества что выбрал пользователь
-      const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-      const featuresNodeList = document.querySelectorAll(`.map__checkbox`);
-      const activeFlatFeatures = [];
-      for(let j = 0; j<featuresNodeList.length; j++) {
-        // console.log(featuresNodeList[j]);
-        if (featuresNodeList[j].checked) {
-          activeFlatFeatures.push(allFeatures[j])
-        }
-      }
-      // console.log(activeFlatFeatures);
-
-
-      const allF = [`elevator`, `conditioner`]; // что выбрали
-
-      const arrM = copyDataFlats.filter(function (item) {
-        let countF = 0;
-        // console.log(index);
-        // console.log(item.offer.features.length);
-        for (let r = 0; r < activeFlatFeatures.length; r++) {
-          for (let i = 0; i < item.offer.features.length; i++) {
-            // console.log(`${activeFlatFeatures[r]}    ${item.offer.features[i]}`);
-            if (activeFlatFeatures[r] === item.offer.features[i]) {
-              countF++;
-            }
-          }
-        }
-        if(countF !== activeFlatFeatures.length){
-          // console.log(`check`);
-          return false
-        }
-        return true
-      });
-      console.log(arrM);
+// // код возвращает все приимущества что выбрал пользователь
+//       const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+//       const featuresNodeList = document.querySelectorAll(`.map__checkbox`);
+//       const activeFlatFeatures = [];
+//       for(let j = 0; j<featuresNodeList.length; j++) {
+//         // console.log(featuresNodeList[j]);
+//         if (featuresNodeList[j].checked) {
+//           activeFlatFeatures.push(allFeatures[j])
+//         }
+//       }
+//       // console.log(activeFlatFeatures);
+//
+//
+//       const allF = [`elevator`, `conditioner`]; // что выбрали
+//
+//       const arrM = copyDataFlats.filter(function (item) {
+//         let countF = 0;
+//         // console.log(index);
+//         // console.log(item.offer.features.length);
+//         for (let r = 0; r < activeFlatFeatures.length; r++) {
+//           for (let i = 0; i < item.offer.features.length; i++) {
+//             // console.log(`${activeFlatFeatures[r]}    ${item.offer.features[i]}`);
+//             if (activeFlatFeatures[r] === item.offer.features[i]) {
+//               countF++;
+//             }
+//           }
+//         }
+//         if(countF !== activeFlatFeatures.length){
+//           // console.log(`check`);
+//           return false
+//         }
+//         return true
+//       });
+//       console.log(arrM);
 
 
 
@@ -389,6 +389,50 @@
       });
 console.log(sortUniqueTotalFilterFlats);
 
+
+
+// код возвращает все приимущества что выбрал пользователь
+      const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+      const featuresNodeList = document.querySelectorAll(`.map__checkbox`);
+      const activeFlatFeatures = [];
+      for(let j = 0; j<featuresNodeList.length; j++) {
+        // console.log(featuresNodeList[j]);
+        if (featuresNodeList[j].checked) {
+          activeFlatFeatures.push(allFeatures[j])
+        }
+      }
+      // console.log(activeFlatFeatures);
+
+
+
+      const sortFeatures = sortUniqueTotalFilterFlats.filter(function (item) {
+        let countF = 0;
+        // console.log(index);
+        // console.log(item.offer.features.length);
+        for (let r = 0; r < activeFlatFeatures.length; r++) {
+          for (let i = 0; i < item.offer.features.length; i++) {
+            // console.log(`${activeFlatFeatures[r]}    ${item.offer.features[i]}`);
+            if (activeFlatFeatures[r] === item.offer.features[i]) {
+              countF++;
+            }
+          }
+        }
+        if(countF !== activeFlatFeatures.length){
+          // console.log(`check`);
+          return false
+        }
+        return true
+      });
+
+
+
+
+
+
+
+
+
+
       // const filterWifi = document.querySelector(`#filter-wifi`);
       // const filterDishwasher = document.querySelector(`#filter-dishwasher`);
       // const filterParking = document.querySelector(`#filter-parking`);
@@ -521,7 +565,7 @@ console.log(sortUniqueTotalFilterFlats);
           }
         }
       };
-      renderNewPin(sortUniqueTotalFilterFlats);
+      renderNewPin(sortFeatures);
     });
     // }
 
