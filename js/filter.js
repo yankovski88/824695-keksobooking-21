@@ -67,6 +67,8 @@
           return item.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
         } else if (flatName === `any`) { // если выбрали все  то
           return item.offer.type; // возвращаем все
+        } else {
+          return false;
         }
       });
 
@@ -93,6 +95,7 @@
         if (flatPrice === `any`) {
           return item.offer.price;
         }
+        return false;
       });
 
       //   return filterPriceFlats;
@@ -100,7 +103,7 @@
 
       const filterRoomFlats = copyDataFlats.filter(function (item) {
         if (flatRoom !== `any`) {
-          const numberFlatRoom = parseInt(flatRoom);
+          const numberFlatRoom = parseInt(flatRoom, 10);
           return item.offer.rooms === numberFlatRoom;
 
         } else {
@@ -110,7 +113,7 @@
 
       const filterGuestFlats = copyDataFlats.filter(function (item) {
         if (flatGuest !== `any`) {
-          const numberFlatGuest = parseInt(flatGuest);
+          const numberFlatGuest = parseInt(flatGuest, 10);
           return item.offer.guests === numberFlatGuest;
         } else {
           return item.offer.guests;
@@ -173,14 +176,13 @@
           }
         }
 
-        if (flatRoom !== `any` && item.offer.rooms !== parseInt(flatRoom)) {
+        if (flatRoom !== `any` && item.offer.rooms !== parseInt(flatRoom, 10)) {
           return false;
         }
 
-        if (flatGuest !== `any` && item.offer.guests !== parseInt(flatGuest)) {
+        if (flatGuest !== `any` && item.offer.guests !== parseInt(flatGuest, 10)) {
           return false;
         }
-
         return true;
       });
 
