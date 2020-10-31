@@ -220,6 +220,7 @@
         return true; // если совпадаем вернуть, то вернуть этот массив для отрисовки Меток
       });
 
+      // установка задержки прорисовки меток, теперь не будут маргать
       // если не сделать этот код, то будут рендерится метки несколько раз(в зависимости от кликов по фильтру) только с задержкой
       if (lastTimeout) { // если в переменной есть идентификатор timeouta
         clearTimeout(lastTimeout); // то мы удаляем timeout
@@ -227,10 +228,6 @@
       lastTimeout = setTimeout(function () { // setTimeout возвращает идентификатор усановленного timeouta
         renderNewPin(sortFeatures);
       }, DEBOUNCE_INTERVAL);
-
-
-      // window.debounce.debounceFilter(renderNewPin(sortFeatures))
-      // renderNewPin(sortFeatures); // вызвали функцию для отрисовки новых меток после изменения фильтра
     });
   };
 
