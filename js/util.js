@@ -1,27 +1,5 @@
-"use strict";
+'use strict';
 (function () {
-  // получить рандомную часть массива
-  function getRandomPartOfArr(arr) {
-    const arrCopy = arr.slice();
-    const randomNumber = getRandomInt(arrCopy.length);
-    for (let i = 0; i < randomNumber; i++) {
-      const randomNumberDel = getRandomInt(arrCopy.length);
-      arrCopy.splice(randomNumberDel, 1);
-    }
-    return arrCopy;
-  }
-
-  // получить рандомное число из max
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-
-  // получить рандомное число из min max
-  const getRandomMinMax = function (min, max) {
-    const random = Math.floor(min + Math.random() * (max + 1 - min));
-    return random;
-  };
-
   // получить массив названия классов от html
   const getArrClassNameHtml = function (elementHtml) {
     const classNames = [];
@@ -65,14 +43,6 @@
     }
   };
 
-  // получить рандомное значение из объекта
-  const getRandomValueOfObject = function (object) {
-    const values = Object.values(object);
-    const randomNumber = window.util.getRandomInt(values.length);
-    const randomValue = values[randomNumber];
-    return randomValue;
-  };
-
   // получить первый итем строки до запятой
   const getFirstItemOfString = function (string) {
     const arr = [];
@@ -99,21 +69,11 @@
     return arr.join(``);
   };
 
-  // преобразовать строку в число
-  const getNumberOfString = function (stringNumber) {
-    return parseInt(stringNumber, 10);
-  };
-
   window.util = {
     getArrOfTextBeforeDash,
     getArrClassNameHtml,
-    getRandomMinMax,
-    getRandomInt,
-    getRandomPartOfArr,
-    getNumberOfString,
     getLastItemOfString,
     getFirstItemOfString,
-    getRandomValueOfObject,
     comparisonArrsAndAddClassNameHidden,
   };
 })();
