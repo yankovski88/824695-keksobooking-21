@@ -49,15 +49,15 @@
       for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-        window.renderPinStart.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-        window.renderPinStart.renderPin(); // прорисовываем метки
+        window.startPins.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+        window.startPins.renderPin(); // прорисовываем метки
       }
     } else if (newPins.length > window.pin.MAX_PIN) {
       for (let i = 0; i < window.pin.MAX_PIN; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-        window.renderPinStart.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-        window.renderPinStart.renderPin(); // прорисовываем метки
+        window.startPins.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+        window.startPins.renderPin(); // прорисовываем метки
       }
     }
   };

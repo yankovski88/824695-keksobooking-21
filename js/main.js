@@ -93,7 +93,7 @@
     }
     removeAdFormDisabled(form); // форма становится активной
     removeAdFormFieldsetsDisabled(); // удаляется где есть disabled в форме
-    window.renderPinStart.renderPin(); // рисуются метки
+    window.startPins.renderPin(); // рисуются метки
     window.form.checkRoomAndGuest(); // запускается проверка по гостям
     window.form.onTypeChange(); // запускаемся проверка по типу жилья
     window.form.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
@@ -113,7 +113,7 @@
     }
     removeAdFormDisabled(form);
     removeAdFormFieldsetsDisabled();
-    window.renderPinStart.renderPin();
+    window.startPins.renderPin();
     window.form.checkRoomAndGuest();
     window.form.onTypeChange();
     window.form.setTimeinAndTimeout();

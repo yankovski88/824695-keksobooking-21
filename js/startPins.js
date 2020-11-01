@@ -20,7 +20,7 @@
     mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html
   };
 
-  window.renderPinStart = {
+  window.startPins = {
     renderPin,
     dataFlats,
     fragment
