@@ -5,7 +5,7 @@
   const PIN_FIELD_HEIGHT = 630;
   const mapPinMain = document.querySelector(`.map__pin--main`);
   const address = document.querySelector(`#address`);
-  const similarListElement = document.querySelector(`.map__pins`);
+  const mapPin = document.querySelector(`.map__pins`);
   const mainPinHeight = mapPinMain.offsetHeight + MAIN_PIN_TIP; // полная высота of pin
 
   function fillAddress(elementHtml, currentX, currentY) {
@@ -56,9 +56,9 @@
         mapPinMain.style.left = `${-mapPinMain.offsetWidth / 2}px`;
         fillAddress(address, 0, currentY);
       }
-      if (currentX >= similarListElement.offsetWidth) {
-        mapPinMain.style.left = `${similarListElement.offsetWidth - mapPinMain.offsetWidth / 2}px`;
-        fillAddress(address, similarListElement.offsetWidth, currentY);
+      if (currentX >= mapPin.offsetWidth) {
+        mapPinMain.style.left = `${mapPin.offsetWidth - mapPinMain.offsetWidth / 2}px`;
+        fillAddress(address, mapPin.offsetWidth, currentY);
       }
 
       if (currentY <= PIN_FIELD_MIN_Y) {
