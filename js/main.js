@@ -1,6 +1,5 @@
 "use strict";
 (function () {
-
   // при клике на метку открывается карточка
   const onMapClick = function (evt) {
     let target = evt.target; // цель по которой был клик
@@ -72,7 +71,7 @@
   const addAdFormDisabled = function (item) {
     item.classList.add(`ad-form--disabled`);
   };
-  // addAdFormDisabled(); // дизэйбл формы
+  // дизэйбл формы addAdFormDisabled();
 
   // удаление ad-form--disabled
   const removeAdFormDisabled = function (item) {

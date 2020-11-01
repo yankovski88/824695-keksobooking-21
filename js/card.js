@@ -92,6 +92,5 @@
     card,
     renderCard,
     map,
-
   };
 })();

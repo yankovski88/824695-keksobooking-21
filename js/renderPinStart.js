@@ -10,12 +10,10 @@
       const fragmentPin = window.pin.createPin(arr[i]); // создаем метку через функцию выше
       fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
       fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-
     }
   };
 
   window.backend.load(onLoad, window.error.onError); // делаем запрос для заполнения данных для метки
-
 
   const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
   const renderPin = function () { // отрисовать метки

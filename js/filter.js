@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 (function () {
   const DEBOUNCE_INTERVAL = 500; // интервал задержки
+  const ANY_CHOUCE = `any`;
 
   const MapPrice = { // словарь для фильтрации middle
-    // any: `any`,
     MIDDLE_MIN: 10000,
     MIDDLE_MAX: 50000,
     LOW: 10000,
@@ -16,9 +16,8 @@
     MIDDLE: `middle`,
     HIGH: `high`
   };
-  const ANY_CHOUCE = `any`;
 
-  const AllFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+  const AllFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
 
   // удаление меток если было изменения фильтра
   const delPin = function () {
@@ -106,22 +105,14 @@
       const filterTypeFlats = copyDataFlats.filter(function (item) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
         if (item.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
           return item.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
-        } else if (flatName === `any`) { // если выбрали все  то
+        } else if (flatName === ANY_CHOUCE) { // если выбрали все  то
           return item.offer.type; // возвращаем все
         } else {
           return false;
         }
       });
 
-      // const getFilterPriceFlats = function (copyDataFlats, flatPrice) {
       const filterPriceFlats = copyDataFlats.filter(function (item) {
-        // const mapPrice = {
-        //   any: `any`,
-        //   middleMin: 10000,
-        //   middleMax: 50000,
-        //   low: 10000,
-        //   high: 50000,
-        // };
         if (flatPrice === PriceValue.MIDDLE) {
           if (item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX) {
             return item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX;
@@ -139,11 +130,8 @@
         return false;
       });
 
-      //   return filterPriceFlats;
-      // };
-
       const filterRoomFlats = copyDataFlats.filter(function (item) {
-        if (flatRoom !== `any`) {
+        if (flatRoom !== ANY_CHOUCE) {
           const numberFlatRoom = parseInt(flatRoom, 10);
           return item.offer.rooms === numberFlatRoom;
 
@@ -153,7 +141,7 @@
       });
 
       const filterGuestFlats = copyDataFlats.filter(function (item) {
-        if (flatGuest !== `any`) {
+        if (flatGuest !== ANY_CHOUCE) {
           const numberFlatGuest = parseInt(flatGuest, 10);
           return item.offer.guests === numberFlatGuest;
         } else {
@@ -170,7 +158,7 @@
 
       // сортируем уникальный массив, но походу первая часть сортировки лишняя
       const sortUniqueTotalFilterFlats = uniqueTotalFilterFlats.filter(function (item) {
-        if (flatName !== `any` && item.offer.type !== flatName) {
+        if (flatName !== ANY_CHOUCE && item.offer.type !== flatName) {
           return false;
         }
 
@@ -216,9 +204,9 @@
       // сортируем основной уникальный массив на приимущества features
       const sortFeatures = sortUniqueTotalFilterFlats.filter(function (item) {
         let countFeature = 0; // счетчик нужен для сравнения или есть все совпадения
-        for (let r = 0; r < activeFlatFeatures.length; r++) { // перебираем все активные приимущества что выбрал пользователь
-          for (let i = 0; i < item.offer.features.length; i++) { // перебираем все примущества каждого объекта недважимости
-            if (activeFlatFeatures[r] === item.offer.features[i]) { // сравниваем каждое приимущество с каждым набором примущест каждого обхекта недвижимости
+        for (let i = 0; i < activeFlatFeatures.length; i++) { // перебираем все активные приимущества что выбрал пользователь
+          for (let j = 0; j < item.offer.features.length; j++) { // перебираем все примущества каждого объекта недважимости
+            if (activeFlatFeatures[i] === item.offer.features[j]) { // сравниваем каждое приимущество с каждым набором примущест каждого обхекта недвижимости
               countFeature++; // если есть совадение то добавляем к счетчику
             }
           }

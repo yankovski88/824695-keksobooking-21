@@ -2,8 +2,11 @@
 (function () {
   // + все что связано с формой
   // здесь куча колбеков не знаю стоит ли удалять и когда стоит? если говорят, что надо удалять их всегда???
+  const KEY_CODE_ESC = 27;
+  const KEY_CODE_ENTER = 13;
 
-
+  const MIN_LENGTH = 30;
+  const MAX_PRICE = 1000000;
   const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
   const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
 
@@ -13,9 +16,7 @@
       item.removeAttribute(`disabled`);
     });
   };
-
   removeToArrDisabled(capacityOptions);
-
 
   const checkRoomAndGuest = function () {
     const roomNumber = document.querySelector(`#room_number`);
@@ -75,9 +76,9 @@
   };
 
   const title = document.querySelector(`#title`);
-  title.setAttribute(`minlength`, `30`);
+  title.setAttribute(`minlength`, MIN_LENGTH);
   const price = document.querySelector(`#price`);
-  price.setAttribute(`max`, `1000000`);
+  price.setAttribute(`max`, MAX_PRICE);
 
   const getArrValueFromHtml = function (arrHtml) {
     const itemValue = [];
@@ -105,7 +106,6 @@
   };
   type.addEventListener(`change`, onTypeChange);
 
-  const MAX_PRICE = 1000000;
   price.setAttribute(`required`, `required`);
   price.setAttribute(`type`, `number`);
   price.setAttribute(`max`, `${MAX_PRICE}`);
@@ -179,7 +179,7 @@
 
   // Добавляю удаление сообщения об успешной отправке через ESC
   const onSuccessPressEsc = function (evt) {
-    if (evt.keyCode === 27) {
+    if (evt.keyCode === KEY_CODE_ESC) {
       successTemplate.remove();
       document.removeEventListener(`keydown`, onSuccessPressEsc);
       document.removeEventListener(`click`, onSuccessClick);
@@ -216,7 +216,7 @@
   };
 
   const onErrorButtonPressEsc = function (evt) {
-    if (evt.keyCode === 27) {
+    if (evt.keyCode === KEY_CODE_ESC) {
       nodeError.remove(); // удаляем наш node Error
       document.removeEventListener(`keydown`, onErrorButtonPressEsc);
       document.removeEventListener(`click`, onAroundOfErrorButtonClick);
@@ -240,7 +240,7 @@
   };
   // может не надо здесь удалять оброботчики по ссылке?
   const onFormPressEnter = function (evt) {
-    if (evt.keyCode === 13) {
+    if (evt.keyCode === KEY_CODE_ENTER) {
       form.reset();
       adFormReset.removeEventListener(`click`, onFormClick);
       adFormReset.removeEventListener(`keydown`, onFormPressEnter);

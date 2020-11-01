@@ -51,12 +51,12 @@
   };
 
   // сравниваем два массива и если есть совпадение то не скрываем, а если совпадение то к html элементу добавляем название плюса
-  const comparisonArrsAndAddClassNameHidden = function (arr1, arr2, htmlElement) {
-    for (let i = 0; i < arr1.length; i++) {
-      for (let j = 0; j < arr2.length; j++) {
+  const comparisonArrsAndAddClassNameHidden = function (arrFirst, arrSecond, htmlElement) {
+    for (let i = 0; i < arrFirst.length; i++) {
+      for (let j = 0; j < arrSecond.length; j++) {
         htmlElement[j].classList.add(`hidden`);
-        if (arr1[i] === arr2[j]) {
-          htmlElement[j].textContent = arr1[i];
+        if (arrFirst[i] === arrSecond[j]) {
+          htmlElement[j].textContent = arrFirst[i];
         }
         if (htmlElement[j].textContent) {
           htmlElement[j].classList.remove(`hidden`);
@@ -103,7 +103,6 @@
   const getNumberOfString = function (stringNumber) {
     return parseInt(stringNumber, 10);
   };
-
 
   window.util = {
     getArrOfTextBeforeDash,
