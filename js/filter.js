@@ -2,6 +2,24 @@
 (function () {
   const DEBOUNCE_INTERVAL = 500; // интервал задержки
 
+  const MapPrice = { // словарь для фильтрации middle
+    // any: `any`,
+    MIDDLE_MIN: 10000,
+    MIDDLE_MAX: 50000,
+    LOW: 10000,
+    HIGH: 50000,
+  };
+
+  const PriceValue = {
+    ANY: `any`,
+    LOW: `low`,
+    MIDDLE: `middle`,
+    HIGH: `high`
+  };
+  const ANY_CHOUCE = `any`;
+
+  const AllFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
+
   // удаление меток если было изменения фильтра
   const delPin = function () {
     const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
@@ -97,25 +115,25 @@
 
       // const getFilterPriceFlats = function (copyDataFlats, flatPrice) {
       const filterPriceFlats = copyDataFlats.filter(function (item) {
-        const mapPrice = {
-          any: `any`,
-          middleMin: 10000,
-          middleMax: 50000,
-          low: 10000,
-          high: 50000,
-        };
-        if (flatPrice === `middle`) {
-          if (item.offer.price >= mapPrice.middleMin && item.offer.price < mapPrice.middleMax) {
-            return item.offer.price >= mapPrice.middleMin && item.offer.price < mapPrice.middleMax;
+        // const mapPrice = {
+        //   any: `any`,
+        //   middleMin: 10000,
+        //   middleMax: 50000,
+        //   low: 10000,
+        //   high: 50000,
+        // };
+        if (flatPrice === PriceValue.MIDDLE) {
+          if (item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX) {
+            return item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX;
           }
         }
-        if (flatPrice === `low`) {
-          return item.offer.price < mapPrice.low;
+        if (flatPrice === PriceValue.LOW) {
+          return item.offer.price < MapPrice.LOW;
         }
-        if (flatPrice === `high`) {
-          return item.offer.price >= mapPrice.high;
+        if (flatPrice === PriceValue.HIGH) {
+          return item.offer.price >= MapPrice.HIGH;
         }
-        if (flatPrice === `any`) {
+        if (flatPrice === PriceValue.ANY) {
           return item.offer.price;
         }
         return false;
@@ -156,51 +174,42 @@
           return false;
         }
 
-        const mapPrice = {
-          any: `any`,
-          middleMin: 10000,
-          middleMax: 50000,
-          low: 10000,
-          high: 50000,
-        };
+        if (flatPrice === PriceValue.MIDDLE) {
 
-        if (flatPrice === `middle`) {
-
-          if (flatPrice !== `any` && item.offer.price < mapPrice.middleMin) {
+          if (flatPrice !== PriceValue.ANY && item.offer.price < MapPrice.MIDDLE_MIN) {
             return false;
           } // не получилось соединить эти 2 условия. Не знаю почему.
-          if (flatPrice !== `any` && item.offer.price >= mapPrice.middleMax) {
+          if (flatPrice !== PriceValue.ANY && item.offer.price >= MapPrice.MIDDLE_MAX) {
             return false;
           }
         }
-        if (flatPrice === `low`) {
-          if (flatPrice !== `any` && item.offer.price > mapPrice.low) {
+        if (flatPrice === PriceValue.LOW) {
+          if (flatPrice !== PriceValue.ANY && item.offer.price > MapPrice.LOW) {
             return false;
           }
         }
-        if (flatPrice === `high`) {
-          if (flatPrice !== `any` && item.offer.price <= mapPrice.high) {
+        if (flatPrice === PriceValue.HIGH) {
+          if (flatPrice !== PriceValue.ANY && item.offer.price <= MapPrice.HIGH) {
             return false;
           }
         }
 
-        if (flatRoom !== `any` && item.offer.rooms !== parseInt(flatRoom, 10)) {
+        if (flatRoom !== ANY_CHOUCE && item.offer.rooms !== parseInt(flatRoom, 10)) {
           return false;
         }
 
-        if (flatGuest !== `any` && item.offer.guests !== parseInt(flatGuest, 10)) {
+        if (flatGuest !== ANY_CHOUCE && item.offer.guests !== parseInt(flatGuest, 10)) {
           return false;
         }
         return true;
       });
 
       // код возвращает все приимущества что выбрал пользователь
-      const allFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
       const featuresNodeList = document.querySelectorAll(`.map__checkbox`); // нашли поле со всеми features
       const activeFlatFeatures = []; // сюда записываем приимущества которые выбрал пользователь
       for (let j = 0; j < featuresNodeList.length; j++) { // делаем обход
-        if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив allFeatures
-          activeFlatFeatures.push(allFeatures[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
+        if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив AllFeatures
+          activeFlatFeatures.push(AllFeatures[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
         }
       }
 
