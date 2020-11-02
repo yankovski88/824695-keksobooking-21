@@ -21,9 +21,8 @@
 
   // удаление меток если было изменения фильтра
   const delPin = function () {
-    const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
     // удаление всех меток кроме главной
-    const mapPins = mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
+    const mapPins = window.startPins.mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
     for (let i = 0; i < mapPins.length; i++) { // перебрать все метки
       if (!mapPins[i].classList.contains(`map__pin--main`)) { // все метки которой нет главной
         mapPins[i].remove(); // удалить все метки кроме главной
@@ -34,8 +33,7 @@
 
   // функция которая проверяет или карточка открыта, если открыта и есть измения фильтра то карточка закрывается
   const delCard = function () {
-    const map = document.querySelector(`.map`); // нашел место где отображаются карточки
-    if (map.querySelector(`.map__card`)) { // если карточка открыта
+    if (window.card.map.querySelector(`.map__card`)) { // если карточка открыта
       const mapCards = document.querySelector(`.map__card`); // то находим карточку
       mapCards.remove(); // удаляем карточку т.к. условие при клике любого фильтра удаляем карточку
     }

@@ -3,9 +3,9 @@
   // + все что связано с формой
   const KEY_CODE_ESC = 27;
   const KEY_CODE_ENTER = 13;
-
   const MIN_LENGTH = 30;
   const MAX_PRICE = 1000000;
+
   const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
   const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
 

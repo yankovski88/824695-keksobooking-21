@@ -23,7 +23,8 @@
   window.startPins = {
     renderPin,
     dataFlats,
-    fragment
+    fragment,
+    mapPinsHtml
   };
 
 })();
