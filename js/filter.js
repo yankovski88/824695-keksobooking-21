@@ -133,7 +133,6 @@
         if (flatRoom !== ANY_CHOUCE) {
           const numberFlatRoom = parseInt(flatRoom, 10);
           return item.offer.rooms === numberFlatRoom;
-
         }
         return item.offer.rooms;
       });
