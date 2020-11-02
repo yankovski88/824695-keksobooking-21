@@ -14,7 +14,7 @@
     ANY: `any`,
     LOW: `low`,
     MIDDLE: `middle`,
-    HIGH: `high`
+    HIGH: `high`,
   };
 
   const AllFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
@@ -105,9 +105,10 @@
           return item.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
         } else if (flatName === ANY_CHOUCE) { // если выбрали все  то
           return item.offer.type; // возвращаем все
-        } else {
-          return false;
         }
+        // else {
+        return false;
+        // }
       });
 
       const filterPriceFlats = copyDataFlats.filter(function (item) {
@@ -133,18 +134,16 @@
           const numberFlatRoom = parseInt(flatRoom, 10);
           return item.offer.rooms === numberFlatRoom;
 
-        } else {
-          return item.offer.rooms;
         }
+        return item.offer.rooms;
       });
 
       const filterGuestFlats = copyDataFlats.filter(function (item) {
         if (flatGuest !== ANY_CHOUCE) {
           const numberFlatGuest = parseInt(flatGuest, 10);
           return item.offer.guests === numberFlatGuest;
-        } else {
-          return item.offer.guests;
         }
+        return item.offer.guests;
       });
 
 
