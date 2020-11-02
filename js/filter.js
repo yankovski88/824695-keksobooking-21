@@ -2,6 +2,7 @@
 
 const DEBOUNCE_INTERVAL = 500; // интервал задержки
 const ANY_CHOUCE = `any`;
+const ALL_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
 
 const MapPrice = { // словарь для фильтрации middle
   MIDDLE_MIN: 10000,
@@ -17,7 +18,6 @@ const PriceValue = {
   HIGH: `high`,
 };
 
-const AllFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
 
 // удаление меток если было изменения фильтра
 const delPin = function () {
@@ -192,8 +192,8 @@ const filterPin = function (arr) {
     const featuresNodeList = document.querySelectorAll(`.map__checkbox`); // нашли поле со всеми features
     const activeFlatFeatures = []; // сюда записываем приимущества которые выбрал пользователь
     for (let j = 0; j < featuresNodeList.length; j++) { // делаем обход
-      if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив AllFeatures
-        activeFlatFeatures.push(AllFeatures[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
+      if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив ALL_FEATURES
+        activeFlatFeatures.push(ALL_FEATURES[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
       }
     }
 

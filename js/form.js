@@ -5,6 +5,15 @@ const KEY_CODE_ESC = 27;
 const KEY_CODE_ENTER = 13;
 const MIN_LENGTH = 30;
 const MAX_PRICE = 1000000;
+// переменная с указанием информации что нет таких комант с гостями
+const MESSAGE_ROOMS_ERROR = `
+1 комната — «для 1 гостя»;
+2 комнаты — «для 2 гостей» или «для 1 гостя»;
+3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
+100 комнат — «не для гостей».`;
+
+const MAX_ROOM = 3;
+const NO_FOR_GUEST = `0`;
 
 const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
 const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
@@ -20,18 +29,10 @@ removeToArrDisabled(capacityOptions);
 const checkRoomAndGuest = function () {
   const roomNumber = document.querySelector(`#room_number`);
 
-  // переменная с указанием информации что нет таких комант с гостями
-  const MESSAGE_ROOMS_ERROR = `
-1 комната — «для 1 гостя»;
-2 комнаты — «для 2 гостей» или «для 1 гостя»;
-3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
-100 комнат — «не для гостей».`;
   // идет работа по функция компанты и гости
   let room = roomNumber.value;
   let guest = capacity.value;
   let romIndex = room - 1;
-  const MAX_ROOM = 3;
-  const NO_FOR_GUEST = `0`;
   const capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]];
 
   const checkRoomDefault = function () {
