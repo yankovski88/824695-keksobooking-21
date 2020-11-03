@@ -62,6 +62,7 @@ const renderNewPin = function (newPins) {
 
 
 let lastTimeout;
+const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
 
 const filterPin = function (arr) {
   const copyDataFlats = arr; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
@@ -96,7 +97,7 @@ const filterPin = function (arr) {
 
 
   // удаление карточки если она была открыта
-  const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
+  // const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
   mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
     delCard(); // вставили функцию удаления карточки
 
@@ -225,3 +226,7 @@ const filterPin = function (arr) {
 };
 
 window.backend.load(filterPin, window.error.onError); // делаем запрос для заполнения данных для метки
+
+window.filter = {
+  mapFilters
+};

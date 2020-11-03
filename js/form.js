@@ -160,13 +160,16 @@ const onSuccess = function () {
   // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
   document.addEventListener(`click`, onSuccessClick); // обработчик на клик, удаляет себя и обработик на ESC
   form.reset();
+  // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
+  window.filter.mapFilters.reset(); // удаление всех данных фильтра. ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map);
 
   delPinButtons();
   window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
-
 };
+
 const delPinButtons = function () {
   const buttonPins = mapPins.querySelectorAll(`button`);
   for (let i = 0; i < buttonPins.length; i++) {
@@ -234,16 +237,22 @@ const onErrorButtonClick = function () {
 // сделал обработчик клика на очистку формы
 const onFormClick = function () {
   form.reset();
-  adFormReset.removeEventListener(`click`, onFormClick);
-  adFormReset.removeEventListener(`keydown`, onFormPressEnter);
+  window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+  // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
+
+  // adFormReset.removeEventListener(`click`, onFormClick);
+  // adFormReset.removeEventListener(`keydown`, onFormPressEnter);
 
 };
 // может не надо здесь удалять оброботчики по ссылке?
 const onFormPressEnter = function (evt) {
   if (evt.keyCode === KEY_CODE_ENTER) {
     form.reset();
-    adFormReset.removeEventListener(`click`, onFormClick);
-    adFormReset.removeEventListener(`keydown`, onFormPressEnter);
+    window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+    // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
+
+    // adFormReset.removeEventListener(`click`, onFormClick);
+    // adFormReset.removeEventListener(`keydown`, onFormPressEnter);
   }
 };
 

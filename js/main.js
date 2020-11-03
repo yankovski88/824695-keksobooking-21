@@ -130,4 +130,5 @@ window.main = {
   mapFilter,
   mapPinMain,
   onMapPinMainMousedown,
+
 };
