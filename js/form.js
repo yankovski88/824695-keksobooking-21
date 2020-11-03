@@ -1,4 +1,5 @@
 'use strict';
+(function () {
 
 // + все что связано с формой
 const KEY_CODE_ESC = 27;
@@ -160,8 +161,8 @@ const onSuccess = function () {
   // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
   document.addEventListener(`click`, onSuccessClick); // обработчик на клик, удаляет себя и обработик на ESC
   form.reset();
-  // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
   window.filter.mapFilters.reset(); // удаление всех данных фильтра. ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+  // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
 
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map);
@@ -239,10 +240,11 @@ const onFormClick = function () {
   form.reset();
   window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
   // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
+  window.main.addAdFormDisabled(form); // дизейбл формы
+  window.main.addMapFaded(window.card.map);
 
-  // adFormReset.removeEventListener(`click`, onFormClick);
-  // adFormReset.removeEventListener(`keydown`, onFormPressEnter);
-
+  delPinButtons();
+  window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
 };
 // может не надо здесь удалять оброботчики по ссылке?
 const onFormPressEnter = function (evt) {
@@ -250,9 +252,11 @@ const onFormPressEnter = function (evt) {
     form.reset();
     window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
     // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
+    window.main.addAdFormDisabled(form); // дизейбл формы
+    window.main.addMapFaded(window.card.map);
 
-    // adFormReset.removeEventListener(`click`, onFormClick);
-    // adFormReset.removeEventListener(`keydown`, onFormPressEnter);
+    delPinButtons();
+    window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
   }
 };
 
@@ -270,3 +274,4 @@ window.form = {
   onTypeChange,
 };
 
+})();

@@ -1,4 +1,5 @@
 'use strict';
+(function () {
 
 const MAIN_PIN_TIP = 22;
 const PIN_FIELD_MIN_Y = 130;
@@ -81,3 +82,4 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
   document.addEventListener(`mousemove`, onMouseMove);
   document.addEventListener(`mouseup`, onMouseUp);
 });
+})();

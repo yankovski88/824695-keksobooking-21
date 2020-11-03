@@ -1,4 +1,7 @@
 'use strict';
+(function () {
+
+
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
@@ -35,3 +38,6 @@ img.style.height = `70px`;
 // img.alt = `Превью добавленного изображеия`;
 const previewFoto = previewFotoFlat.appendChild(img); // отличие append от apppendChild
 loadFile(fotoFlat, previewFoto, FILE_TYPES);
+
+
+})();

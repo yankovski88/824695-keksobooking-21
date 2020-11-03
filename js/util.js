@@ -1,4 +1,5 @@
 'use strict';
+(function () {
 
 // получить массив названия классов от html
 const getArrClassNameHtml = function (elementHtml) {
@@ -72,7 +73,8 @@ const getLastItemOfString = function (string) {
 // функция неактивного состояния сайта
 const disabledMapFilter = function () {
   window.main.addMapFaded(window.card.map); // сделать карту неактивной
-window.main.addAdFormDisabled(window.filter.mapFilters);
+  window.main.addAdFormDisabled(window.filter.mapFilters);
+  window.main.addDisabled(window.main.adFormFieldsets);
 };
 
 window.util = {
@@ -81,5 +83,8 @@ window.util = {
   getLastItemOfString,
   getFirstItemOfString,
   comparisonArrsAndAddClassNameHidden,
-  disabledMapFilter
+  disabledMapFilter,
 };
+
+
+})();

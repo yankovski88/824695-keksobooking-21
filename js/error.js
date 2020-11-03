@@ -1,4 +1,5 @@
 'use strict';
+(function () {
 
 const onError = function (errorMessage) { // всплывающее окно с ошибкой
   const mapOverlay = document.querySelector(`.map__overlay`); // нашли место куда вставлять метки
@@ -25,3 +26,4 @@ window.error = {
   onError,
 };
 
+})();
