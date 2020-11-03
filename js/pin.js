@@ -18,7 +18,6 @@ window.pin = {
   pin,
   MAX_PIN,
   createPin,
-  // onLoad
 };
 
 

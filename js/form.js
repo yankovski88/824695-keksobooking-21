@@ -154,8 +154,7 @@ form.addEventListener(`submit`, function (evt) {
 
 const success = document.querySelector(`#success`).content.querySelector(`.success`); // нашел шаблон для вставки
 const successTemplate = success.cloneNode(true); // обязательно клонируем шаблон, без клона не вставится в html
-const onSuccess = function () {
-
+const onSuccess = function () { // обработчик отправки успешной формы
   mapPins.appendChild(successTemplate); // Добавил нод в Html
   document.addEventListener(`keydown`, onSuccessPressEsc); // добавивл обработчик по ссылке
   // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
@@ -168,6 +167,11 @@ const onSuccess = function () {
 
   if (window.card.map.querySelector(`.map__card`)) {
     window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
+  }
+
+  if(window.card.map.classList.contains(`map--faded`)){
+    window.movePin.mapPinMain.style.top = `375px`;
+    window.movePin.mapPinMain.style.left = `570px`;
   }
 
   delPinButtons();
@@ -242,15 +246,17 @@ const onErrorButtonClick = function () {
 const onFormClick = function () {
   form.reset();
   window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
-  // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map);
-  // window.main.removeChildMapCard(); // удаление карточки
 
   if (window.card.map.querySelector(`.map__card`)) {
     window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
   }
 
+  if(window.card.map.classList.contains(`map--faded`)){
+    window.movePin.mapPinMain.style.top = `375px`;
+    window.movePin.mapPinMain.style.left = `570px`;
+  }
 
   delPinButtons();
   window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
@@ -262,10 +268,14 @@ const onFormPressEnter = function (evt) {
     window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
     window.main.addAdFormDisabled(form); // дизейбл формы
     window.main.addMapFaded(window.card.map);
-    window.main.removeChildMapCard(); // удаление карточки
-
+// удаление карточки если была открыта
     if (window.card.map.querySelector(`.map__card`)) {
       window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
+    }
+// установка метки в центре
+    if(window.card.map.classList.contains(`map--faded`)){
+      window.movePin.mapPinMain.style.top = `375px`;
+      window.movePin.mapPinMain.style.left = `570px`;
     }
 
     delPinButtons();
