@@ -162,10 +162,13 @@ const onSuccess = function () {
   document.addEventListener(`click`, onSuccessClick); // обработчик на клик, удаляет себя и обработик на ESC
   form.reset();
   window.filter.mapFilters.reset(); // удаление всех данных фильтра. ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
-  // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
 
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map);
+
+  if (window.card.map.querySelector(`.map__card`)) {
+    window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
+  }
 
   delPinButtons();
   window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
@@ -242,6 +245,12 @@ const onFormClick = function () {
   // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map);
+  // window.main.removeChildMapCard(); // удаление карточки
+
+  if (window.card.map.querySelector(`.map__card`)) {
+    window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
+  }
+
 
   delPinButtons();
   window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
@@ -251,9 +260,13 @@ const onFormPressEnter = function (evt) {
   if (evt.keyCode === KEY_CODE_ENTER) {
     form.reset();
     window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
-    // window.util.disabledMapFilter(); // удаеляет пол верхнего сайта
     window.main.addAdFormDisabled(form); // дизейбл формы
     window.main.addMapFaded(window.card.map);
+    window.main.removeChildMapCard(); // удаление карточки
+
+    if (window.card.map.querySelector(`.map__card`)) {
+      window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
+    }
 
     delPinButtons();
     window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);

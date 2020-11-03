@@ -92,11 +92,7 @@
     if (evt.which === 1) {
       window.card.map.classList.remove(`map--faded`); // карта становится активной
       window.backend.load(window.filter.filterPin, window.error.onError); // делаем запрос для заполнения данных для метки
-
     }
-    // window.backend.load(window.startPins.onLoad, window.error.onError); // делаем запрос для заполнения данных для метки
-
-
     removeAdFormDisabled(form); // форма становится активной
     removeAdFormFieldsetsDisabled(); // удаляется где есть disabled в форме
     // window.startPins.renderPin(); // рисуются метки
@@ -139,6 +135,5 @@
     onMapPinMainMousedown,
     addDisabled,
     adFormFieldsets,
-
   };
 })();
