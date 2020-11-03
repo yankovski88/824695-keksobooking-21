@@ -19,11 +19,12 @@
     HIGH: `high`,
   };
 
+  const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
 
 // удаление меток если было изменения фильтра
   const delPin = function () {
     // удаление всех меток кроме главной
-    const mapPins = window.startPins.mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
+    const mapPins = mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
     for (let i = 0; i < mapPins.length; i++) { // перебрать все метки
       if (!mapPins[i].classList.contains(`map__pin--main`)) { // все метки которой нет главной
         mapPins[i].remove(); // удалить все метки кроме главной
@@ -39,31 +40,37 @@
       mapCards.remove(); // удаляем карточку т.к. условие при клике любого фильтра удаляем карточку
     }
   };
+  const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
+  const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
 
+  const renderPin = function () { // отрисовать метки
+    mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html
+  };
 
 // функция которая отрисовывает pin после изменения фильтра
   const renderNewPin = function (newPins) {
+    // const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
+
     delPin();
     if (newPins.length < window.pin.MAX_PIN) {
       for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-        window.startPins.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-        window.startPins.renderPin(); // прорисовываем метки
+        fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+        renderPin(); // прорисовываем метки
       }
     } else if (newPins.length > window.pin.MAX_PIN) {
       for (let i = 0; i < window.pin.MAX_PIN; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-        window.startPins.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-        window.startPins.renderPin(); // прорисовываем метки
+        fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+        renderPin(); // прорисовываем метки
       }
     }
   };
 
 
   let lastTimeout;
-  const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
 
   const filterPin = function (arr) {
     const copyDataFlats = arr; // скопировали запрос по массиву, чтобы не делать каждый раз запрос

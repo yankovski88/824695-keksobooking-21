@@ -33,6 +33,7 @@ loadFile(fileChooser, preview, FILE_TYPES);
 const fotoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
 const previewFotoFlat = document.querySelector(`.ad-form__photo`);
 const img = document.createElement(`img`);
+img.style.borderRadius = `5px`;
 img.style.width = `70px`;
 img.style.height = `70px`;
 // img.alt = `Превью добавленного изображеия`;
