@@ -13,22 +13,25 @@ function fillAddress(elementHtml, currentX, currentY) {
   elementHtml.setAttribute(`value`, `${currentX}, ${currentY}`);
 }
 
-  // высчитываем изначальные точки c учетом ширин и высот
-  let activeMainPinX = Math.round(mapPinMain.offsetLeft + mapPinMain.offsetWidth / 2);
-  let activeMainPinY = Math.round(mapPinMain.offsetTop + mainPinHeight);
+  console.log(mapPinMain.offsetLeft);
+  console.log(mapPinMain.offsetTop);
+
+
 mapPinMain.addEventListener(`mousedown`, function (evt) {
   evt.preventDefault();
-  console.log(evt.clientX);
-  console.log(evt.clientY);
+  if(window.card.map.classList.contains(`map--faded`)){
+    mapPinMain.style.top = `375px`;
+    mapPinMain.style.left = `570px`;
+  }
 
   // запоминаем начальные точки без размера Pin
   let startCoords = {
     x: evt.clientX,
     y: evt.clientY,
   };
-  // // высчитываем изначальные точки c учетом ширин и высот
-  // let activeMainPinX = Math.round(mapPinMain.offsetLeft + mapPinMain.offsetWidth / 2);
-  // let activeMainPinY = Math.round(mapPinMain.offsetTop + mainPinHeight);
+  // высчитываем изначальные точки c учетом ширин и высот
+  let activeMainPinX = Math.round(mapPinMain.offsetLeft + mapPinMain.offsetWidth / 2);
+  let activeMainPinY = Math.round(mapPinMain.offsetTop + mainPinHeight);
 
   // сразу изначальные точки записываем в Input адреса
   address.setAttribute(`value`, `${activeMainPinX}, ${activeMainPinY}`);
@@ -90,7 +93,5 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
 });
 window.movePin = {
   mapPinMain,
-  activeMainPinX,
-  activeMainPinY
 }
 })();
