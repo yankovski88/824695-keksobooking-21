@@ -14,7 +14,7 @@ const onMapClick = function (evt) {
       window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
     } else {
       // иначе создаем новую карточку
-      // [target.dataset.index] устанавливаем в карточки индекс, пока не знаю для чего
+      // [target.dataset.index] устанавливаем в карточки индекс, Пока
       const onLoadCard = function (arr) {
         window.card.renderCard(window.card.createCard(arr[target.dataset.index]), window.card.mapFiltersContainer); // создаем карточку, перед определенным элементом html
         const popupClose = document.querySelector(`.popup__close`);
