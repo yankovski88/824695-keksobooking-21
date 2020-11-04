@@ -25,11 +25,16 @@ const mapFilters = document.querySelector(`.map__filters`); // выбрал вс
 const delPin = function () {
   // удаление всех меток кроме главной
   const mapPins = mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
-  for (let i = 0; i < mapPins.length; i++) { // перебрать все метки
-    if (!mapPins[i].classList.contains(`map__pin--main`)) { // все метки которой нет главной
-      mapPins[i].remove(); // удалить все метки кроме главной
+  // for (let i = 0; i < mapPins.length; i++) { // перебрать все метки
+  //   if (!mapPins[i].classList.contains(`map__pin--main`)) { // все метки которой нет главной
+  //     mapPins[i].remove(); // удалить все метки кроме главной
+  //   }
+  // }
+  mapPins.forEach((item) => { // перебрать все метки
+    if (!item.classList.contains(`map__pin--main`)) { // все метки которой нет главной
+      item.remove(); // удалить все метки кроме главной
     }
-  }
+  })
 };
 
 
@@ -200,11 +205,16 @@ const filterPin = function (arr) {
     // код возвращает все приимущества что выбрал пользователь
     const featuresNodeList = document.querySelectorAll(`.map__checkbox`); // нашли поле со всеми features
     const activeFlatFeatures = []; // сюда записываем приимущества которые выбрал пользователь
-    for (let j = 0; j < featuresNodeList.length; j++) { // делаем обход
-      if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив ALL_FEATURES
-        activeFlatFeatures.push(ALL_FEATURES[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
+    // for (let j = 0; j < featuresNodeList.length; j++) { // делаем обход
+    //   if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив ALL_FEATURES
+    //     activeFlatFeatures.push(ALL_FEATURES[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
+    //   }
+    // }
+    featuresNodeList.forEach((item, i)=>{ // делаем обход
+      if (item.checked) { // если фильтр идет попарядку как и массив ALL_FEATURES
+        activeFlatFeatures.push(ALL_FEATURES[i]); // если что-то выберет пользователь в html то и попадет в массив приимуществ
       }
-    }
+    });
 
     // сортируем основной уникальный массив на приимущества features
     const sortFeatures = sortUniqueTotalFilterFlats.filter(function (item) {

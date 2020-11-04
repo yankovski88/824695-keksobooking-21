@@ -145,21 +145,31 @@ const timeoutOptions = timeout.querySelectorAll(`option`);
 
 const setTimeinAndTimeout = function () {
   const onTimeinChange = function () {
-    for (let i = 0; i < timeinOptions.length; i++) {
-      if (timeinOptions[i].value === timein.value) {
-        timeout.value = timein[i].value;
+    // for (let i = 0; i < timeinOptions.length; i++) {
+    //   if (timeinOptions[i].value === timein.value) {
+    //     timeout.value = timein[i].value;
+    //   }
+    // }
+    timeinOptions.forEach((item) =>{
+      if (item.value === timein.value) {
+        timeout.value = item.value;
       }
-    }
+    })
   };
 
   timein.addEventListener(`change`, onTimeinChange);
 
   const onTimeoutChange = function () {
-    for (let i = 0; i < timeoutOptions.length; i++) {
-      if (timeoutOptions[i].value === timeout.value) {
-        timein.value = timeout[i].value;
+    // for (let i = 0; i < timeoutOptions.length; i++) {
+    //   if (timeoutOptions[i].value === timeout.value) {
+    //     timein.value = timeout[i].value;
+    //   }
+    // }
+    timeoutOptions.forEach((item)=>{
+      if (item.value === timeout.value) {
+        timein.value = item.value;
       }
-    }
+    })
   };
   timeout.addEventListener(`change`, onTimeoutChange);
 };
@@ -186,12 +196,16 @@ const onSuccess = function () { // обработчик отправки усп�
 
 const delPinButtons = function () {
   const buttonPins = mapPins.querySelectorAll(`button`);
-  for (let i = 0; i < buttonPins.length; i++) {
-
-    if (!buttonPins[i].classList.contains(`map__pin--main`)) {
-      buttonPins[i].remove();
+  // for (let i = 0; i < buttonPins.length; i++) {
+  //   if (!buttonPins[i].classList.contains(`map__pin--main`)) {
+  //     buttonPins[i].remove();
+  //   }
+  // }
+  buttonPins.forEach((item)=>{
+    if (!item.classList.contains(`map__pin--main`)) {
+      item.remove();
     }
-  }
+  })
 };
 
 // Добавляю удаление сообщения об успешной отправке через ESC
