@@ -170,8 +170,8 @@ const onSuccess = function () { // обработчик отправки усп�
   }
 
   if(window.card.map.classList.contains(`map--faded`)){
-    window.movePin.mapPinMain.style.top = `375px`;
-    window.movePin.mapPinMain.style.left = `570px`;
+    window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP;
+    window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT;
   }
 
   delPinButtons();
@@ -254,8 +254,8 @@ const onFormClick = function () {
   }
 
   if(window.card.map.classList.contains(`map--faded`)){
-    window.movePin.mapPinMain.style.top = `375px`;
-    window.movePin.mapPinMain.style.left = `570px`;
+    window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP;
+    window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT;
   }
 
   delPinButtons();
@@ -274,8 +274,8 @@ const onFormPressEnter = function (evt) {
     }
 // установка метки в центре
     if(window.card.map.classList.contains(`map--faded`)){
-      window.movePin.mapPinMain.style.top = `375px`;
-      window.movePin.mapPinMain.style.left = `570px`;
+      window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP;
+      window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT;
     }
 
     delPinButtons();
