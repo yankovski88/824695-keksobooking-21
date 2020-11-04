@@ -8,37 +8,40 @@ const mapFiltersContainer = document.querySelector(`.map__filters-container`); /
 // создание карточки заполнение всех полей по шаблону
 const createCard = function (obj) { // помещаем в функцию объект с которого возьмем данные
   const cardTemplate = card.cloneNode(true); // клонируем шаблон т.к. много объявлений и без клона не вставить в html
-  if (obj.offer.title) { // заходим в поле объекта заголовок
-    cardTemplate.querySelector(`.popup__title`).textContent = obj.offer.title; // переименовываем заголовок на заголовок с объекта
+  if(obj.offer) { // если есть описание offer
+    if (obj.offer.title) { // заходим в поле объекта заголовок
+      cardTemplate.querySelector(`.popup__title`).textContent = obj.offer.title; // переименовываем заголовок на заголовок с объекта
+    } else {
+      cardTemplate.querySelector(`.popup__title`).classList.add(`hidden`); // если нет заголовка, то скрываем эту строку карточки
+    }
+    if (obj.offer.address[0] && obj.offer.address[1]) { // если есть текст адреса то вставляем
+      cardTemplate.querySelector(`.popup__text--address`).textContent = `${window.util.getFirstItemOfString(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${window.util.getLastItemOfString(obj.offer.address)}`;
+    } else {
+      cardTemplate.querySelector(`.popup__text--address`).classList.add(`hidden`);
+    }
+    if (obj.offer.price) {
+      cardTemplate.querySelector(`.popup__text--price`).textContent = obj.offer.price; // заполняем поле цены
+    } else {
+      cardTemplate.querySelector(`.popup__text--price`).classList.add(`hidden`);
+    }
+    if (obj.offer.type) {
+      cardTemplate.querySelector(`.popup__type`).textContent = obj.offer.type;
+    } else {
+      cardTemplate.querySelector(`.popup__type`).classList.add(`hidden`);
+    }
+    if (obj.offer.rooms && obj.offer.guests) {
+      cardTemplate.querySelector(`.popup__text--capacity`).textContent = `${obj.offer.rooms} комнатa(ы) для ${obj.offer.guests} гостя(ей)`;
+    } else {
+      cardTemplate.querySelector(`.popup__text--capacity`).classList.add(`hidden`);
+    }
+    if (obj.offer.checkin && obj.offer.checkout) {
+      cardTemplate.querySelector(`.popup__text--time`).textContent = `Заезд после ${obj.offer.checkin}, выезд до ${obj.offer.checkout}`;
+    } else {
+      cardTemplate.querySelector(`.popup__text--time`).classList.add(`hidden`);
+    }
   } else {
-    cardTemplate.querySelector(`.popup__title`).classList.add(`hidden`); // если нет заголовка, то скрываем эту строку карточки
+    obj.remove() // иначе удаляем объект с объявлением. мысль если нет объекта, то он и не будет показываться
   }
-  if (obj.offer.address[0] && obj.offer.address[1]) { // если есть текст адреса то вставляем
-    cardTemplate.querySelector(`.popup__text--address`).textContent = `${window.util.getFirstItemOfString(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${window.util.getLastItemOfString(obj.offer.address)}`;
-  } else {
-    cardTemplate.querySelector(`.popup__text--address`).classList.add(`hidden`);
-  }
-  if (obj.offer.price) {
-    cardTemplate.querySelector(`.popup__text--price`).textContent = obj.offer.price; // заполняем поле цены
-  } else {
-    cardTemplate.querySelector(`.popup__text--price`).classList.add(`hidden`);
-  }
-  if (obj.offer.type) {
-    cardTemplate.querySelector(`.popup__type`).textContent = obj.offer.type;
-  } else {
-    cardTemplate.querySelector(`.popup__type`).classList.add(`hidden`);
-  }
-  if (obj.offer.rooms && obj.offer.guests) {
-    cardTemplate.querySelector(`.popup__text--capacity`).textContent = `${obj.offer.rooms} комнатa(ы) для ${obj.offer.guests} гостя(ей)`;
-  } else {
-    cardTemplate.querySelector(`.popup__text--capacity`).classList.add(`hidden`);
-  }
-  if (obj.offer.checkin && obj.offer.checkout) {
-    cardTemplate.querySelector(`.popup__text--time`).textContent = `Заезд после ${obj.offer.checkin}, выезд до ${obj.offer.checkout}`;
-  } else {
-    cardTemplate.querySelector(`.popup__text--time`).classList.add(`hidden`);
-  }
-
 
   const cardTemplateLis = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`); // находим все li теги с плюсами квартиры
   const classNames = window.util.getArrClassNameHtml(cardTemplateLis); // получаем все названия классов массива li
