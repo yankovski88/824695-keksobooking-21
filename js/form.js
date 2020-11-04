@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+// (function () {
 
 // + все что связано с формой
 const KEY_CODE_ESC = 27;
@@ -15,6 +15,27 @@ const MESSAGE_ROOMS_ERROR = `
 
 const MAX_ROOM = 3;
 const NO_FOR_GUEST = `0`;
+
+// функция которая удаляет все поля и возвращает сайт в начальное состояние
+const startSite = function () {
+  form.reset(); // удаление полей в форме подачи объявления
+  window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+  window.main.addAdFormDisabled(form); // дизейбл формы
+  window.main.addMapFaded(window.card.map); // дизейбл карты
+  // удаление карточки если была открыта
+  if (window.card.map.querySelector(`.map__card`)) {
+    window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
+  }
+  // установка метки в центре
+  if (window.card.map.classList.contains(`map--faded`)) { // если с карта содержит map--faded т.е. заблокирована
+    window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP; // прописали стиль координат на данные с html
+    window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
+  }
+
+  delPinButtons(); // удалить все метки
+  // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
+  window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
+};
 
 const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
 const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
@@ -34,10 +55,10 @@ const checkRoomAndGuest = function () {
   let room = roomNumber.value;
   let guest = capacity.value;
   let romIndex = room - 1;
-  const capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]];
+  const Capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]]; // это перечисление заменил с массива
 
   const checkRoomDefault = function () {
-    if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
       roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
     } else {
       roomNumber.setCustomValidity(``);
@@ -50,11 +71,11 @@ const checkRoomAndGuest = function () {
     room = roomValue;
     if (room > MAX_ROOM) {
       room = NO_FOR_GUEST;
-      romIndex = capacitys.length - 1;
+      romIndex = Capacitys.length - 1;
     } else {
       romIndex = room - 1;
     }
-    if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
       roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
     } else {
       roomNumber.setCustomValidity(``);
@@ -67,7 +88,7 @@ const checkRoomAndGuest = function () {
   const onCapacityChange = function () {
     const guestValue = capacity.value;
     guest = guestValue;
-    if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
       roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
     } else {
       roomNumber.setCustomValidity(``);
@@ -93,15 +114,15 @@ const getArrValueFromHtml = function (arrHtml) {
 const type = document.querySelector(`#type`);
 const types = type.querySelectorAll(`option`);
 const titles = getArrValueFromHtml(types);
-const prices = [0, 1000, 5000, 10000];
+const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
 
 // функция сравнения цены по типу жилья
 const onTypeChange = function () {
   const titleValue = type.value;
   for (let i = 0; i < titles.length; i++) {
     if (titleValue === titles[i]) {
-      price.setAttribute(`placeholder`, `от ${prices[i]}`);
-      price.setAttribute(`min`, `${prices[i]}`);
+      price.setAttribute(`placeholder`, `от ${Prices[i]}`);
+      price.setAttribute(`min`, `${Prices[i]}`);
     }
   }
 };
@@ -159,23 +180,8 @@ const onSuccess = function () { // обработчик отправки усп�
   document.addEventListener(`keydown`, onSuccessPressEsc); // добавивл обработчик по ссылке
   // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
   document.addEventListener(`click`, onSuccessClick); // обработчик на клик, удаляет себя и обработик на ESC
-  form.reset();
-  window.filter.mapFilters.reset(); // удаление всех данных фильтра. ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
 
-  window.main.addAdFormDisabled(form); // дизейбл формы
-  window.main.addMapFaded(window.card.map);
-
-  if (window.card.map.querySelector(`.map__card`)) {
-    window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
-  }
-
-  if(window.card.map.classList.contains(`map--faded`)){
-    window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP;
-    window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT;
-  }
-
-  delPinButtons();
-  window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
+  startSite(); // функция которая приводит сайт в начальное состояние
 };
 
 const delPinButtons = function () {
@@ -244,42 +250,13 @@ const onErrorButtonClick = function () {
 
 // сделал обработчик клика на очистку формы
 const onFormClick = function () {
-  form.reset();
-  window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
-  window.main.addAdFormDisabled(form); // дизейбл формы
-  window.main.addMapFaded(window.card.map);
-
-  if (window.card.map.querySelector(`.map__card`)) {
-    window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
-  }
-
-  if(window.card.map.classList.contains(`map--faded`)){
-    window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP;
-    window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT;
-  }
-
-  delPinButtons();
-  window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
+  startSite(); // функция которая приводит сайт в начальное состояние
 };
+
 // может не надо здесь удалять оброботчики по ссылке?
 const onFormPressEnter = function (evt) {
   if (evt.keyCode === KEY_CODE_ENTER) {
-    form.reset();
-    window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
-    window.main.addAdFormDisabled(form); // дизейбл формы
-    window.main.addMapFaded(window.card.map);
-// удаление карточки если была открыта
-    if (window.card.map.querySelector(`.map__card`)) {
-      window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
-    }
-// установка метки в центре
-    if(window.card.map.classList.contains(`map--faded`)){
-      window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP;
-      window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT;
-    }
-
-    delPinButtons();
-    window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
+    startSite();
   }
 };
 
@@ -295,6 +272,7 @@ window.form = {
   capacity,
   checkRoomAndGuest,
   onTypeChange,
+  KEY_CODE_ENTER,
 };
 
-})();
+// })();

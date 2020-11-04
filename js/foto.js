@@ -1,14 +1,14 @@
 'use strict';
-(function () {
+// (function () {
 
 
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 
 const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
 const preview = document.querySelector(`.ad-form-header__preview img`); // картинка, куда мы будем выставлять превью загруженного изображения
-const loadFile = function (fileChooser, preview, fileTypes) {
-  fileChooser.addEventListener(`change`, () => { // обработчик, пользователь кликает поле для загрузки
-    const file = fileChooser.files[0]; // получаем из списка загруженный один файл
+const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
+  fileChooserLoad.addEventListener(`change`, () => { // обработчик, пользователь кликает поле для загрузки
+    const file = fileChooserLoad.files[0]; // получаем из списка загруженный один файл
     const fileName = file.name.toLowerCase(); // имя файла приводим к нижнему регистру это понадобится для сравнения файла с расширением
     // делаем проверку что выбрал польззователь
 
@@ -22,7 +22,7 @@ const loadFile = function (fileChooser, preview, fileTypes) {
       const reader = new FileReader();
 
       reader.addEventListener(`load`, () => {
-        preview.src = reader.result; // В обработчике результат чтения файла — изображение — мы положим в атрибут src DOM-узла с превью картинки.
+        previewFoto.src = reader.result; // В обработчике результат чтения файла — изображение — мы положим в атрибут src DOM-узла с превью картинки.
       });
       reader.readAsDataURL(file); // просим ридер прочитать наш файл
     }
@@ -36,9 +36,9 @@ const img = document.createElement(`img`);
 img.style.borderRadius = `5px`;
 img.style.width = `70px`;
 img.style.height = `70px`;
-// img.alt = `Превью добавленного изображеия`;
-const previewFoto = previewFotoFlat.appendChild(img); // отличие append от apppendChild
-loadFile(fotoFlat, previewFoto, FILE_TYPES);
+// img.alt = `Превью добавленного изображеия`; // проблема появляется типа не загруженная картинка
+const previewPicter = previewFotoFlat.appendChild(img); // отличие append от apppendChild
+loadFile(fotoFlat, previewPicter, FILE_TYPES);
 
 
-})();
+// })();

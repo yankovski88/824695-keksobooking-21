@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+// (function () {
 
 const MAIN_PIN_TIP = 22;
 const PIN_FIELD_MIN_Y = 130;
@@ -16,13 +16,10 @@ function fillAddress(elementHtml, currentX, currentY) {
   elementHtml.setAttribute(`value`, `${currentX}, ${currentY}`);
 }
 
-  console.log(mapPinMain.offsetLeft);
-  console.log(mapPinMain.offsetTop);
-
 
 mapPinMain.addEventListener(`mousedown`, function (evt) {
   evt.preventDefault();
-  if(window.card.map.classList.contains(`map--faded`)){
+  if (window.card.map.classList.contains(`map--faded`)) {
     mapPinMain.style.top = MAP_PIN_MAIN_TOP;
     mapPinMain.style.left = MAP_PIN_MAIN_LEFT;
   }
@@ -98,5 +95,5 @@ window.movePin = {
   mapPinMain,
   MAP_PIN_MAIN_TOP,
   MAP_PIN_MAIN_LEFT,
-}
-})();
+};
+// })();

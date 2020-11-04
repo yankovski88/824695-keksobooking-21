@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+// (function () {
 
 // + прорисовка карты объявления
 const card = document.querySelector(`#card`).content.querySelector(`.map__card`); // нашел шаблон и подключился к нему
@@ -8,7 +8,7 @@ const mapFiltersContainer = document.querySelector(`.map__filters-container`); /
 // создание карточки заполнение всех полей по шаблону
 const createCard = function (obj) { // помещаем в функцию объект с которого возьмем данные
   const cardTemplate = card.cloneNode(true); // клонируем шаблон т.к. много объявлений и без клона не вставить в html
-  if(obj.offer) { // если есть описание offer
+  if (obj.offer) { // если есть описание offer
     if (obj.offer.title) { // заходим в поле объекта заголовок
       cardTemplate.querySelector(`.popup__title`).textContent = obj.offer.title; // переименовываем заголовок на заголовок с объекта
     } else {
@@ -40,7 +40,7 @@ const createCard = function (obj) { // помещаем в функцию объ
       cardTemplate.querySelector(`.popup__text--time`).classList.add(`hidden`);
     }
   } else {
-    obj.remove() // иначе удаляем объект с объявлением. мысль если нет объекта, то он и не будет показываться
+    obj.remove(); // иначе удаляем объект с объявлением. мысль если нет объекта, то он и не будет показываться
   }
 
   const cardTemplateLis = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`); // находим все li теги с плюсами квартиры
@@ -98,4 +98,4 @@ window.card = {
   map,
 };
 
-})();
+// })();
