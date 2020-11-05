@@ -4,7 +4,7 @@
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 
 const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
-const preview = document.querySelector(`.ad-form-header__preview`); // картинка, куда мы будем выставлять превью загруженного изображения
+const previewAvatar = document.querySelector(`.ad-form-header__preview`); // картинка, куда мы будем выставлять превью загруженного изображения
 const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
   fileChooserLoad.addEventListener(`change`, () => { // обработчик, пользователь кликает поле для загрузки
     const file = fileChooserLoad.files[0]; // получаем из списка загруженный один файл
@@ -37,48 +37,14 @@ const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
   });
 };
 
-loadFile(fileChooser, preview, FILE_TYPES);
+loadFile(fileChooser, previewAvatar, FILE_TYPES);
 const fotoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
 const previewFotoFlat = document.querySelector(`.ad-form__photo`);
 loadFile(fotoFlat, previewFotoFlat, FILE_TYPES);
 
-
-// const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
-//
-// const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
-// const preview = document.querySelector(`.ad-form-header__preview img`); // картинка, куда мы будем выставлять превью загруженного изображения
-// const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
-//   fileChooserLoad.addEventListener(`change`, () => { // обработчик, пользователь кликает поле для загрузки
-//     const file = fileChooserLoad.files[0]; // получаем из списка загруженный один файл
-//     const fileName = file.name.toLowerCase(); // имя файла приводим к нижнему регистру это понадобится для сравнения файла с расширением
-//     // делаем проверку что выбрал польззователь
-//
-//     // проверка окончания файла одним из доступных наших расширений
-//     const matches = fileTypes.some(function (end) { // метод some возвращает булевое значение
-//       return fileName.endsWith(end);
-//     });
-//
-//     // после всех проверок создаем ридер для чтения файла
-//     if (matches) {
-//       const reader = new FileReader();
-//
-//       reader.addEventListener(`load`, () => {
-//         previewFoto.src = reader.result; // В обработчике результат чтения файла — изображение — мы положим в атрибут src DOM-узла с превью картинки.
-//       });
-//       reader.readAsDataURL(file); // просим ридер прочитать наш файл
-//     }
-//   });
-// };
-//
-// loadFile(fileChooser, preview, FILE_TYPES);
-// const fotoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
-// const previewFotoFlat = document.querySelector(`.ad-form__photo`);
-// const img = document.createElement(`img`);
-// img.style.borderRadius = `5px`;
-// img.style.width = `70px`;
-// img.style.height = `70px`;
-// // img.alt = `Превью добавленного изображеия`; // проблема появляется типа не загруженная картинка
-// const previewPicter = previewFotoFlat.appendChild(img); // отличие append от apppendChild
-// loadFile(fotoFlat, previewPicter, FILE_TYPES);
+window.foto = {
+  previewAvatar,
+  previewFotoFlat
+};
 
 // })();

@@ -74,7 +74,7 @@ const getLastItemOfString = function (string) {
 const disabledMapFilter = function () {
   window.main.addMapFaded(window.card.map); // сделать карту неактивной
   window.main.addAdFormDisabled(window.filter.mapFilters);
-  window.main.addDisabled(window.main.adFormFieldsets);
+  window.main.addDisabled(window.main.formFieldsets);
 };
 
 window.util = {

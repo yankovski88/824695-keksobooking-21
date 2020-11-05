@@ -22,6 +22,7 @@ const startSite = function () {
   window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map); // дизейбл карты
+  window.main.addDisabled(window.main.formFieldsets); // добавление к полям формы disabled
   // удаление карточки если была открыта
   if (window.card.map.querySelector(`.map__card`)) {
     window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
@@ -31,6 +32,26 @@ const startSite = function () {
     window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP; // прописали стиль координат на данные с html
     window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
   }
+
+  // удаление аватара и устнановка старой картинки
+  if (window.foto.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
+    window.foto.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
+
+    window.foto.previewAvatar.style.display = `flex`;
+    window.foto.previewAvatar.style.alignItems = `center`;
+    window.foto.previewAvatar.style.justifyContent = `center`;
+    const imgAvatar = document.createElement(`img`);
+    imgAvatar.style.width = `40px`;
+    imgAvatar.style.height = `44px`;
+    window.foto.previewAvatar.appendChild(imgAvatar);
+    imgAvatar.src = `img/muffin-grey.svg`;
+  }
+
+  // удаление старого фото квартииры
+  if (window.foto.previewFotoFlat.querySelector(`img`)) {
+    window.foto.previewFotoFlat.querySelector(`img`).remove();
+  }
+
 
   delPinButtons(); // удалить все метки
   // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
