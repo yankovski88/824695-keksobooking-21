@@ -21,19 +21,16 @@ const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
       const reader = new FileReader();
 
       reader.addEventListener(`load`, () => {
+        previewFoto.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
 
-        const previewImg = previewFoto.querySelector(`img`);
-        if(previewImg){
-          previewFoto.removeChild(previewImg);
-        }
-          previewFoto.style.display = `flex`;
-          previewFoto.style.alignItems = `center`;
-          previewFoto.style.justifyContent = `center`;
-          const imgFoto = document.createElement(`img`);
-          imgFoto.style.width = `40px`;
-          imgFoto.style.height = `44px`;
-          previewFoto.appendChild(imgFoto);
-          imgFoto.src = reader.result; // В обработчике результат чтения файла — изображение — мы положим в атрибут src DOM-узла с превью картинки.
+        previewFoto.style.display = `flex`;
+        previewFoto.style.alignItems = `center`;
+        previewFoto.style.justifyContent = `center`;
+        const imgFoto = document.createElement(`img`);
+        imgFoto.style.width = `40px`;
+        imgFoto.style.height = `44px`;
+        previewFoto.appendChild(imgFoto);
+        imgFoto.src = reader.result; // В обработчике результат чтения файла — изображение — мы положим в атрибут src DOM-узла с превью картинки.
       });
       reader.readAsDataURL(file); // просим ридер прочитать наш файл
     }
@@ -44,7 +41,6 @@ loadFile(fileChooser, preview, FILE_TYPES);
 const fotoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
 const previewFotoFlat = document.querySelector(`.ad-form__photo`);
 loadFile(fotoFlat, previewFotoFlat, FILE_TYPES);
-
 
 
 // const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
