@@ -1,7 +1,9 @@
 'use strict';
+// (function () {
 
 const DEBOUNCE_INTERVAL = 500; // интервал задержки
 const ANY_CHOUCE = `any`;
+const ALL_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
 
 const MapPrice = { // словарь для фильтрации middle
   MIDDLE_MIN: 10000,
@@ -17,17 +19,17 @@ const PriceValue = {
   HIGH: `high`,
 };
 
-const AllFeatures = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
+const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
 
 // удаление меток если было изменения фильтра
 const delPin = function () {
   // удаление всех меток кроме главной
-  const mapPins = window.startPins.mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
-  for (let i = 0; i < mapPins.length; i++) { // перебрать все метки
-    if (!mapPins[i].classList.contains(`map__pin--main`)) { // все метки которой нет главной
-      mapPins[i].remove(); // удалить все метки кроме главной
+  const mapPins = mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
+  mapPins.forEach((item) => { // перебрать все метки
+    if (!item.classList.contains(`map__pin--main`)) { // все метки которой нет главной
+      item.remove(); // удалить все метки кроме главной
     }
-  }
+  });
 };
 
 
@@ -38,24 +40,31 @@ const delCard = function () {
     mapCards.remove(); // удаляем карточку т.к. условие при клике любого фильтра удаляем карточку
   }
 };
+const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
+const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
 
+const renderPin = function () { // отрисовать метки
+  mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html
+};
 
 // функция которая отрисовывает pin после изменения фильтра
 const renderNewPin = function (newPins) {
+  // const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
+
   delPin();
   if (newPins.length < window.pin.MAX_PIN) {
     for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
       const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
       fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-      window.startPins.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-      window.startPins.renderPin(); // прорисовываем метки
+      fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+      renderPin(); // прорисовываем метки
     }
   } else if (newPins.length > window.pin.MAX_PIN) {
     for (let i = 0; i < window.pin.MAX_PIN; i++) { // перебрать все данные которые получены и перенесены в переменную
       const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
       fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
-      window.startPins.fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-      window.startPins.renderPin(); // прорисовываем метки
+      fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+      renderPin(); // прорисовываем метки
     }
   }
 };
@@ -96,7 +105,7 @@ const filterPin = function (arr) {
 
 
   // удаление карточки если она была открыта
-  const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
+  // const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
   mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
     delCard(); // вставили функцию удаления карточки
 
@@ -106,9 +115,7 @@ const filterPin = function (arr) {
       } else if (flatName === ANY_CHOUCE) { // если выбрали все  то
         return item.offer.type; // возвращаем все
       }
-      // else {
       return false;
-      // }
     });
 
     const filterPriceFlats = copyDataFlats.filter(function (item) {
@@ -191,11 +198,12 @@ const filterPin = function (arr) {
     // код возвращает все приимущества что выбрал пользователь
     const featuresNodeList = document.querySelectorAll(`.map__checkbox`); // нашли поле со всеми features
     const activeFlatFeatures = []; // сюда записываем приимущества которые выбрал пользователь
-    for (let j = 0; j < featuresNodeList.length; j++) { // делаем обход
-      if (featuresNodeList[j].checked) { // если фильтр идет попарядку как и массив AllFeatures
-        activeFlatFeatures.push(AllFeatures[j]); // если что-то выберет пользователь в html то и попадет в массив приимущесть
+
+    featuresNodeList.forEach((item, i)=>{ // делаем обход
+      if (item.checked) { // если фильтр идет попарядку как и массив ALL_FEATURES
+        activeFlatFeatures.push(ALL_FEATURES[i]); // если что-то выберет пользователь в html то и попадет в массив приимуществ
       }
-    }
+    });
 
     // сортируем основной уникальный массив на приимущества features
     const sortFeatures = sortUniqueTotalFilterFlats.filter(function (item) {
@@ -222,6 +230,14 @@ const filterPin = function (arr) {
       renderNewPin(sortFeatures);
     }, DEBOUNCE_INTERVAL);
   });
+  renderNewPin(copyDataFlats);
 };
 
-window.backend.load(filterPin, window.error.onError); // делаем запрос для заполнения данных для метки
+
+window.filter = {
+  mapFilters,
+  filterPin,
+};
+
+
+// })();

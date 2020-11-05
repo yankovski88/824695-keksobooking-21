@@ -1,8 +1,12 @@
 'use strict';
+// (function () {
 
 const MAIN_PIN_TIP = 22;
 const PIN_FIELD_MIN_Y = 130;
 const PIN_FIELD_HEIGHT = 630;
+const MAP_PIN_MAIN_TOP = `375px`;
+const MAP_PIN_MAIN_LEFT = `570px`;
+
 const mapPinMain = document.querySelector(`.map__pin--main`);
 const address = document.querySelector(`#address`);
 const mapPin = document.querySelector(`.map__pins`);
@@ -12,8 +16,14 @@ function fillAddress(elementHtml, currentX, currentY) {
   elementHtml.setAttribute(`value`, `${currentX}, ${currentY}`);
 }
 
+
 mapPinMain.addEventListener(`mousedown`, function (evt) {
   evt.preventDefault();
+  if (window.card.map.classList.contains(`map--faded`)) {
+    mapPinMain.style.top = MAP_PIN_MAIN_TOP;
+    mapPinMain.style.left = MAP_PIN_MAIN_LEFT;
+  }
+
   // запоминаем начальные точки без размера Pin
   let startCoords = {
     x: evt.clientX,
@@ -81,3 +91,9 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
   document.addEventListener(`mousemove`, onMouseMove);
   document.addEventListener(`mouseup`, onMouseUp);
 });
+window.movePin = {
+  mapPinMain,
+  MAP_PIN_MAIN_TOP,
+  MAP_PIN_MAIN_LEFT,
+};
+// })();

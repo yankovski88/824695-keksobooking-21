@@ -12,7 +12,7 @@ module.exports = {
     `/js/main.js`,
     `/js/movePin.js`,
     `/js/filter.js`,
-    `/js/startPins.js`,
+    `/js/foto.js`,
   ],
   // свойство вывод т.е. куда сложить файлы
   output: {

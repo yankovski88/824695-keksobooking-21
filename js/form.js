@@ -1,10 +1,62 @@
 'use strict';
+// (function () {
 
 // + все что связано с формой
 const KEY_CODE_ESC = 27;
 const KEY_CODE_ENTER = 13;
 const MIN_LENGTH = 30;
 const MAX_PRICE = 1000000;
+// переменная с указанием информации что нет таких комант с гостями
+const MESSAGE_ROOMS_ERROR = `
+1 комната — «для 1 гостя»;
+2 комнаты — «для 2 гостей» или «для 1 гостя»;
+3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
+100 комнат — «не для гостей».`;
+
+const MAX_ROOM = 3;
+const NO_FOR_GUEST = `0`;
+
+// функция которая удаляет все поля и возвращает сайт в начальное состояние
+const startSite = function () {
+  form.reset(); // удаление полей в форме подачи объявления
+  window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+  window.main.addAdFormDisabled(form); // дизейбл формы
+  window.main.addMapFaded(window.card.map); // дизейбл карты
+  window.main.addDisabled(window.main.formFieldsets); // добавление к полям формы disabled
+  // удаление карточки если была открыта
+  if (window.card.map.querySelector(`.map__card`)) {
+    window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
+  }
+  // установка метки в центре
+  if (window.card.map.classList.contains(`map--faded`)) { // если с карта содержит map--faded т.е. заблокирована
+    window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP; // прописали стиль координат на данные с html
+    window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
+  }
+
+  // удаление аватара и устнановка старой картинки
+  if (window.foto.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
+    window.foto.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
+
+    window.foto.previewAvatar.style.display = `flex`;
+    window.foto.previewAvatar.style.alignItems = `center`;
+    window.foto.previewAvatar.style.justifyContent = `center`;
+    const imgAvatar = document.createElement(`img`);
+    imgAvatar.style.width = `40px`;
+    imgAvatar.style.height = `44px`;
+    window.foto.previewAvatar.appendChild(imgAvatar);
+    imgAvatar.src = `img/muffin-grey.svg`;
+  }
+
+  // удаление старого фото квартииры
+  if (window.foto.previewFotoFlat.querySelector(`img`)) {
+    window.foto.previewFotoFlat.querySelector(`img`).remove();
+  }
+
+
+  delPinButtons(); // удалить все метки
+  // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
+  window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
+};
 
 const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
 const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
@@ -20,22 +72,14 @@ removeToArrDisabled(capacityOptions);
 const checkRoomAndGuest = function () {
   const roomNumber = document.querySelector(`#room_number`);
 
-  // переменная с указанием информации что нет таких комант с гостями
-  const MESSAGE_ROOMS_ERROR = `
-1 комната — «для 1 гостя»;
-2 комнаты — «для 2 гостей» или «для 1 гостя»;
-3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
-100 комнат — «не для гостей».`;
   // идет работа по функция компанты и гости
   let room = roomNumber.value;
   let guest = capacity.value;
   let romIndex = room - 1;
-  const MAX_ROOM = 3;
-  const NO_FOR_GUEST = `0`;
-  const capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]];
+  const Capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]]; // это перечисление заменил с массива
 
   const checkRoomDefault = function () {
-    if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
       roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
     } else {
       roomNumber.setCustomValidity(``);
@@ -48,11 +92,11 @@ const checkRoomAndGuest = function () {
     room = roomValue;
     if (room > MAX_ROOM) {
       room = NO_FOR_GUEST;
-      romIndex = capacitys.length - 1;
+      romIndex = Capacitys.length - 1;
     } else {
       romIndex = room - 1;
     }
-    if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
       roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
     } else {
       roomNumber.setCustomValidity(``);
@@ -65,7 +109,7 @@ const checkRoomAndGuest = function () {
   const onCapacityChange = function () {
     const guestValue = capacity.value;
     guest = guestValue;
-    if ((capacitys[romIndex].includes(room) && capacitys[romIndex].includes(guest)) === false) {
+    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
       roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
     } else {
       roomNumber.setCustomValidity(``);
@@ -91,15 +135,15 @@ const getArrValueFromHtml = function (arrHtml) {
 const type = document.querySelector(`#type`);
 const types = type.querySelectorAll(`option`);
 const titles = getArrValueFromHtml(types);
-const prices = [0, 1000, 5000, 10000];
+const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
 
 // функция сравнения цены по типу жилья
 const onTypeChange = function () {
   const titleValue = type.value;
   for (let i = 0; i < titles.length; i++) {
     if (titleValue === titles[i]) {
-      price.setAttribute(`placeholder`, `от ${prices[i]}`);
-      price.setAttribute(`min`, `${prices[i]}`);
+      price.setAttribute(`placeholder`, `от ${Prices[i]}`);
+      price.setAttribute(`min`, `${Prices[i]}`);
     }
   }
 };
@@ -122,21 +166,21 @@ const timeoutOptions = timeout.querySelectorAll(`option`);
 
 const setTimeinAndTimeout = function () {
   const onTimeinChange = function () {
-    for (let i = 0; i < timeinOptions.length; i++) {
-      if (timeinOptions[i].value === timein.value) {
-        timeout.value = timein[i].value;
+    timeinOptions.forEach((item) =>{
+      if (item.value === timein.value) {
+        timeout.value = item.value;
       }
-    }
+    });
   };
 
   timein.addEventListener(`change`, onTimeinChange);
 
   const onTimeoutChange = function () {
-    for (let i = 0; i < timeoutOptions.length; i++) {
-      if (timeoutOptions[i].value === timeout.value) {
-        timein.value = timeout[i].value;
+    timeoutOptions.forEach((item)=>{
+      if (item.value === timeout.value) {
+        timein.value = item.value;
       }
-    }
+    });
   };
   timeout.addEventListener(`change`, onTimeoutChange);
 };
@@ -152,28 +196,22 @@ form.addEventListener(`submit`, function (evt) {
 
 const success = document.querySelector(`#success`).content.querySelector(`.success`); // нашел шаблон для вставки
 const successTemplate = success.cloneNode(true); // обязательно клонируем шаблон, без клона не вставится в html
-const onSuccess = function () {
-
+const onSuccess = function () { // обработчик отправки успешной формы
   mapPins.appendChild(successTemplate); // Добавил нод в Html
   document.addEventListener(`keydown`, onSuccessPressEsc); // добавивл обработчик по ссылке
   // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
   document.addEventListener(`click`, onSuccessClick); // обработчик на клик, удаляет себя и обработик на ESC
-  form.reset();
-  window.main.addAdFormDisabled(form); // дизейбл формы
-  window.main.addMapFaded(window.card.map);
 
-  delPinButtons();
-  window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
-
+  startSite(); // функция которая приводит сайт в начальное состояние
 };
+
 const delPinButtons = function () {
   const buttonPins = mapPins.querySelectorAll(`button`);
-  for (let i = 0; i < buttonPins.length; i++) {
-
-    if (!buttonPins[i].classList.contains(`map__pin--main`)) {
-      buttonPins[i].remove();
+  buttonPins.forEach((item)=>{
+    if (!item.classList.contains(`map__pin--main`)) {
+      item.remove();
     }
-  }
+  });
 };
 
 // Добавляю удаление сообщения об успешной отправке через ESC
@@ -232,17 +270,13 @@ const onErrorButtonClick = function () {
 
 // сделал обработчик клика на очистку формы
 const onFormClick = function () {
-  form.reset();
-  adFormReset.removeEventListener(`click`, onFormClick);
-  adFormReset.removeEventListener(`keydown`, onFormPressEnter);
-
+  startSite(); // функция которая приводит сайт в начальное состояние
 };
+
 // может не надо здесь удалять оброботчики по ссылке?
 const onFormPressEnter = function (evt) {
   if (evt.keyCode === KEY_CODE_ENTER) {
-    form.reset();
-    adFormReset.removeEventListener(`click`, onFormClick);
-    adFormReset.removeEventListener(`keydown`, onFormPressEnter);
+    startSite();
   }
 };
 
@@ -258,5 +292,7 @@ window.form = {
   capacity,
   checkRoomAndGuest,
   onTypeChange,
+  KEY_CODE_ENTER,
 };
 
+// })();

@@ -1,5 +1,5 @@
 'use strict';
-
+// (function () {
 const URL_DATA = `https://21.javascript.pages.academy/keksobooking/data`;
 const TIMEOUT_IN_MS = 10000;
 const STATUS = 200; // статус который означаем, что запрос прошел
@@ -56,3 +56,4 @@ window.backend = {
   save,
 };
 
+// })();
