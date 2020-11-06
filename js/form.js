@@ -15,7 +15,8 @@
 
   const MAX_ROOM = 3;
   const NO_FOR_GUEST = `0`;
-
+  const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT) + window.movePin.mapPinMain.offsetWidth / 2);
+  const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP) + window.movePin.mainPinHeight);
 // функция которая удаляет все поля и возвращает сайт в начальное состояние
   const startSite = function () {
     form.reset(); // удаление полей в форме подачи объявления
@@ -36,7 +37,7 @@
       window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
     }
     // возвращает начальное поле адреса
-    window.movePin.fillAddress(window.movePin.address, Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT) + window.movePin.mapPinMain.offsetWidth / 2), Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP) + window.movePin.mainPinHeight));
+    window.movePin.fillAddress(window.movePin.address, START_ADDRESS_X, START_ADDRESS_Y);
     // удаление аватара и устнановка старой картинки
     if (window.foto.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
       window.foto.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
@@ -297,6 +298,8 @@
     checkRoomAndGuest,
     onTypeChange,
     KEY_CODE_ENTER,
+    START_ADDRESS_X,
+    START_ADDRESS_Y,
   };
 
 })();

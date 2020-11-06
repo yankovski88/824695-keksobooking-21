@@ -52,6 +52,8 @@ const onMapEscapePress = function (evt) {
 };
 window.card.map.addEventListener(`keydown`, onMapEscapePress); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
 
+  // установка адреса изначально
+  // window.movePin.fillAddress(window.movePin.address, window.form.START_ADDRESS_X, window.form.START_ADDRESS_Y);
 
 const mapPinMain = document.querySelector(`.map__pin--main`);
 const formFieldsets = document.querySelectorAll(`fieldset`);
