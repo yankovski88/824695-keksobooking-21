@@ -1,5 +1,5 @@
 'use strict';
-// (function () {
+(function () {
 
 // + прорисовка карты объявления
 const card = document.querySelector(`#card`).content.querySelector(`.map__card`); // нашел шаблон и подключился к нему
@@ -98,4 +98,4 @@ window.card = {
   map,
 };
 
-// })();
+})();

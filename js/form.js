@@ -1,5 +1,5 @@
 'use strict';
-// (function () {
+(function () {
 
 // + все что связано с формой
 const KEY_CODE_ESC = 27;
@@ -23,6 +23,10 @@ const startSite = function () {
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map); // дизейбл карты
   window.main.addDisabled(window.main.formFieldsets); // добавление к полям формы disabled
+  window.main.addDisabled(window.main.mapFilterSelects); //  к селектам карты добавил disabled
+
+
+
   // удаление карточки если была открыта
   if (window.card.map.querySelector(`.map__card`)) {
     window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
@@ -51,7 +55,6 @@ const startSite = function () {
   if (window.foto.previewFotoFlat.querySelector(`img`)) {
     window.foto.previewFotoFlat.querySelector(`img`).remove();
   }
-
 
   delPinButtons(); // удалить все метки
   // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
@@ -295,4 +298,4 @@ window.form = {
   KEY_CODE_ENTER,
 };
 
-// })();
+})();
