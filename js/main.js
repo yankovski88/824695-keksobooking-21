@@ -36,9 +36,9 @@ const onMapClick = function (evt) {
   if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
     if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
       window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
-      window.backend.load(onLoadCard, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+      window.backend.load(onLoadCard, window.error.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
     } else {
-      window.backend.load(onLoadCard, window.pin.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
+      window.backend.load(onLoadCard, window.error.onError); // Я Так понимаю вызываю функцию чтобы она изначально прорисовала метки,
     }
   }
 };

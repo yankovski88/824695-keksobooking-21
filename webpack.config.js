@@ -5,6 +5,7 @@ const path = require(`path`); // получили модуль path из npm
 module.exports = {
   entry: [ // откуда берем файлы отнительно файла webpack.config.js
     `/js/util.js`,
+    `/js/error.js`,
     `/js/backend.js`,
     `/js/movePin.js`,
     `/js/form.js`,

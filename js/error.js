@@ -2,8 +2,6 @@
 (function () {
 
 const onError = function (errorMessage) { // всплывающее окно с ошибкой
-  const mapOverlay = document.querySelector(`.map__overlay`); // нашли место куда вставлять метки
-
   const node = document.createElement(`div`);
   node.style = `
     z-index: 100; 
@@ -20,7 +18,7 @@ const onError = function (errorMessage) { // всплывающее окно с 
   node.style.fontSize = `50px`;
 
   node.textContent = errorMessage;
-  mapOverlay.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
+  window.card.map.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
 };
 window.error = {
   onError,
