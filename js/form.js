@@ -1,23 +1,22 @@
 'use strict';
 (function () {
 
-// + все что связано с формой
+  // + все что связано с формой
   const KEY_CODE_ESC = 27;
   const KEY_CODE_ENTER = 13;
   const MIN_LENGTH = 30;
   const MAX_PRICE = 1000000;
-// переменная с указанием информации что нет таких комант с гостями
-  const MESSAGE_ROOMS_ERROR = `
-1 комната — «для 1 гостя»;
-2 комнаты — «для 2 гостей» или «для 1 гостя»;
-3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
-100 комнат — «не для гостей».`;
+  // переменная с указанием информации что нет таких комант с гостями
+  //   const MESSAGE_ROOMS_ERROR = `
+  // 1 комната — «для 1 гостя»;
+  // 2 комнаты — «для 2 гостей» или «для 1 гостя»;
+  // 3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
+  // 100 комнат — «не для гостей».`;
 
-  const MAX_ROOM = 3;
-  const NO_FOR_GUEST = `0`;
-  const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT) + window.movePin.mapPinMain.offsetWidth / 2);
-  const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP) + window.movePin.mainPinHeight);
-// функция которая удаляет все поля и возвращает сайт в начальное состояние
+
+  const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT, 10) + window.movePin.mapPinMain.offsetWidth / 2);
+  const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mainPinHeight);
+  // функция которая удаляет все поля и возвращает сайт в начальное состояние
   const startSite = function () {
     form.reset(); // удаление полей в форме подачи объявления
     window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
@@ -57,6 +56,7 @@
       window.foto.previewFotoFlat.querySelector(`img`).remove();
     }
 
+    setGuestsDefault(); // функция делает по умолчанию поле с гостями
 
     delPinButtons(); // удалить все метки
     // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
@@ -66,61 +66,72 @@
   const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
   const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
 
-// удаляем атрибут disabled в полученом массиве option
+  // удаляем атрибут disabled в полученом массиве option
   const removeToArrDisabled = function (arr) {
     arr.forEach((item) => {
       item.removeAttribute(`disabled`);
     });
   };
   removeToArrDisabled(capacityOptions);
+  const СountGuests = [[0, 1, 3], [0, 3], [3], [0, 1, 2]]; // это перечисление дляустановки определенным полям гостей disabled
+
+  // установка поле гостя по умолчанию
+  const setGuestsDefault = function () {
+    for (let i = 0; i < СountGuests[0].length; i++) { // перебираем массив для 1 комнаты
+      capacityOptions[СountGuests[0][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+    }
+    capacityOptions[2].selected = true; // покажется активный выриант колличества гостей
+  };
+  setGuestsDefault();
 
   const checkRoomAndGuest = function () {
-    const roomNumber = document.querySelector(`#room_number`);
+    const roomNumber = document.querySelector(`#room_number`); // нашел поле комнат
 
     // идет работа по функция компанты и гости
-    let room = roomNumber.value;
-    let guest = capacity.value;
-    let romIndex = room - 1;
-    const Capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]]; // это перечисление заменил с массива
-
-    const checkRoomDefault = function () {
-      if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
-        roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-      } else {
-        roomNumber.setCustomValidity(``);
-      }
-    };
-    checkRoomDefault();
+    // let room = roomNumber.value; // значение поля рум сохранил в room
 
     const onRoomNumberChange = function () {
-      const roomValue = roomNumber.value;
-      room = roomValue;
-      if (room > MAX_ROOM) {
-        room = NO_FOR_GUEST;
-        romIndex = Capacitys.length - 1;
-      } else {
-        romIndex = room - 1;
-      }
-      if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
-        roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-      } else {
-        roomNumber.setCustomValidity(``);
-      }
-    };
-    roomNumber.addEventListener(`change`, onRoomNumberChange);
+      const ROOM_ONE = `1`;
+      const ROOM_TWO = `2`;
+      const ROOM_THREE = `3`;
 
-    // везде где есть обработчики вставил фнкции по ссылке. Это правильно или нужно было оставить как былом(отдельной функцией)?
-    // ну и приходится менять название функции на название обработчика с checkCapacity на onCapacityChange
-    const onCapacityChange = function () {
-      const guestValue = capacity.value;
-      guest = guestValue;
-      if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
-        roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-      } else {
-        roomNumber.setCustomValidity(``);
+      const roomValue = roomNumber.value; // нашли значение выбраного поля пользователем
+      // room = roomValue; // перегнали значение в другую переменную, для чего не знаю
+      if (roomValue === ROOM_ONE) { // если значение 1 то это 1 комната выбрана
+        window.main.removeAddDisabled(capacityOptions); // функция удаляет у всех полей disabled
+
+        for (let i = 0; i < СountGuests[0].length; i++) { // перебираем массив для 1 комнаты
+          capacityOptions[СountGuests[0][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+        }
+        capacityOptions[2].selected = true; // покажется активный выриант колличества гостей
+      }
+      if (roomValue === ROOM_TWO) { // если значение 1 то это 1 комната выбрана
+        window.main.removeAddDisabled(capacityOptions);
+        for (let i = 0; i < СountGuests[1].length; i++) { // перебираем массив для 1 комнаты
+
+          capacityOptions[СountGuests[1][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+        }
+        capacityOptions[1].selected = true; // покажется активный выриант колличества гостей
+      }
+      if (roomValue === ROOM_THREE) { // если значение 1 то это 1 комната выбрана
+        window.main.removeAddDisabled(capacityOptions);
+
+        for (let i = 0; i < СountGuests[2].length; i++) { // перебираем массив для 1 комнаты
+          capacityOptions[СountGuests[2][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+        }
+        capacityOptions[0].selected = true; // покажется активный выриант колличества гостей
+      }
+      if (roomValue > СountGuests.length - 1) { // если значение 1 то это 1 комната выбрана
+        window.main.removeAddDisabled(capacityOptions);
+
+        for (let i = 0; i < СountGuests[3].length; i++) { // перебираем массив для 1 комнаты
+          capacityOptions[СountGuests[3][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+        }
+        capacityOptions[3].selected = true; // покажется активный выриант колличества гостей
       }
     };
-    capacity.addEventListener(`change`, onCapacityChange);
+
+    roomNumber.addEventListener(`change`, onRoomNumberChange);
   };
 
   const title = document.querySelector(`#title`);
@@ -142,7 +153,7 @@
   const titles = getArrValueFromHtml(types);
   const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
 
-// функция сравнения цены по типу жилья
+  // функция сравнения цены по типу жилья
   const onTypeChange = function () {
     const titleValue = type.value;
     for (let i = 0; i < titles.length; i++) {
@@ -192,7 +203,7 @@
 
   const mapPins = document.querySelector(`.map__pins`);
 
-// после того как форма отправится любым способом, то вызовитесь следующие колбеки
+  // после того как форма отправится любым способом, то вызовитесь следующие колбеки
   const form = document.querySelector(`.ad-form`);
   form.addEventListener(`submit`, function (evt) {
     evt.preventDefault(); // отменил отправку формы по умолчанию
@@ -219,7 +230,7 @@
     });
   };
 
-// Добавляю удаление сообщения об успешной отправке через ESC
+  // Добавляю удаление сообщения об успешной отправке через ESC
   const onSuccessPressEsc = function (evt) {
     if (evt.keyCode === KEY_CODE_ESC) {
       successTemplate.remove();
@@ -237,7 +248,7 @@
   const error = document.querySelector(`#error`).content.querySelector(`.error`); // нашел шаблон
   const nodeError = error.cloneNode(true); // делаем клон ноду шаблона без нее не вставим
   let errorButton; // вынес кнопку в глобальную видимость т.к. нужно ее найти только после добавленя ее в DOM
-// сделал функцю по обработке ошибки
+  // сделал функцю по обработке ошибки
   const onErrorSave = function () {
     const main = document.querySelector(`main`); // нашел куда вставляем
     main.appendChild(nodeError); // вставил в html элемент наш шаблон
@@ -249,7 +260,7 @@
 
   };
 
-// создаю колбек функцию по ссылке для удаления окна с ошибкой
+  // создаю колбек функцию по ссылке для удаления окна с ошибкой
   const onAroundOfErrorButtonClick = function () { // пишу функцию по клику на кнопку закрытия
     nodeError.remove(); // удаляем наш node Error
     document.removeEventListener(`click`, onAroundOfErrorButtonClick);
@@ -273,19 +284,19 @@
     document.removeEventListener(`click`, onAroundOfErrorButtonClick);
   };
 
-// сделал обработчик клика на очистку формы
+  // сделал обработчик клика на очистку формы
   const onFormClick = function () {
     startSite(); // функция которая приводит сайт в начальное состояние
   };
 
-// может не надо здесь удалять оброботчики по ссылке?
+  // может не надо здесь удалять оброботчики по ссылке?
   const onFormPressEnter = function (evt) {
     if (evt.keyCode === KEY_CODE_ENTER) {
       startSite();
     }
   };
 
-// добаить обработчик очистки формы
+  // добаить обработчик очистки формы
   const adFormReset = document.querySelector(`.ad-form__reset`); // клик по этой кнопке
   adFormReset.addEventListener(`click`, onFormClick);
   adFormReset.addEventListener(`keydown`, onFormPressEnter);
