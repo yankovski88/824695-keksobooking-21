@@ -28,7 +28,7 @@
         }
       };
       popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
-    // если удалять то сробатывает область видимости
+      // если удалять то сробатывает область видимости
     };
 
 
@@ -108,15 +108,16 @@
     if (evt.which === LEFT_KEY_MOUSE_CODE) { // было evt.which
       window.card.map.classList.remove(`map--faded`); // карта становится активной
       window.backend.load(window.filter.filterPin, window.error.onError); // делаем запрос для заполнения данных для метки
+
+      removeAddDisabled(mapFilterSelects); // удалили disabled из фильтра на карте
+      removeAdFormDisabled(form); // форма становится активной
+      removeformFieldsetsDisabled(); // удаляется где есть disabled в форме
+      window.form.checkRoomAndGuest(); // запускается проверка по гостям
+      window.form.onTypeChange(); // запускаемся проверка по типу жилья
+      window.form.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
+      mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
+      mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
     }
-    removeAddDisabled(mapFilterSelects); // удалили disabled из фильтра на карте
-    removeAdFormDisabled(form); // форма становится активной
-    removeformFieldsetsDisabled(); // удаляется где есть disabled в форме
-    window.form.checkRoomAndGuest(); // запускается проверка по гостям
-    window.form.onTypeChange(); // запускаемся проверка по типу жилья
-    window.form.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
-    mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
-    mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
   };
 
   // добавление обработчика на главную метку
@@ -153,6 +154,6 @@
     formFieldsets,
     mapFilterSelects,
     LEFT_KEY_MOUSE_CODE,
-    removeAddDisabled
+    removeAddDisabled,
   };
 })();
