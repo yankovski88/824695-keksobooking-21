@@ -1,5 +1,5 @@
 'use strict';
-// (function () {
+(function () {
 
 const DEBOUNCE_INTERVAL = 500; // интервал задержки
 const ANY_CHOUCE = `any`;
@@ -240,4 +240,4 @@ window.filter = {
 };
 
 
-// })();
+})();
