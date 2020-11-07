@@ -73,6 +73,8 @@
   let lastTimeout;
 
   const filterPin = function (arr) {
+    window.main.removeAddDisabled(window.main.mapFilterSelects); // удалили disabled из фильтра на карте ТОЛЬКО после загрузки меток
+
     const copyDataFlats = arr; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
 
     let flatName = `any`; // будет значение которое выбрал пользователь по квартире
