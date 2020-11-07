@@ -11,6 +11,7 @@
     xhr.addEventListener(`load`, function () {
       if (xhr.status === STATUS) {
         onLoad(xhr.response); // в функцию поместили данные
+        window.main.removeAddDisabled(window.main.mapFilterSelects); // удалили disabled из фильтра на карте
       } else {
         onError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);
       }

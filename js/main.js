@@ -109,7 +109,6 @@
       window.card.map.classList.remove(`map--faded`); // карта становится активной
       window.backend.load(window.filter.filterPin, window.error.onError); // делаем запрос для заполнения данных для метки
 
-      removeAddDisabled(mapFilterSelects); // удалили disabled из фильтра на карте
       removeAdFormDisabled(form); // форма становится активной
       removeformFieldsetsDisabled(); // удаляется где есть disabled в форме
       window.form.checkRoomAndGuest(); // запускается проверка по гостям
@@ -130,7 +129,6 @@
     if (evt.code === `Enter`) {
       window.card.map.classList.remove(`map--faded`);
     }
-    removeAddDisabled(mapFilterSelects); // удалили disabled из фильтра на карте
     removeAdFormDisabled(form);
     removeformFieldsetsDisabled();
     window.form.checkRoomAndGuest();
