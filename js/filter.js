@@ -56,7 +56,6 @@
     if (newPins.length < window.pin.MAX_PIN) {
       for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
-        console.log(`data-index1`, i);
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
         fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
         renderPin(); // прорисовываем метки
@@ -64,7 +63,6 @@
     } else if (newPins.length > window.pin.MAX_PIN) {
       for (let i = 0; i < window.pin.MAX_PIN; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
-        console.log(`data-index2`, i);
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
         fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
         renderPin(); // прорисовываем метки

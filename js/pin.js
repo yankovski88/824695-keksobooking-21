@@ -14,7 +14,7 @@
     pinTemplate.style.left = `${obj.location.x}px`; // вставили координаты
     pinTemplate.style.top = `${obj.location.y}px`;
 
-    pinTemplate.addEventListener("click", (evt) => {
+    pinTemplate.addEventListener("click", (evt) => { // отслеживаем клик по каждой созданой метке
 
       let target = evt.target; // цель по которой был клик
       if (target.tagName === `IMG`) { // если таргет был с тегом IMG
@@ -45,11 +45,11 @@
           window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
           removeMapPinActive();
           setMapPinActive();
-          window.card.renderCard(window.card.createCard(obj), window.card.mapFiltersContainer);
+          window.card.renderCard(window.card.createCard(obj), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
         } else {
           removeMapPinActive();
           setMapPinActive();
-          window.card.renderCard(window.card.createCard(obj), window.card.mapFiltersContainer);
+          window.card.renderCard(window.card.createCard(obj), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
         }
       }
 

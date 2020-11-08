@@ -14,7 +14,7 @@ module.exports = {
 
     `/js/main.js`,
     `/js/filter.js`,
-    `/js/foto.js`,
+    `/js/photo.js`,
   ],
   // свойство вывод т.е. куда сложить файлы
   output: {

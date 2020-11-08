@@ -39,22 +39,22 @@
     // возвращает начальное поле адреса
     window.movePin.fillAddress(window.movePin.address, START_ADDRESS_X, START_ADDRESS_Y);
     // удаление аватара и устнановка старой картинки
-    if (window.foto.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
-      window.foto.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
+    if (window.photo.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
+      window.photo.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
 
-      window.foto.previewAvatar.style.display = `flex`;
-      window.foto.previewAvatar.style.alignItems = `center`;
-      window.foto.previewAvatar.style.justifyContent = `center`;
+      window.photo.previewAvatar.style.display = `flex`;
+      window.photo.previewAvatar.style.alignItems = `center`;
+      window.photo.previewAvatar.style.justifyContent = `center`;
       const imgAvatar = document.createElement(`img`);
       imgAvatar.style.width = `40px`;
       imgAvatar.style.height = `44px`;
-      window.foto.previewAvatar.appendChild(imgAvatar);
+      window.photo.previewAvatar.appendChild(imgAvatar);
       imgAvatar.src = `img/muffin-grey.svg`;
     }
 
     // удаление старого фото квартииры
-    if (window.foto.previewFotoFlat.querySelector(`img`)) {
-      window.foto.previewFotoFlat.querySelector(`img`).remove();
+    if (window.photo.previewPhotoFlat.querySelector(`img`)) {
+      window.photo.previewPhotoFlat.querySelector(`img`).remove();
     }
 
     setGuestsDefault(); // функция делает по умолчанию поле с гостями
