@@ -3,15 +3,16 @@
 
 
   const URL_DATA = `https://21.javascript.pages.academy/keksobooking/data`;
+  const URL = `https://21.javascript.pages.academy/keksobooking`;
   const TIMEOUT_IN_MS = 10000;
-  const STATUS = 200; // статус который означаем, что запрос прошел
+  const STATUS_OK = 200; // статус который означаем, что запрос прошел
 
   // Делаем запрос по данным там вся информация по объявлениям и координатам меток
   const load = function (onLoad, onError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
-      if (xhr.status === STATUS) {
+      if (xhr.status === STATUS_OK) {
         onLoad(xhr.response); // в функцию поместили данные
       } else {
         onError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);
@@ -33,10 +34,9 @@
   // отправляю форму
   const save = function (data, onSuccess, onErrorSave) {
     const xhr = new XMLHttpRequest();
-    const URL = `https://21.javascript.pages.academy/keksobooking`;
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
-      if (xhr.status === STATUS) {
+      if (xhr.status === STATUS_OK) {
         onSuccess();
       } else {
         onErrorSave();
