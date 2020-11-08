@@ -208,7 +208,7 @@
   const form = document.querySelector(`.ad-form`);
   form.addEventListener(`submit`, function (evt) {
     evt.preventDefault(); // отменил отправку формы по умолчанию
-    window.backend.save(new FormData(form), onSuccess, onErrorSave);
+    window.backend.save(new FormData(form), onSuccess, showErrorSave);
   });
 
   const success = document.querySelector(`#success`).content.querySelector(`.success`); // нашел шаблон для вставки
@@ -250,7 +250,7 @@
   const nodeError = error.cloneNode(true); // делаем клон ноду шаблона без нее не вставим
   let errorButton; // вынес кнопку в глобальную видимость т.к. нужно ее найти только после добавленя ее в DOM
   // сделал функцю по обработке ошибки
-  const onErrorSave = function () {
+  const showErrorSave = function () {
     const main = document.querySelector(`main`); // нашел куда вставляем
     main.appendChild(nodeError); // вставил в html элемент наш шаблон
     errorButton = document.querySelector(`.error__button`);// находим кнопку по которой будем кликать для закрытия

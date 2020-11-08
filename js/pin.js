@@ -7,9 +7,8 @@
   const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`); // нашли шаблон по pin
 
   const createPin = function (objData) { // по этому макету создается метка
+    const pinTemplate = pin.cloneNode(true); // создаем клоны метки
     if (objData.offer) { // если есть описание offer,  то рисуем метки.
-
-      const pinTemplate = pin.cloneNode(true); // создаем клоны метки
       const img = pinTemplate.querySelector(`img`); // создал константу чтобы 2 раза не искать
       img.src = objData.author.avatar; // вставили ссылку на аватар
       img.alt = objData.offer.title; // вставили заголовок
@@ -77,9 +76,8 @@
         popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
         // если удалять то сробатывает область видимости
       });
-
-      return pinTemplate; // вернули метку
     }
+    return pinTemplate; // вернули метку
   };
 
   window.pin = {

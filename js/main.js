@@ -66,7 +66,7 @@
   const onMapPinMainMousedown = function (evt) {
     if (evt.which === LEFT_KEY_MOUSE_CODE) { // было evt.which
       window.card.map.classList.remove(`map--faded`); // карта становится активной
-      window.backend.load(window.filter.filterPin, window.error.onError); // делаем запрос для заполнения данных для метки
+      window.backend.load(window.filter.filterPin, window.error.showError); // делаем запрос для заполнения данных для метки
 
       removeAdFormDisabled(form); // форма становится активной
       removeformFieldsetsDisabled(); // удаляется где есть disabled в форме

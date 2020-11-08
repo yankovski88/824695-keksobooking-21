@@ -8,22 +8,22 @@
   const STATUS_OK = 200; // статус который означаем, что запрос прошел
 
   // Делаем запрос по данным там вся информация по объявлениям и координатам меток
-  const load = function (onLoad, onError) {
+  const load = function (onLoad, showError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
       if (xhr.status === STATUS_OK) {
         onLoad(xhr.response); // в функцию поместили данные
       } else {
-        onError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);
+        showError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);
       }
     });
 
     xhr.addEventListener(`error`, function () {
-      onError(`Запрос не удался`);
+      showError(`Запрос не удался`);
     });
     xhr.addEventListener(`timeout`, function () {
-      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+      showError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
     xhr.timeout = TIMEOUT_IN_MS;
@@ -32,21 +32,21 @@
   };
 
   // отправляю форму
-  const save = function (data, onSuccess, onErrorSave) {
+  const save = function (data, onSuccess, showErrorSave) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
     xhr.addEventListener(`load`, function () {
       if (xhr.status === STATUS_OK) {
         onSuccess();
       } else {
-        onErrorSave();
+        showErrorSave();
       }
     });
     xhr.addEventListener(`timeout`, function () {
-      onErrorSave();
+      showErrorSave();
     });
     xhr.addEventListener(`error`, function () {
-      onErrorSave();
+      showErrorSave();
     });
     xhr.timeout = TIMEOUT_IN_MS;
     xhr.open(`POST`, URL);
