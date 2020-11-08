@@ -6,15 +6,15 @@
 
   const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`); // нашли шаблон по pin
 
-  const createPin = function (obj) { // по этому макету создается метка
+  const createPin = function (objData) { // по этому макету создается метка
     const pinTemplate = pin.cloneNode(true); // создаем клоны метки
     const img = pinTemplate.querySelector(`img`); // создал константу чтобы 2 раза не искать
-    img.src = obj.author.avatar; // вставили ссылку на аватар
-    img.alt = obj.offer.title; // вставили заголовок
-    pinTemplate.style.left = `${obj.location.x}px`; // вставили координаты
-    pinTemplate.style.top = `${obj.location.y}px`;
+    img.src = objData.author.avatar; // вставили ссылку на аватар
+    img.alt = objData.offer.title; // вставили заголовок
+    pinTemplate.style.left = `${objData.location.x}px`; // вставили координаты
+    pinTemplate.style.top = `${objData.location.y}px`;
 
-    pinTemplate.addEventListener("click", (evt) => { // отслеживаем клик по каждой созданой метке
+    pinTemplate.addEventListener(`click`, (evt) => { // отслеживаем клик по каждой созданой метке
 
       let target = evt.target; // цель по которой был клик
       if (target.tagName === `IMG`) { // если таргет был с тегом IMG
@@ -45,11 +45,11 @@
           window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
           removeMapPinActive();
           setMapPinActive();
-          window.card.renderCard(window.card.createCard(obj), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
+          window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
         } else {
           removeMapPinActive();
           setMapPinActive();
-          window.card.renderCard(window.card.createCard(obj), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
+          window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
         }
       }
 
@@ -79,7 +79,6 @@
   };
 
   window.pin = {
-    pin,
     MAX_PIN,
     createPin,
   };
@@ -87,28 +86,3 @@
 
 })();
 
-
-// // TODO: непонятно что за obj. Стоит переименовать
-// const createPin = function (obj) { // по этому макету создается метка
-//   const pinTemplate = pin.cloneNode(true); // создаем клоны метки
-//   // TODO: стоит сохранить элемент в отдельную переменную, чтобы не искать ее два раза
-//   const img = pinTemplate.querySelector(img);
-//   img.src = obj.author.avatar; // вставили ссылку на аватар
-//   img.alt = obj.offer.title; // вставили заголовок
-//   pinTemplate.style.left = ${obj.location.x}px; // вставили координаты
-//   pinTemplate.style.top = ${obj.location.y}px;
-//
-//   pinTemplate.addEventListener("click", () => {
-//     // setPinActive(img);
-//     window.card.renderCard(window.card.createCard(obj), window.card.mapFiltersContainer);
-//   });
-//
-//   return pinTemplate; // вернули метку
-// };
-//
-// window.pin = {
-//   // TODO: неиспользуемая переменная
-//   pin,
-//   MAX_PIN,
-//   createPin,
-// };
