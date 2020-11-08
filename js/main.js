@@ -12,6 +12,10 @@
       target = target.parentNode; // то переопределяем таргет на его родителя, с помощью target.parentNode
     }
 
+
+
+    console.log(target.dataset.index);
+
     // код установки активной метки
     const mapItemPins = document.querySelectorAll(`.map__pin`); // находим все метки после рендера
     // функция удаления всех активных меток
@@ -27,11 +31,15 @@
       target.classList.add(`map__pin--active`); // добавление к метке класа актив
     };
 
-
+    const objFlat = window.card.createCard(arr[target.dataset.index]);
     // иначе создаем новую карточку
     // [target.dataset.index] устанавливаем в карточки индекс, Пока
     const onLoadCard = function (arr) { // функция загружает карточку
-      window.card.renderCard(window.card.createCard(arr[target.dataset.index]), window.card.mapFiltersContainer); // создаем карточку, перед определенным элементом html
+console.log(target.dataset.index);
+
+
+
+      window.card.renderCard(, window.card.mapFiltersContainer); // создаем карточку, перед определенным элементом html
       const popupClose = document.querySelector(`.popup__close`);
       const mapCard = window.card.map.querySelector(`.map__card`);
       const removeChildMapCard = function () {

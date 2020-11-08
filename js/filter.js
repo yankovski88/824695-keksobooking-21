@@ -56,6 +56,7 @@
     if (newPins.length < window.pin.MAX_PIN) {
       for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
+        console.log(`data-index1`, i);
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
         fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
         renderPin(); // прорисовываем метки
@@ -63,6 +64,7 @@
     } else if (newPins.length > window.pin.MAX_PIN) {
       for (let i = 0; i < window.pin.MAX_PIN; i++) { // перебрать все данные которые получены и перенесены в переменную
         const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
+        console.log(`data-index2`, i);
         fragmentPin.setAttribute(`data-index`, i); // устанавливаем меткам индекс
         fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
         renderPin(); // прорисовываем метки
@@ -83,7 +85,7 @@
     let flatRoom = `any`; // будет значение которое выбрал пользователь по цене
     let flatGuest = `any`; // будет значение которое выбрал пользователь по цене
 
-    // делаем отслеживание кликов на типе квартир
+    // делаем отслеживание кликов на типе квартир и заменяем данные any на выбраные пользователем
     const housingType = document.querySelector(`#housing-type`); // находим поле с фильтром по типу жилья
     // следим за фильтрами если есть зименения то перписываем value фильтра
     housingType.addEventListener(`change`, function () { // после изменения поля тип

@@ -35,9 +35,9 @@
     if (arrFirst.length > 0) {
       for (let i = 0; i < arrFirst.length; i++) { // перебираем все список плюсов полученого из объекта
         for (let j = 0; j < arrSecond.length; j++) { // перебираем общий список плюсов полученный из шаблона
-          htmlElement[j].classList.add(`hidden`);
-          if (arrFirst[i] === arrSecond[j]) {
-            htmlElement[j].textContent = arrFirst[i];
+          htmlElement[j].classList.add(`hidden`); // добавили всем скрыться полям сразу
+          if (arrFirst[i] === arrSecond[j]) { // если есть вопадение плюсов
+            htmlElement[j].textContent = arrFirst[i]; // то пишем textContent
           }
           if (htmlElement[j].textContent) {
             htmlElement[j].classList.remove(`hidden`);
@@ -46,7 +46,7 @@
       }
     } else {
       for (let j = 0; j < arrSecond.length; j++) { // перебираем общий список плюсов полученный из шаблона
-        htmlElement[j].classList.add(`hidden`);
+        htmlElement[j].classList.add(`hidden`); // и добавляем всем скрыться
       }
     }
   };
