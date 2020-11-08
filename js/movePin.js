@@ -1,4 +1,6 @@
 'use strict';
+(function () {
+
 
 const MAIN_PIN_TIP = 22;
 const PIN_FIELD_MIN_Y = 130;
@@ -108,5 +110,7 @@ window.movePin = {
   MAP_PIN_MAIN_LEFT,
   fillAddress,
   address,
-  mainPinHeight
+  mainPinHeight,
+  mapPin
 };
+})();

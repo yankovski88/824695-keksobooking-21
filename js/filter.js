@@ -1,4 +1,6 @@
 'use strict';
+(function () {
+
 
 const DEBOUNCE_INTERVAL = 500; // интервал задержки
 const ANY_CHOUCE = `any`;
@@ -105,10 +107,17 @@ const filterPin = function (arr) {
   });
 
 
+
+
   // удаление карточки если она была открыта
   // const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
   mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
     delCard(); // вставили функцию удаления карточки
+
+
+
+
+
 
     const filterTypeFlats = copyDataFlats.filter(function (item) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
       if (item.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
@@ -232,6 +241,9 @@ const filterPin = function (arr) {
     }, DEBOUNCE_INTERVAL);
   });
   renderNewPin(copyDataFlats);
+
+
+
 };
 
 
@@ -241,3 +253,4 @@ window.filter = {
 };
 
 
+})();

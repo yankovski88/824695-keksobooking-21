@@ -1,4 +1,6 @@
 'use strict';
+(function () {
+
 
 const onError = function (errorMessage) { // всплывающее окно с ошибкой
   const node = document.createElement(`div`);
@@ -23,3 +25,4 @@ window.error = {
   onError,
 };
 
+})();

@@ -1,4 +1,6 @@
 'use strict';
+(function () {
+
 
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 
@@ -46,3 +48,4 @@ window.foto = {
   previewFotoFlat
 };
 
+})();

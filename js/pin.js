@@ -1,4 +1,6 @@
 'use strict';
+(function () {
+
 
 const MAX_PIN = 5;
 
@@ -20,3 +22,4 @@ window.pin = {
 };
 
 
+})();

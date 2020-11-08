@@ -1,4 +1,6 @@
 'use strict';
+(function () {
+
 
 // + все что связано с формой
 const KEY_CODE_ESC = 27;
@@ -312,3 +314,4 @@ window.form = {
   START_ADDRESS_Y,
 };
 
+})();
