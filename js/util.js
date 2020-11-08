@@ -1,5 +1,4 @@
 'use strict';
-// (function () {
 
 // получить массив названия классов от html
 const getArrClassNameHtml = function (elementHtml) {
@@ -87,4 +86,3 @@ window.util = {
 };
 
 
-// })();

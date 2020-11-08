@@ -1,5 +1,4 @@
 'use strict';
-// (function () {
 
 // + все что связано с формой
 const KEY_CODE_ESC = 27;
@@ -7,15 +6,15 @@ const KEY_CODE_ENTER = 13;
 const MIN_LENGTH = 30;
 const MAX_PRICE = 1000000;
 // переменная с указанием информации что нет таких комант с гостями
-const MESSAGE_ROOMS_ERROR = `
-1 комната — «для 1 гостя»;
-2 комнаты — «для 2 гостей» или «для 1 гостя»;
-3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
-100 комнат — «не для гостей».`;
+//   const MESSAGE_ROOMS_ERROR = `
+// 1 комната — «для 1 гостя»;
+// 2 комнаты — «для 2 гостей» или «для 1 гостя»;
+// 3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
+// 100 комнат — «не для гостей».`;
 
-const MAX_ROOM = 3;
-const NO_FOR_GUEST = `0`;
 
+const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT, 10) + window.movePin.mapPinMain.offsetWidth / 2);
+const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mainPinHeight);
 // функция которая удаляет все поля и возвращает сайт в начальное состояние
 const startSite = function () {
   form.reset(); // удаление полей в форме подачи объявления
@@ -23,6 +22,9 @@ const startSite = function () {
   window.main.addAdFormDisabled(form); // дизейбл формы
   window.main.addMapFaded(window.card.map); // дизейбл карты
   window.main.addDisabled(window.main.formFieldsets); // добавление к полям формы disabled
+  window.main.addDisabled(window.main.mapFilterSelects); //  к селектам карты добавил disabled
+
+
   // удаление карточки если была открыта
   if (window.card.map.querySelector(`.map__card`)) {
     window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
@@ -32,7 +34,8 @@ const startSite = function () {
     window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP; // прописали стиль координат на данные с html
     window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
   }
-
+  // возвращает начальное поле адреса
+  window.movePin.fillAddress(window.movePin.address, START_ADDRESS_X, START_ADDRESS_Y);
   // удаление аватара и устнановка старой картинки
   if (window.foto.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
     window.foto.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
@@ -52,6 +55,7 @@ const startSite = function () {
     window.foto.previewFotoFlat.querySelector(`img`).remove();
   }
 
+  setGuestsDefault(); // функция делает по умолчанию поле с гостями
 
   delPinButtons(); // удалить все метки
   // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
@@ -68,54 +72,65 @@ const removeToArrDisabled = function (arr) {
   });
 };
 removeToArrDisabled(capacityOptions);
+const СountGuests = [[0, 1, 3], [0, 3], [3], [0, 1, 2]]; // это перечисление дляустановки определенным полям гостей disabled
+
+// установка поле гостя по умолчанию
+const setGuestsDefault = function () {
+  for (let i = 0; i < СountGuests[0].length; i++) { // перебираем массив для 1 комнаты
+    capacityOptions[СountGuests[0][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+  }
+  capacityOptions[2].selected = true; // покажется активный выриант колличества гостей
+};
+setGuestsDefault();
 
 const checkRoomAndGuest = function () {
-  const roomNumber = document.querySelector(`#room_number`);
+  const roomNumber = document.querySelector(`#room_number`); // нашел поле комнат
 
   // идет работа по функция компанты и гости
-  let room = roomNumber.value;
-  let guest = capacity.value;
-  let romIndex = room - 1;
-  const Capacitys = [[`1`], [`1`, `2`], [`1`, `2`, `3`], [`0`]]; // это перечисление заменил с массива
-
-  const checkRoomDefault = function () {
-    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
-      roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-    } else {
-      roomNumber.setCustomValidity(``);
-    }
-  };
-  checkRoomDefault();
+  // let room = roomNumber.value; // значение поля рум сохранил в room
 
   const onRoomNumberChange = function () {
-    const roomValue = roomNumber.value;
-    room = roomValue;
-    if (room > MAX_ROOM) {
-      room = NO_FOR_GUEST;
-      romIndex = Capacitys.length - 1;
-    } else {
-      romIndex = room - 1;
-    }
-    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
-      roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-    } else {
-      roomNumber.setCustomValidity(``);
-    }
-  };
-  roomNumber.addEventListener(`change`, onRoomNumberChange);
+    const ROOM_ONE = `1`;
+    const ROOM_TWO = `2`;
+    const ROOM_THREE = `3`;
 
-  // везде где есть обработчики вставил фнкции по ссылке. Это правильно или нужно было оставить как былом(отдельной функцией)?
-  // ну и приходится менять название функции на название обработчика с checkCapacity на onCapacityChange
-  const onCapacityChange = function () {
-    const guestValue = capacity.value;
-    guest = guestValue;
-    if ((Capacitys[romIndex].includes(room) && Capacitys[romIndex].includes(guest)) === false) {
-      roomNumber.setCustomValidity(MESSAGE_ROOMS_ERROR);
-    } else {
-      roomNumber.setCustomValidity(``);
+    const roomValue = roomNumber.value; // нашли значение выбраного поля пользователем
+    // room = roomValue; // перегнали значение в другую переменную, для чего не знаю
+    if (roomValue === ROOM_ONE) { // если значение 1 то это 1 комната выбрана
+      window.main.removeAddDisabled(capacityOptions); // функция удаляет у всех полей disabled
+
+      for (let i = 0; i < СountGuests[0].length; i++) { // перебираем массив для 1 комнаты
+        capacityOptions[СountGuests[0][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+      }
+      capacityOptions[2].selected = true; // покажется активный выриант колличества гостей
+    }
+    if (roomValue === ROOM_TWO) { // если значение 1 то это 1 комната выбрана
+      window.main.removeAddDisabled(capacityOptions);
+      for (let i = 0; i < СountGuests[1].length; i++) { // перебираем массив для 1 комнаты
+
+        capacityOptions[СountGuests[1][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+      }
+      capacityOptions[1].selected = true; // покажется активный выриант колличества гостей
+    }
+    if (roomValue === ROOM_THREE) { // если значение 1 то это 1 комната выбрана
+      window.main.removeAddDisabled(capacityOptions);
+
+      for (let i = 0; i < СountGuests[2].length; i++) { // перебираем массив для 1 комнаты
+        capacityOptions[СountGuests[2][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+      }
+      capacityOptions[0].selected = true; // покажется активный выриант колличества гостей
+    }
+    if (roomValue > СountGuests.length - 1) { // если значение 1 то это 1 комната выбрана
+      window.main.removeAddDisabled(capacityOptions);
+
+      for (let i = 0; i < СountGuests[3].length; i++) { // перебираем массив для 1 комнаты
+        capacityOptions[СountGuests[3][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+      }
+      capacityOptions[3].selected = true; // покажется активный выриант колличества гостей
     }
   };
-  capacity.addEventListener(`change`, onCapacityChange);
+
+  roomNumber.addEventListener(`change`, onRoomNumberChange);
 };
 
 const title = document.querySelector(`#title`);
@@ -166,7 +181,7 @@ const timeoutOptions = timeout.querySelectorAll(`option`);
 
 const setTimeinAndTimeout = function () {
   const onTimeinChange = function () {
-    timeinOptions.forEach((item) =>{
+    timeinOptions.forEach((item) => {
       if (item.value === timein.value) {
         timeout.value = item.value;
       }
@@ -176,7 +191,7 @@ const setTimeinAndTimeout = function () {
   timein.addEventListener(`change`, onTimeinChange);
 
   const onTimeoutChange = function () {
-    timeoutOptions.forEach((item)=>{
+    timeoutOptions.forEach((item) => {
       if (item.value === timeout.value) {
         timein.value = item.value;
       }
@@ -207,7 +222,7 @@ const onSuccess = function () { // обработчик отправки усп�
 
 const delPinButtons = function () {
   const buttonPins = mapPins.querySelectorAll(`button`);
-  buttonPins.forEach((item)=>{
+  buttonPins.forEach((item) => {
     if (!item.classList.contains(`map__pin--main`)) {
       item.remove();
     }
@@ -293,6 +308,7 @@ window.form = {
   checkRoomAndGuest,
   onTypeChange,
   KEY_CODE_ENTER,
+  START_ADDRESS_X,
+  START_ADDRESS_Y,
 };
 
-// })();
