@@ -3,7 +3,7 @@
 
 
   const LEFT_KEY_MOUSE_CODE = 1;
-// при клике на метку открывается карточка
+  // при клике на метку открывается карточка
 
 
   const onMapClick = function (evt) {
@@ -71,7 +71,7 @@
   };
   window.card.map.addEventListener(`click`, onMapClick); // отслеживаем клик по метке и запускаем функцию по открытию карточки (думаю этот колбек надо удалять)
 
-// функция по закрытию карточки через esc
+  // функция по закрытию карточки через esc
   const onMapEscapePress = function (evt) {
     if ((evt.key === `Escape`) && (window.card.map.querySelector(`.map__card`))) {
       window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
@@ -79,20 +79,20 @@
   };
   window.card.map.addEventListener(`keydown`, onMapEscapePress); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
 
-// установка адреса изначально
+  // установка адреса изначально
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
   const formFieldsets = document.querySelectorAll(`fieldset`);
   const mapFilter = document.querySelector(`.map__filters`);
   const mapFilterSelects = mapFilter.querySelectorAll(`select`);
 
-// добавить к классу map--faded
+  // добавить к классу map--faded
   const addMapFaded = function (item) {
     item.classList.add(`map--faded`);
   };
   addMapFaded(window.card.map); // дизэйбл карты
 
-// добавить disabled
+  // добавить disabled
   const addDisabled = function (arrItems) {
     arrItems.forEach((item) => {
       item.setAttribute(`disabled`, `true`);
@@ -102,7 +102,7 @@
   addDisabled(formFieldsets);
   addDisabled(mapFilterSelects); //  к селектам карты добавил disabled
 
-// удаление disabled fieldset
+  // удаление disabled fieldset
   const removeAddDisabled = function (arr) {
     arr.forEach((item) => {
       item.removeAttribute(`disabled`);
@@ -110,17 +110,17 @@
   };
 
 
-// добавить ad-form--disabled
+  // добавить ad-form--disabled
   const addAdFormDisabled = function (item) {
     item.classList.add(`ad-form--disabled`);
   };
 
-// удаление ad-form--disabled
+  // удаление ad-form--disabled
   const removeAdFormDisabled = function (item) {
     item.classList.remove(`ad-form--disabled`);
   };
 
-// удаление disabled fieldset
+  // удаление disabled fieldset
   const removeformFieldsetsDisabled = function () {
     formFieldsets.forEach((item) => {
       item.removeAttribute(`disabled`);
@@ -129,7 +129,7 @@
 
   const form = document.querySelector(`.ad-form`);
 
-// если был клик левой кнопки мыши на клавную метку
+  // если был клик левой кнопки мыши на клавную метку
   const onMapPinMainMousedown = function (evt) {
     if (evt.which === LEFT_KEY_MOUSE_CODE) { // было evt.which
       window.card.map.classList.remove(`map--faded`); // карта становится активной
@@ -145,12 +145,12 @@
     }
   };
 
-// добавление обработчика на главную метку
+  // добавление обработчика на главную метку
   if (window.card.map.classList.contains(`map--faded`)) {
     mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
   }
 
-// вызываем все теже функции что и при клике на главную метку
+  // вызываем все теже функции что и при клике на главную метку
   const onMapPinMainKeydown = function (evt) {
     if (evt.code === `Enter`) {
       window.card.map.classList.remove(`map--faded`);

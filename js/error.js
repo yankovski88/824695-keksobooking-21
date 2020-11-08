@@ -2,9 +2,9 @@
 (function () {
 
 
-const onError = function (errorMessage) { // всплывающее окно с ошибкой
-  const node = document.createElement(`div`);
-  node.style = `
+  const onError = function (errorMessage) { // всплывающее окно с ошибкой
+    const node = document.createElement(`div`);
+    node.style = `
     z-index: 100; 
     margin: 0 auto; 
     text-align: center; 
@@ -12,17 +12,17 @@ const onError = function (errorMessage) { // всплывающее окно с 
     height: 130px;display: flex; 
     justify-content: center; 
     align-items: center`;
-  node.style.position = `absolute`;
-  node.style.left = 0;
-  node.style.right = 0;
-  node.style.color = `red`;
-  node.style.fontSize = `50px`;
+    node.style.position = `absolute`;
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.color = `red`;
+    node.style.fontSize = `50px`;
 
-  node.textContent = errorMessage;
-  window.card.map.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
-};
-window.error = {
-  onError,
-};
+    node.textContent = errorMessage;
+    window.card.map.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
+  };
+  window.error = {
+    onError,
+  };
 
 })();
