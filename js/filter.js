@@ -3,7 +3,7 @@
 
 
   const DEBOUNCE_INTERVAL = 500; // интервал задержки
-  const ANY_CHOUCE = `any`;
+  const ANY_CHOICE = `any`;
   const ALL_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
 
   const MapPrice = { // словарь для фильтрации middle
@@ -116,7 +116,7 @@
       const filterTypeFlats = copyDataFlats.filter(function (item) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
         if (item.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
           return item.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
-        } else if (flatName === ANY_CHOUCE) { // если выбрали все  то
+        } else if (flatName === ANY_CHOICE) { // если выбрали все  то
           return item.offer.type; // возвращаем все
         }
         return false;
@@ -141,7 +141,7 @@
       });
 
       const filterRoomFlats = copyDataFlats.filter(function (item) {
-        if (flatRoom !== ANY_CHOUCE) {
+        if (flatRoom !== ANY_CHOICE) {
           const numberFlatRoom = parseInt(flatRoom, 10);
           return item.offer.rooms === numberFlatRoom;
         }
@@ -149,7 +149,7 @@
       });
 
       const filterGuestFlats = copyDataFlats.filter(function (item) {
-        if (flatGuest !== ANY_CHOUCE) {
+        if (flatGuest !== ANY_CHOICE) {
           const numberFlatGuest = parseInt(flatGuest, 10);
           return item.offer.guests === numberFlatGuest;
         }
@@ -165,7 +165,7 @@
 
       // сортируем уникальный массив, но походу первая часть сортировки лишняя
       const sortUniqueTotalFilterFlats = uniqueTotalFilterFlats.filter(function (item) {
-        if (flatName !== ANY_CHOUCE && item.offer.type !== flatName) {
+        if (flatName !== ANY_CHOICE && item.offer.type !== flatName) {
           return false;
         }
 
@@ -189,11 +189,11 @@
           }
         }
 
-        if (flatRoom !== ANY_CHOUCE && item.offer.rooms !== parseInt(flatRoom, 10)) {
+        if (flatRoom !== ANY_CHOICE && item.offer.rooms !== parseInt(flatRoom, 10)) {
           return false;
         }
 
-        if (flatGuest !== ANY_CHOUCE && item.offer.guests !== parseInt(flatGuest, 10)) {
+        if (flatGuest !== ANY_CHOICE && item.offer.guests !== parseInt(flatGuest, 10)) {
           return false;
         }
         return true;
