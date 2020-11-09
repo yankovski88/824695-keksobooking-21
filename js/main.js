@@ -1,8 +1,12 @@
 'use strict';
 (function () {
 
-
   const LEFT_KEY_MOUSE_CODE = 1;
+  const mapPinMain = document.querySelector(`.map__pin--main`);
+  const formFieldsets = document.querySelectorAll(`fieldset`);
+  const mapFilter = document.querySelector(`.map__filters`);
+  const mapFilterSelects = mapFilter.querySelectorAll(`select`);
+  const form = document.querySelector(`.ad-form`);
 
   // функция по закрытию карточки через esc
   const onMapEscapePress = function (evt) {
@@ -13,12 +17,6 @@
   window.card.map.addEventListener(`keydown`, onMapEscapePress); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
 
   // установка адреса изначально
-
-  const mapPinMain = document.querySelector(`.map__pin--main`);
-  const formFieldsets = document.querySelectorAll(`fieldset`);
-  const mapFilter = document.querySelector(`.map__filters`);
-  const mapFilterSelects = mapFilter.querySelectorAll(`select`);
-
   // добавить к классу map--faded
   const addMapFaded = function (item) {
     item.classList.add(`map--faded`);
@@ -59,8 +57,6 @@
       item.removeAttribute(`disabled`);
     });
   };
-
-  const form = document.querySelector(`.ad-form`);
 
   // если был клик левой кнопки мыши на клавную метку
   const onMapPinMainMousedown = function (evt) {
