@@ -1,7 +1,6 @@
 'use strict';
 (function () {
 
-
   // получить массив названия классов от html
   const getArrClassNameHtml = function (elementHtml) {
     const classNames = [];
@@ -51,32 +50,6 @@
     }
   };
 
-  // получить первый итем строки до запятой
-  const getFirstItemOfString = function (string) {
-    const arr = [];
-    for (let i = 0; i < string.length; i++) {
-      if (string[i] !== `,`) {
-        arr.push(string[i]);
-      } else {
-        break;
-      }
-    }
-    return arr.join(``);
-  };
-
-  // получить последний итем до пробела от строки
-  const getLastItemOfString = function (string) {
-    const arr = [];
-    for (let i = string.length - 1; i > 0; i--) {
-      if (string[i] !== ` `) {
-        arr.push(string[i]);
-      } else {
-        break;
-      }
-    }
-    return arr.join(``);
-  };
-
   // функция неактивного состояния сайта
   const disabledMapFilter = function () {
     window.main.addMapFaded(window.card.map); // сделать карту неактивной
@@ -87,8 +60,6 @@
   window.util = {
     getArrOfTextBeforeDash,
     getArrClassNameHtml,
-    getLastItemOfString,
-    getFirstItemOfString,
     comparisonArrsAndAddClassNameHidden,
     disabledMapFilter,
   };
