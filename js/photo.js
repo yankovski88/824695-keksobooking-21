@@ -1,7 +1,8 @@
 'use strict';
 (function () {
 
-
+  const photoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
+  const previewPhotoFlat = document.querySelector(`.ad-form__photo`);
   const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 
   const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
@@ -39,8 +40,6 @@
   };
 
   loadFile(fileChooser, previewAvatar, FILE_TYPES);
-  const photoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
-  const previewPhotoFlat = document.querySelector(`.ad-form__photo`);
   loadFile(photoFlat, previewPhotoFlat, FILE_TYPES);
 
   window.photo = {
