@@ -24,7 +24,7 @@
 
   // удаление меток если было изменения фильтра
   const delPin = function () {
-  // удаление всех меток кроме главной
+    // удаление всех меток кроме главной
     const mapPins = mapPinsHtml.querySelectorAll(`.map__pin`); // найти все метки
     mapPins.forEach((item) => { // перебрать все метки
       if (!item.classList.contains(`map__pin--main`)) { // все метки которой нет главной
@@ -50,7 +50,7 @@
 
   // функция которая отрисовывает pin после изменения фильтра
   const renderNewPin = function (newPins) {
-  // const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
+    // const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
 
     delPin();
     if (newPins.length < window.pin.MAX_PIN) {
@@ -124,9 +124,7 @@
 
       const filterPriceFlats = copyDataFlats.filter(function (item) {
         if (flatPrice === PriceValue.MIDDLE) {
-          if (item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX) {
-            return item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX;
-          }
+          return item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX;
         }
         if (flatPrice === PriceValue.LOW) {
           return item.offer.price < MapPrice.LOW;
@@ -170,7 +168,6 @@
         }
 
         if (flatPrice === PriceValue.MIDDLE) {
-
           if (flatPrice !== PriceValue.ANY && item.offer.price < MapPrice.MIDDLE_MIN) {
             return false;
           } // не получилось соединить эти 2 условия. Не знаю почему.
@@ -203,7 +200,7 @@
       const featuresNodeList = document.querySelectorAll(`.map__checkbox`); // нашли поле со всеми features
       const activeFlatFeatures = []; // сюда записываем приимущества которые выбрал пользователь
 
-      featuresNodeList.forEach((item, i)=>{ // делаем обход
+      featuresNodeList.forEach((item, i) => { // делаем обход
         if (item.checked) { // если фильтр идет попарядку как и массив ALL_FEATURES
           activeFlatFeatures.push(ALL_FEATURES[i]); // если что-то выберет пользователь в html то и попадет в массив приимуществ
         }
