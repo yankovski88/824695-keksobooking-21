@@ -16,7 +16,6 @@
   };
   window.card.map.addEventListener(`keydown`, onMapEscapePress); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
 
-  // установка адреса изначально
   // добавить к классу map--faded
   const addMapFaded = function (item) {
     item.classList.add(`map--faded`);

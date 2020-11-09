@@ -1,11 +1,18 @@
 'use strict';
 (function () {
 
-
   const MAX_PIN = 5;
 
   const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`); // нашли шаблон по pin
-
+  let itemPins; // новый массив меток после изменения фильтра
+  // функция удаления всех активных меток
+  const removeMapPinActive = function (nodePins) {
+    nodePins.forEach((item) => { // перебираем все метки
+      if (item.classList.contains(`map__pin--active`)) { // если находим активную метку
+        item.classList.remove(`map__pin--active`); // то удаляем в ней класс активности
+      }
+    });
+  };
   const createPin = function (objData) { // по этому макету создается метка
     const pinTemplate = pin.cloneNode(true); // создаем клоны метки
     if (objData.offer) { // если есть описание offer,  то рисуем метки.
@@ -24,19 +31,13 @@
 
         // код установки активной метки
         const mapItemPins = document.querySelectorAll(`.map__pin`); // находим все метки после рендера
-        // функция удаления всех активных меток
-        const removeMapPinActive = function () {
-          mapItemPins.forEach((item) => { // перебираем все метки
-            if (item.classList.contains(`map__pin--active`)) { // если находим активную метку
-              item.classList.remove(`map__pin--active`); // то удаляем в ней класс активности
-            }
-          });
-        };
+        itemPins = mapItemPins;
+
         // функция по установке активной метки
         const setMapPinActive = function () {
           target.classList.add(`map__pin--active`); // добавление к метке класа актив
         };
-        removeMapPinActive(); // удаление активной метки
+        removeMapPinActive(itemPins); // удаление активной метки
         setMapPinActive(); // установка активной метки
 
 
@@ -44,18 +45,17 @@
         if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
           if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
             window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
-            removeMapPinActive();
+            removeMapPinActive(itemPins);
             setMapPinActive();
             window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
           } else {
-            removeMapPinActive();
+            removeMapPinActive(itemPins);
             setMapPinActive();
             window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
           }
         }
 
-
-        const popupClose = document.querySelector(`.popup__close`);
+        const popupClose = window.card.map.querySelector(`.popup__close`);
         const mapCard = window.card.map.querySelector(`.map__card`);
         // удаление карточки
         const removeChildMapCard = function () {
@@ -63,14 +63,14 @@
         };
         const onPopupCloseClick = function () {
           removeChildMapCard(); // удаление карточки
-          removeMapPinActive(); // удаление активной метки
+          removeMapPinActive(itemPins); // удаление активной метки
         };
         popupClose.addEventListener(`click`, onPopupCloseClick);
 
         const onPopupCloseEnterPress = function () {
           if (evt.target.code === window.card.KEY_CODE_ENTER) {
             removeChildMapCard(); // удаление карточки
-            removeMapPinActive(); // удаление активной метки
+            removeMapPinActive(itemPins); // удаление активной метки
           }
         };
         popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
@@ -79,6 +79,15 @@
     }
     return pinTemplate; // вернули метку
   };
+
+  // функция по удалению активной метки через esc
+  const onMapEscapePressRemovePinActive = function (evt) {
+    if ((evt.key === `Escape`) && (window.card.map.querySelector(`.map__pin--active`))) {
+      removeMapPinActive(itemPins);
+    }
+  };
+  window.card.map.addEventListener(`keydown`, onMapEscapePressRemovePinActive); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
+
 
   window.pin = {
     MAX_PIN,

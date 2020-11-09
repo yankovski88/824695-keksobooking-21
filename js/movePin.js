@@ -77,8 +77,7 @@
         if (currentX <= 0) {
           mapPinMain.style.left = `${-mapPinMain.offsetWidth / 2}px`;
           fillAddress(address, 0, currentY);
-        }
-        else if (currentX >= mapPin.offsetWidth) { // необходимо добавить else if вместо if, чтобы избежать дополнительного сранения
+        } else if (currentX >= mapPin.offsetWidth) { // необходимо добавить else if вместо if, чтобы избежать дополнительного сранения
           mapPinMain.style.left = `${mapPin.offsetWidth - mapPinMain.offsetWidth / 2}px`;
           fillAddress(address, mapPin.offsetWidth, currentY);
         }
@@ -86,8 +85,7 @@
         if (currentY <= PIN_FIELD_MIN_Y) {
           mapPinMain.style.top = `${PIN_FIELD_MIN_Y - mainPinHeight}px`;
           fillAddress(address, currentX, PIN_FIELD_MIN_Y);
-        }
-        else if (currentY >= PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT) {
+        } else if (currentY >= PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT) {
           mapPinMain.style.top = `${PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT - mainPinHeight}px`;
           fillAddress(address, currentX, PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT);
         }
