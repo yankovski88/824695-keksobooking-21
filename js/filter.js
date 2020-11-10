@@ -94,7 +94,6 @@ const filterPin = function (arr) {
   });
 
   // удаление карточки если она была открыта
-  // const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
   mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
     delCard(); // вставили функцию удаления карточки
     const filterTypeFlats = copyDataFlats.filter(function (item) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
