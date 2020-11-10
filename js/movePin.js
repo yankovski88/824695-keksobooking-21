@@ -25,7 +25,6 @@ setCoords(); // первичная установка адреса
 
 mapPinMain.addEventListener(`mousedown`, function (evt) {
   if (evt.which === window.main.LEFT_KEY_MOUSE_CODE) {
-
     evt.preventDefault();
     if (window.card.map.classList.contains(`map--faded`)) {
       mapPinMain.style.top = MAP_PIN_MAIN_TOP;
