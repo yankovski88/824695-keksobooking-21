@@ -31,7 +31,6 @@ const delPin = function () {
   });
 };
 
-
 // функция которая проверяет или карточка открыта, если открыта и есть измения фильтра то карточка закрывается
 const delCard = function () {
   if (window.card.map.querySelector(`.map__card`)) { // если карточка открыта
@@ -48,8 +47,6 @@ const renderPin = function () { // отрисовать метки
 
 // функция которая отрисовывает pin после изменения фильтра
 const renderNewPin = function (newPins) {
-  // const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
-
   delPin();
   if (newPins.length < window.pin.MAX_PIN) {
     for (let i = 0; i < newPins.length; i++) { // перебрать все данные которые получены и перенесены в переменную
@@ -67,7 +64,6 @@ const renderNewPin = function (newPins) {
     }
   }
 };
-
 
 let lastTimeout;
 
@@ -104,13 +100,10 @@ const filterPin = function (arr) {
     flatGuest = housingGuest.value;
   });
 
-
   // удаление карточки если она была открыта
   // const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
   mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
     delCard(); // вставили функцию удаления карточки
-
-
     const filterTypeFlats = copyDataFlats.filter(function (item) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
       if (item.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
         return item.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
@@ -152,7 +145,6 @@ const filterPin = function (arr) {
       return item.offer.guests;
     });
 
-
     const totalFilterFlats = filterTypeFlats.concat(filterPriceFlats).concat(filterRoomFlats).concat(filterGuestFlats); // создали обдщий массив по выбраным фильтрам кроме features
 
     const uniqueTotalFilterFlats = totalFilterFlats.filter(function (item, index) { // удалили повторяющие квартиры друг с другом в фильтррах
@@ -174,7 +166,7 @@ const filterPin = function (arr) {
         }
       }
       if (flatPrice === PriceValue.LOW) {
-        if (flatPrice !== PriceValue.ANY && item.offer.price > MapPrice.LOW) {
+        if ((flatPrice !== PriceValue.ANY) && (item.offer.price >= MapPrice.LOW)) {
           return false;
         }
       }
@@ -230,10 +222,7 @@ const filterPin = function (arr) {
     }, DEBOUNCE_INTERVAL);
   });
   renderNewPin(copyDataFlats);
-
-
 };
-
 
 window.filter = {
   mapFilters,

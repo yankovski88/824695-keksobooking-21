@@ -5,7 +5,6 @@ const PIN_FIELD_MIN_Y = 130;
 const PIN_FIELD_HEIGHT = 630;
 const MAP_PIN_MAIN_TOP = `375px`;
 const MAP_PIN_MAIN_LEFT = `570px`;
-
 const mapPinMain = document.querySelector(`.map__pin--main`);
 const address = document.querySelector(`#address`);
 const mapPin = document.querySelector(`.map__pins`);
@@ -26,7 +25,6 @@ setCoords(); // первичная установка адреса
 
 mapPinMain.addEventListener(`mousedown`, function (evt) {
   if (evt.which === window.main.LEFT_KEY_MOUSE_CODE) {
-
 
     evt.preventDefault();
     if (window.card.map.classList.contains(`map--faded`)) {
@@ -91,7 +89,6 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
 
     const onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-
       document.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);
     };
@@ -100,6 +97,7 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
     document.addEventListener(`mouseup`, onMouseUp);
   }
 });
+
 window.movePin = {
   mapPinMain,
   MAP_PIN_MAIN_TOP,

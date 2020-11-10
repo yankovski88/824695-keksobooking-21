@@ -5,11 +5,9 @@ const KEY_CODE_ESC = 27;
 const KEY_CODE_ENTER = 13;
 const MIN_LENGTH = 30;
 const MAX_PRICE = 1000000;
-
 const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
 const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
 const СountGuests = [[0, 1, 3], [0, 3], [3], [0, 1, 2]]; // это перечисление дляустановки определенным полям гостей disabled
-
 const avatar = document.querySelector(`#avatar`);
 const image = document.querySelector(`#images`);
 const timein = document.querySelector(`#timein`);
@@ -21,10 +19,14 @@ const success = document.querySelector(`#success`).content.querySelector(`.succe
 const successTemplate = success.cloneNode(true); // обязательно клонируем шаблон, без клона не вставится в html
 const error = document.querySelector(`#error`).content.querySelector(`.error`); // нашел шаблон
 const nodeError = error.cloneNode(true); // делаем клон ноду шаблона без нее не вставим
-let errorButton; // вынес кнопку в глобальную видимость т.к. нужно ее найти только после добавленя ее в DOM
-
 const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT, 10) + window.movePin.mapPinMain.offsetWidth / 2);
 const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mainPinHeight);
+const type = document.querySelector(`#type`);
+const types = type.querySelectorAll(`option`);
+// const titles = getArrValueFromHtml(types);
+const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
+let errorButton; // вынес кнопку в глобальную видимость т.к. нужно ее найти только после добавленя ее в DOM
+
 // функция которая удаляет все поля и возвращает сайт в начальное состояние
 const startSite = function () {
   form.reset(); // удаление полей в форме подачи объявления
@@ -49,7 +51,6 @@ const startSite = function () {
   // удаление аватара и устнановка старой картинки
   if (window.photo.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
     window.photo.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
-
     window.photo.previewAvatar.style.display = `flex`;
     window.photo.previewAvatar.style.alignItems = `center`;
     window.photo.previewAvatar.style.justifyContent = `center`;
@@ -66,12 +67,10 @@ const startSite = function () {
   }
 
   setGuestsDefault(); // функция делает по умолчанию поле с гостями
-
   delPinButtons(); // удалить все метки
   // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
   window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
 };
-
 
 // удаляем атрибут disabled в полученом массиве option
 const removeToArrDisabled = function (arr) {
@@ -89,15 +88,16 @@ const setGuestsDefault = function () {
   capacityOptions[2].selected = true; // покажется активный выриант колличества гостей
 };
 setGuestsDefault();
+
 const setDisabledGuest = function (indexСountGuests, countGuests, guestOptions, indexSelectedGuestOptions) {
   for (let i = 0; i < countGuests[indexСountGuests].length; i++) { // перебираем массив для 1 комнаты
     guestOptions[countGuests[indexСountGuests][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
   }
   guestOptions[indexSelectedGuestOptions].selected = true; // покажется активный выриант колличества гостей
 };
+
 const checkRoomAndGuest = function () {
   const roomNumber = document.querySelector(`#room_number`); // нашел поле комнат
-
   // идет работа по функция комнаты и гости
   const onRoomNumberChange = function () {
     const ROOM_ONE = `1`;
@@ -114,13 +114,11 @@ const checkRoomAndGuest = function () {
     } else if (roomValue === ROOM_THREE) { // если значение 1 то это 1 комната выбрана
       window.main.removeAddDisabled(capacityOptions);
       setDisabledGuest(2, СountGuests, capacityOptions, 0);
-    }
-    if (roomValue > СountGuests.length - 1) { // если значение 1 то это 1 комната выбрана
+    } else if (roomValue > СountGuests.length - 1) { // если значение 1 то это 1 комната выбрана. Исп
       window.main.removeAddDisabled(capacityOptions);
       setDisabledGuest(3, СountGuests, capacityOptions, 3);
     }
   };
-
   roomNumber.addEventListener(`change`, onRoomNumberChange);
 };
 
@@ -137,11 +135,7 @@ const getArrValueFromHtml = function (arrHtml) {
   return itemValues;
 };
 
-
-const type = document.querySelector(`#type`);
-const types = type.querySelectorAll(`option`);
 const titles = getArrValueFromHtml(types);
-const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
 
 // функция сравнения цены по типу жилья
 const onTypeChange = function () {
@@ -158,12 +152,8 @@ type.addEventListener(`change`, onTypeChange);
 price.setAttribute(`required`, `required`);
 price.setAttribute(`type`, `number`);
 price.setAttribute(`max`, `${MAX_PRICE}`);
-
-
 avatar.setAttribute(`accept`, `image/*`);
-
 image.setAttribute(`accept`, `image/*`);
-
 
 const setTimeinAndTimeout = function () {
   const onTimeinChange = function () {
@@ -174,9 +164,7 @@ const setTimeinAndTimeout = function () {
       }
     }
   };
-
   timein.addEventListener(`change`, onTimeinChange);
-
   const onTimeoutChange = function () {
     for (let i = 0; i < timeoutOptions.length; i++) {
       if (timeoutOptions[i].value === timeout.value) {
@@ -184,7 +172,6 @@ const setTimeinAndTimeout = function () {
         break;
       }
     }
-
   };
   timeout.addEventListener(`change`, onTimeoutChange);
 };
@@ -196,13 +183,11 @@ form.addEventListener(`submit`, function (evt) {
   window.backend.save(new FormData(form), onSuccess, showErrorSave);
 });
 
-
 const onSuccess = function () { // обработчик отправки успешной формы
   mapPins.appendChild(successTemplate); // Добавил нод в Html
   document.addEventListener(`keydown`, onSuccessPressEsc); // добавивл обработчик по ссылке
   // где onSuccessPressEsc этот колбек удаляет себя же как обработчика
   document.addEventListener(`click`, onSuccessClick); // обработчик на клик, удаляет себя и обработик на ESC
-
   startSite(); // функция которая приводит сайт в начальное состояние
 };
 
@@ -221,12 +206,14 @@ const removeShowSuccess = function () {
   document.removeEventListener(`keydown`, onSuccessPressEsc);
   document.removeEventListener(`click`, onSuccessClick);
 };
-  // Добавляю удаление сообщения об успешной отправке через ESC
+
+// Добавляю удаление сообщения об успешной отправке через ESC
 const onSuccessPressEsc = function (evt) {
   if (evt.keyCode === KEY_CODE_ESC) {
     removeShowSuccess(); // функция удаления успешного окна отправки
   }
 };
+
 const onSuccessClick = function () {
   removeShowSuccess(); // функция удаления успешного окна отправки
 };
@@ -236,11 +223,9 @@ const showErrorSave = function () {
   const main = document.querySelector(`main`); // нашел куда вставляем
   main.appendChild(nodeError); // вставил в html элемент наш шаблон
   errorButton = document.querySelector(`.error__button`);// находим кнопку по которой будем кликать для закрытия
-
   document.addEventListener(`click`, onAroundOfErrorButtonClick);
   document.addEventListener(`keydown`, onErrorButtonPressEsc);
   errorButton.addEventListener(`click`, onErrorButtonClick);
-
 };
 
 const removeShowError = function () {
@@ -249,7 +234,8 @@ const removeShowError = function () {
   document.removeEventListener(`keydown`, onErrorButtonPressEsc);
   errorButton.removeEventListener(`click`, onErrorButtonClick);
 };
-  // создаю колбек функцию по ссылке для удаления окна с ошибкой
+
+// создаю колбек функцию по ссылке для удаления окна с ошибкой
 const onAroundOfErrorButtonClick = function () { // пишу функцию по клику на кнопку закрытия
   removeShowError();
 };
@@ -280,7 +266,6 @@ const adFormReset = document.querySelector(`.ad-form__reset`); // клик по 
 adFormReset.addEventListener(`click`, onFormClick);
 adFormReset.addEventListener(`keydown`, onFormPressEnter);
 
-
 window.form = {
   setTimeinAndTimeout,
   capacityOptions,
@@ -291,4 +276,3 @@ window.form = {
   START_ADDRESS_X,
   START_ADDRESS_Y,
 };
-

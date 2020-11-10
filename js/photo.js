@@ -3,9 +3,9 @@
 const photoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
 const previewPhotoFlat = document.querySelector(`.ad-form__photo`);
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
-
 const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
 const previewAvatar = document.querySelector(`.ad-form-header__preview`); // картинка, куда мы будем выставлять превью загруженного изображения
+
 const loadFile = function (fileChooserLoad, previewPhoto, fileTypes) {
   fileChooserLoad.addEventListener(`change`, () => { // обработчик, пользователь кликает поле для загрузки
     const file = fileChooserLoad.files[0]; // получаем из списка загруженный один файл
@@ -22,8 +22,7 @@ const loadFile = function (fileChooserLoad, previewPhoto, fileTypes) {
       const reader = new FileReader();
 
       reader.addEventListener(`load`, () => {
-        previewPhoto.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
-
+        previewPhoto.replaceChildren(); // replaceChildren предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
         previewPhoto.style.display = `flex`;
         previewPhoto.style.alignItems = `center`;
         previewPhoto.style.justifyContent = `center`;

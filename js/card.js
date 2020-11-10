@@ -8,7 +8,7 @@ const map = document.querySelector(`.map`); // находим место в ко
 const addClassHidden = function (elementHtml) {
   elementHtml.classList.add(`hidden`);
 };
-  // создание карточки заполнение всех полей по шаблону
+// создание карточки заполнение всех полей по шаблону
 const createCard = function (objData) { // помещаем в функцию объект с которого возьмем данные
   const cardTemplate = card.cloneNode(true); // клонируем шаблон т.к. много объявлений и без клона не вставить в html
   if (objData.offer.title) { // заходим в поле объекта заголовок
@@ -41,7 +41,6 @@ const createCard = function (objData) { // помещаем в функцию о
   } else {
     addClassHidden(cardTemplate.querySelector(`.popup__text--time`));
   }
-
 
   const cardTemplateLiTegs = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`); // находим все li теги с плюсами квартиры
   const classNames = window.util.getArrClassNameHtml(cardTemplateLiTegs); // получаем все названия классов массива li
@@ -78,9 +77,7 @@ const createCard = function (objData) { // помещаем в функцию о
   } else {
     cardTemplate.querySelector(`.popup__avatar`).classList.add(`hidden`);
   }
-  // }
   return cardTemplate; // возвращаем полностью заполненую карточку по шаблону
-
 };
 
 

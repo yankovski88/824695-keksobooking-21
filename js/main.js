@@ -38,7 +38,6 @@ const removeAddDisabled = function (arr) {
   });
 };
 
-
 // добавить ad-form--disabled
 const addAdFormDisabled = function (item) {
   item.classList.add(`ad-form--disabled`);
@@ -93,7 +92,6 @@ const onMapPinMainKeydown = function (evt) {
 if (window.card.map.classList.contains(`map--faded`)) {
   mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);
 }
-
 
 window.main = {
   addMapFaded,

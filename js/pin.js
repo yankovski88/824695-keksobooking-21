@@ -1,9 +1,9 @@
 'use strict';
 
 const MAX_PIN = 5;
-
 const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`); // нашли шаблон по pin
 let itemPins; // новый массив меток после изменения фильтра
+
 // функция удаления всех активных меток
 const removeMapPinActive = function (nodePins) {
   nodePins.forEach((item) => { // перебираем все метки
@@ -12,6 +12,7 @@ const removeMapPinActive = function (nodePins) {
     }
   });
 };
+
 const createPin = function (objData) { // по этому макету создается метка
   const pinTemplate = pin.cloneNode(true); // создаем клоны метки
   if (objData.offer) { // если есть описание offer,  то рисуем метки.
@@ -22,7 +23,6 @@ const createPin = function (objData) { // по этому макету созд�
     pinTemplate.style.top = `${objData.location.y}px`;
 
     pinTemplate.addEventListener(`click`, (evt) => { // отслеживаем клик по каждой созданой метке
-
       let target = evt.target; // цель по которой был клик
       if (target.tagName === `IMG`) { // если таргет был с тегом IMG
         target = target.parentNode; // то переопределяем таргет на его родителя, с помощью target.parentNode
@@ -38,7 +38,6 @@ const createPin = function (objData) { // по этому макету созд�
       };
       removeMapPinActive(itemPins); // удаление активной метки
       setMapPinActive(); // установка активной метки
-
 
       // код по открытию карточки квартир
       if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
@@ -86,7 +85,6 @@ const onMapEscapePressRemovePinActive = function (evt) {
   }
 };
 window.card.map.addEventListener(`keydown`, onMapEscapePressRemovePinActive); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
-
 
 window.pin = {
   MAX_PIN,

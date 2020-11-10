@@ -8,7 +8,6 @@ const showError = function (errorMessage) { // всплывающее окно �
     right: 0;
     color: red;
     font-size: 50px;
-    
     z-index: 100; 
     margin: 0 auto; 
     text-align: center; 
@@ -17,7 +16,7 @@ const showError = function (errorMessage) { // всплывающее окно �
     display: flex; 
     justify-content: center; 
     align-items: center  
-    `;
+  `;
 
   node.textContent = errorMessage;
   window.card.map.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
