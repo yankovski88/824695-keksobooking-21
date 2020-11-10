@@ -8,6 +8,7 @@ const map = document.querySelector(`.map`); // находим место в ко
 const addClassHidden = function (elementHtml) {
   elementHtml.classList.add(`hidden`);
 };
+
 // создание карточки заполнение всех полей по шаблону
 const createCard = function (objData) { // помещаем в функцию объект с которого возьмем данные
   const cardTemplate = card.cloneNode(true); // клонируем шаблон т.к. много объявлений и без клона не вставить в html
@@ -79,7 +80,6 @@ const createCard = function (objData) { // помещаем в функцию о
   }
   return cardTemplate; // возвращаем полностью заполненую карточку по шаблону
 };
-
 
 // функция по вставке элемента перед другим элементом
 const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {

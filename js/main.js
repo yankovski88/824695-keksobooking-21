@@ -60,7 +60,6 @@ const onMapPinMainMousedown = function (evt) {
   if (evt.which === LEFT_KEY_MOUSE_CODE) { // было evt.which
     window.card.map.classList.remove(`map--faded`); // карта становится активной
     window.backend.load(window.filter.filterPin, window.error.showError); // делаем запрос для заполнения данных для метки
-
     removeAdFormDisabled(form); // форма становится активной
     removeformFieldsetsDisabled(); // удаляется где есть disabled в форме
     window.form.checkRoomAndGuest(); // запускается проверка по гостям
@@ -89,6 +88,7 @@ const onMapPinMainKeydown = function (evt) {
   mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
   mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
 };
+
 if (window.card.map.classList.contains(`map--faded`)) {
   mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);
 }

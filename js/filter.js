@@ -3,22 +3,21 @@
 const DEBOUNCE_INTERVAL = 500; // интервал задержки
 const ANY_CHOICE = `any`;
 const ALL_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`]; // переисление всех кнопок приимущества в точности как в разметке
-
+const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
+const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
 const MapPrice = { // словарь для фильтрации middle
   MIDDLE_MIN: 10000,
   MIDDLE_MAX: 50000,
   LOW: 10000,
   HIGH: 50000,
 };
-
 const PriceValue = {
   ANY: `any`,
   LOW: `low`,
   MIDDLE: `middle`,
   HIGH: `high`,
 };
-
-const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
+let lastTimeout;
 
 // удаление меток если было изменения фильтра
 const delPin = function () {
@@ -38,7 +37,7 @@ const delCard = function () {
     mapCards.remove(); // удаляем карточку т.к. условие при клике любого фильтра удаляем карточку
   }
 };
-const mapPinsHtml = document.querySelector(`.map__pins`); // место куда будут вставлятся pinы
+
 const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
 
 const renderPin = function () { // отрисовать метки
@@ -64,8 +63,6 @@ const renderNewPin = function (newPins) {
     }
   }
 };
-
-let lastTimeout;
 
 const filterPin = function (arr) {
   window.main.removeAddDisabled(window.main.mapFilterSelects); // удалили disabled из фильтра на карте ТОЛЬКО после загрузки меток
@@ -114,7 +111,7 @@ const filterPin = function (arr) {
     });
 
     const filterPriceFlats = copyDataFlats.filter(function (item) {
-      if (flatPrice === PriceValue.MIDDLE && (item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX)) {
+      if (flatPrice === PriceValue.MIDDLE && item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX) {
         return item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX;
       }
       if (flatPrice === PriceValue.LOW) {

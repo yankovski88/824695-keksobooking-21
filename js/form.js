@@ -23,8 +23,11 @@ const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT, 10
 const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mainPinHeight);
 const type = document.querySelector(`#type`);
 const types = type.querySelectorAll(`option`);
-// const titles = getArrValueFromHtml(types);
 const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
+const title = document.querySelector(`#title`);
+const price = document.querySelector(`#price`);
+const form = document.querySelector(`.ad-form`);
+const adFormReset = document.querySelector(`.ad-form__reset`); // клик по этой кнопке
 let errorButton; // вынес кнопку в глобальную видимость т.к. нужно ее найти только после добавленя ее в DOM
 
 // функция которая удаляет все поля и возвращает сайт в начальное состояние
@@ -36,7 +39,6 @@ const startSite = function () {
   window.main.addDisabled(window.main.formFieldsets); // добавление к полям формы disabled
   window.main.addDisabled(window.main.mapFilterSelects); //  к селектам карты добавил disabled
 
-
   // удаление карточки если была открыта
   if (window.card.map.querySelector(`.map__card`)) {
     window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
@@ -46,6 +48,7 @@ const startSite = function () {
     window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP; // прописали стиль координат на данные с html
     window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
   }
+
   // возвращает начальное поле адреса
   window.movePin.fillAddress(window.movePin.address, START_ADDRESS_X, START_ADDRESS_Y);
   // удаление аватара и устнановка старой картинки
@@ -68,6 +71,7 @@ const startSite = function () {
 
   setGuestsDefault(); // функция делает по умолчанию поле с гостями
   delPinButtons(); // удалить все метки
+
   // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
   window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
 };
@@ -122,9 +126,7 @@ const checkRoomAndGuest = function () {
   roomNumber.addEventListener(`change`, onRoomNumberChange);
 };
 
-const title = document.querySelector(`#title`);
 title.setAttribute(`minlength`, MIN_LENGTH);
-const price = document.querySelector(`#price`);
 price.setAttribute(`max`, MAX_PRICE);
 
 const getArrValueFromHtml = function (arrHtml) {
@@ -177,7 +179,6 @@ const setTimeinAndTimeout = function () {
 };
 
 // после того как форма отправится любым способом, то вызовитесь следующие колбеки
-const form = document.querySelector(`.ad-form`);
 form.addEventListener(`submit`, function (evt) {
   evt.preventDefault(); // отменил отправку формы по умолчанию
   window.backend.save(new FormData(form), onSuccess, showErrorSave);
@@ -262,7 +263,6 @@ const onFormPressEnter = function (evt) {
 };
 
 // добаить обработчик очистки формы
-const adFormReset = document.querySelector(`.ad-form__reset`); // клик по этой кнопке
 adFormReset.addEventListener(`click`, onFormClick);
 adFormReset.addEventListener(`keydown`, onFormPressEnter);
 
