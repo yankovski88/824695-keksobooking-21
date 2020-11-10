@@ -47,19 +47,23 @@ const renderPin = function () { // отрисовать метки
 
 // функция которая отрисовывает pin после изменения фильтра
 const renderNewPin = function (newPins) {
-  delPin();
-  let countPin = 0;
-  if (newPins.length < window.pin.MAX_PIN) {
-    countPin = newPins.length;
-  } else {
-    countPin = window.pin.MAX_PIN;
-  }
+  newPins.filter(function (item) {
+    if (item.offer) {
+      delPin();
+      let countPin = 0;
+      if (newPins.length < window.pin.MAX_PIN) {
+        countPin = newPins.length;
+      } else {
+        countPin = window.pin.MAX_PIN;
+      }
+      for (let i = 0; i < countPin; i++) { // перебрать все данные которые получены и перенесены в переменную
+        const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
+        fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+        renderPin(); // прорисовываем метки
+      }
+    }
+  });
 
-  for (let i = 0; i < countPin; i++) { // перебрать все данные которые получены и перенесены в переменную
-    const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
-    fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-    renderPin(); // прорисовываем метки
-  }
 };
 
 const filterPin = function (arr) {
