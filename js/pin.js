@@ -15,66 +15,64 @@ const removeMapPinActive = function (nodePins) {
 
 const createPin = function (objData) { // по этому макету создается метка
   const pinTemplate = pin.cloneNode(true); // создаем клоны метки
-  if (objData.offer) { // если есть описание offer,  то рисуем метки.
-    const img = pinTemplate.querySelector(`img`); // создал константу чтобы 2 раза не искать
-    img.src = objData.author.avatar; // вставили ссылку на аватар
-    img.alt = objData.offer.title; // вставили заголовок
-    pinTemplate.style.left = `${objData.location.x}px`; // вставили координаты
-    pinTemplate.style.top = `${objData.location.y}px`;
+  const img = pinTemplate.querySelector(`img`); // создал константу чтобы 2 раза не искать
+  img.src = objData.author.avatar; // вставили ссылку на аватар
+  img.alt = objData.offer.title; // вставили заголовок
+  pinTemplate.style.left = `${objData.location.x}px`; // вставили координаты
+  pinTemplate.style.top = `${objData.location.y}px`;
 
-    pinTemplate.addEventListener(`click`, (evt) => { // отслеживаем клик по каждой созданой метке
-      let target = evt.target; // цель по которой был клик
-      if (target.tagName === `IMG`) { // если таргет был с тегом IMG
-        target = target.parentNode; // то переопределяем таргет на его родителя, с помощью target.parentNode
+  pinTemplate.addEventListener(`click`, (evt) => { // отслеживаем клик по каждой созданой метке
+    let target = evt.target; // цель по которой был клик
+    if (target.tagName === `IMG`) { // если таргет был с тегом IMG
+      target = target.parentNode; // то переопределяем таргет на его родителя, с помощью target.parentNode
+    }
+
+    // код установки активной метки
+    const mapItemPins = document.querySelectorAll(`.map__pin`); // находим все метки после рендера
+    itemPins = mapItemPins;
+
+    // функция по установке активной метки
+    const setMapPinActive = function () {
+      target.classList.add(`map__pin--active`); // добавление к метке класа актив
+    };
+    removeMapPinActive(itemPins); // удаление активной метки
+    setMapPinActive(); // установка активной метки
+
+    // код по открытию карточки квартир
+    if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
+      if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
+        window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
+        removeMapPinActive(itemPins);
+        setMapPinActive();
+        window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
+      } else {
+        removeMapPinActive(itemPins);
+        setMapPinActive();
+        window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
       }
+    }
 
-      // код установки активной метки
-      const mapItemPins = document.querySelectorAll(`.map__pin`); // находим все метки после рендера
-      itemPins = mapItemPins;
-
-      // функция по установке активной метки
-      const setMapPinActive = function () {
-        target.classList.add(`map__pin--active`); // добавление к метке класа актив
-      };
+    const popupClose = window.card.map.querySelector(`.popup__close`);
+    const mapCard = window.card.map.querySelector(`.map__card`);
+    // удаление карточки
+    const removeChildMapCard = function () {
+      window.card.map.removeChild(mapCard);
+    };
+    const onPopupCloseClick = function () {
+      removeChildMapCard(); // удаление карточки
       removeMapPinActive(itemPins); // удаление активной метки
-      setMapPinActive(); // установка активной метки
+    };
+    popupClose.addEventListener(`click`, onPopupCloseClick);
 
-      // код по открытию карточки квартир
-      if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
-        if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
-          window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
-          removeMapPinActive(itemPins);
-          setMapPinActive();
-          window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
-        } else {
-          removeMapPinActive(itemPins);
-          setMapPinActive();
-          window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
-        }
-      }
-
-      const popupClose = window.card.map.querySelector(`.popup__close`);
-      const mapCard = window.card.map.querySelector(`.map__card`);
-      // удаление карточки
-      const removeChildMapCard = function () {
-        window.card.map.removeChild(mapCard);
-      };
-      const onPopupCloseClick = function () {
+    const onPopupCloseEnterPress = function () {
+      if (evt.target.code === window.card.KEY_CODE_ENTER) {
         removeChildMapCard(); // удаление карточки
         removeMapPinActive(itemPins); // удаление активной метки
-      };
-      popupClose.addEventListener(`click`, onPopupCloseClick);
-
-      const onPopupCloseEnterPress = function () {
-        if (evt.target.code === window.card.KEY_CODE_ENTER) {
-          removeChildMapCard(); // удаление карточки
-          removeMapPinActive(itemPins); // удаление активной метки
-        }
-      };
-      popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
-      // если удалять то сробатывает область видимости
-    });
-  }
+      }
+    };
+    popupClose.addEventListener(`keydown`, onPopupCloseEnterPress); // думаю эти колбеки можно не удалять т.к.
+    // если удалять то сробатывает область видимости
+  });
   return pinTemplate; // вернули метку
 };
 
