@@ -114,7 +114,7 @@ const filterPin = function (arr) {
     });
 
     const filterPriceFlats = copyDataFlats.filter(function (item) {
-      if (flatPrice === PriceValue.MIDDLE) {
+      if (flatPrice === PriceValue.MIDDLE && (item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX)) {
         return item.offer.price >= MapPrice.MIDDLE_MIN && item.offer.price < MapPrice.MIDDLE_MAX;
       }
       if (flatPrice === PriceValue.LOW) {
@@ -157,23 +157,14 @@ const filterPin = function (arr) {
         return false;
       }
 
-      if (flatPrice === PriceValue.MIDDLE) {
-        if (flatPrice !== PriceValue.ANY && item.offer.price < MapPrice.MIDDLE_MIN) {
-          return false;
-        } // не получилось соединить эти 2 условия. Не знаю почему.
-        if (flatPrice !== PriceValue.ANY && item.offer.price >= MapPrice.MIDDLE_MAX) {
-          return false;
-        }
-      }
-      if (flatPrice === PriceValue.LOW) {
-        if ((flatPrice !== PriceValue.ANY) && (item.offer.price >= MapPrice.LOW)) {
-          return false;
-        }
-      }
-      if (flatPrice === PriceValue.HIGH) {
-        if (flatPrice !== PriceValue.ANY && item.offer.price <= MapPrice.HIGH) {
-          return false;
-        }
+      if (flatPrice === PriceValue.MIDDLE && flatPrice !== PriceValue.ANY && item.offer.price < MapPrice.MIDDLE_MIN) {
+        return false;
+      } else if (flatPrice === PriceValue.MIDDLE && flatPrice !== PriceValue.ANY && item.offer.price >= MapPrice.MIDDLE_MAX) {
+        return false;
+      } else if (flatPrice === PriceValue.LOW && flatPrice !== PriceValue.ANY && item.offer.price >= MapPrice.LOW) {
+        return false;
+      } else if (flatPrice === PriceValue.HIGH && flatPrice !== PriceValue.ANY && item.offer.price <= MapPrice.HIGH) {
+        return false;
       }
 
       if (flatRoom !== ANY_CHOICE && item.offer.rooms !== parseInt(flatRoom, 10)) {
