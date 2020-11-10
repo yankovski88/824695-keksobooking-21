@@ -38,32 +38,26 @@ const delCard = function () {
   }
 };
 
-const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
 
-const renderPin = function () { // отрисовать метки
+const renderPin = function (fragment) { // отрисовать метки
   mapPinsHtml.appendChild(fragment); // одним фрагментом Pin вствили в html
 };
 
 
 // функция которая отрисовывает pin после изменения фильтра
 const renderNewPin = function (newPins) {
-  newPins.filter(function (item) {
-    if (item.offer) {
-      delPin();
-      let countPin = 0;
-      if (newPins.length < window.pin.MAX_PIN) {
-        countPin = newPins.length;
-      } else {
-        countPin = window.pin.MAX_PIN;
-      }
-      for (let i = 0; i < countPin; i++) { // перебрать все данные которые получены и перенесены в переменную
-        const fragmentPin = window.pin.createPin(newPins[i]); // создаем метку через функцию выше
-        fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-        renderPin(); // прорисовываем метки
-      }
-    }
-  });
+  const fragment = document.createDocumentFragment(); // создаем фрагмент т.к. без него не вставим
 
+  const pinsWithOffer = newPins.filter(function (item) {
+    return !!item.offer;
+  });
+  delPin();
+  const pinsCount = pinsWithOffer.length < window.pin.MAX_PIN ? pinsWithOffer.length : window.pin.MAX_PIN;
+  for (let i = 0; i < pinsCount; i++) { // перебрать все данные которые получены и перенесены в переменную
+    const fragmentPin = window.pin.createPin(pinsWithOffer[i]); // создаем метку через функцию выше
+    fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
+    renderPin(fragment); // прорисовываем метки
+  }
 };
 
 const filterPin = function (arr) {
