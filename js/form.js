@@ -5,9 +5,12 @@ const KEY_CODE_ESC = 27;
 const KEY_CODE_ENTER = 13;
 const MIN_LENGTH = 30;
 const MAX_PRICE = 1000000;
+const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT, 10) + window.movePin.mapPinMain.offsetWidth / 2);
+const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mainPinHeight);
+const CountGuests = [[0, 1, 3], [0, 3], [3], [0, 1, 2]]; // это перечисление дляустановки определенным полям гостей disabled
+const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
 const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
 const capacityOptions = capacity.querySelectorAll(`option`); // выбрали у нее все всплывающие пункты
-const СountGuests = [[0, 1, 3], [0, 3], [3], [0, 1, 2]]; // это перечисление дляустановки определенным полям гостей disabled
 const avatar = document.querySelector(`#avatar`);
 const image = document.querySelector(`#images`);
 const timein = document.querySelector(`#timein`);
@@ -19,15 +22,14 @@ const success = document.querySelector(`#success`).content.querySelector(`.succe
 const successTemplate = success.cloneNode(true); // обязательно клонируем шаблон, без клона не вставится в html
 const error = document.querySelector(`#error`).content.querySelector(`.error`); // нашел шаблон
 const nodeError = error.cloneNode(true); // делаем клон ноду шаблона без нее не вставим
-const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT, 10) + window.movePin.mapPinMain.offsetWidth / 2);
-const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mainPinHeight);
 const type = document.querySelector(`#type`);
 const types = type.querySelectorAll(`option`);
-const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
 const title = document.querySelector(`#title`);
+const titles = window.util.getArrValueFromHtml(types);
 const price = document.querySelector(`#price`);
 const form = document.querySelector(`.ad-form`);
 const adFormReset = document.querySelector(`.ad-form__reset`); // клик по этой кнопке
+const imgPhotoFlat = window.photo.previewPhotoFlat.querySelector(`img`);
 let errorButton; // вынес кнопку в глобальную видимость т.к. нужно ее найти только после добавленя ее в DOM
 
 // функция которая удаляет все поля и возвращает сайт в начальное состояние
@@ -65,37 +67,33 @@ const startSite = function () {
   }
 
   // удаление старого фото квартииры
-  if (window.photo.previewPhotoFlat.querySelector(`img`)) {
-    window.photo.previewPhotoFlat.querySelector(`img`).remove();
+  if (imgPhotoFlat) {
+    imgPhotoFlat.remove();
   }
 
   setGuestsDefault(); // функция делает по умолчанию поле с гостями
   delPinButtons(); // удалить все метки
-
+  adFormReset.removeEventListener(`click`, onFormClick); // удалить обработчик на reset form через клик
+  adFormReset.removeEventListener(`click`, onFormPressEnter); // удалить обработчик на reset form через enter
   // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
   window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
+  window.main.mapPinMain.addEventListener(`keydown`, window.main.onMapPinMainKeydown); // добавил обработчик на загрузку главной страницы через enter
 };
 
-// удаляем атрибут disabled в полученом массиве option
-const removeToArrDisabled = function (arr) {
-  arr.forEach((item) => {
-    item.removeAttribute(`disabled`);
-  });
-};
-removeToArrDisabled(capacityOptions);
+window.util.removeToArrDisabled(capacityOptions);
 
 // установка поле гостя по умолчанию
 const setGuestsDefault = function () {
-  for (let i = 0; i < СountGuests[0].length; i++) { // перебираем массив для 1 комнаты
-    capacityOptions[СountGuests[0][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+  for (let i = 0; i < CountGuests[0].length; i++) { // перебираем массив для 1 комнаты
+    capacityOptions[CountGuests[0][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
   }
   capacityOptions[2].selected = true; // покажется активный выриант колличества гостей
 };
 setGuestsDefault();
 
-const setDisabledGuest = function (indexСountGuests, countGuests, guestOptions, indexSelectedGuestOptions) {
-  for (let i = 0; i < countGuests[indexСountGuests].length; i++) { // перебираем массив для 1 комнаты
-    guestOptions[countGuests[indexСountGuests][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
+const setDisabledGuest = function (indexCountGuests, countGuests, guestOptions, indexSelectedGuestOptions) {
+  for (let i = 0; i < countGuests[indexCountGuests].length; i++) { // перебираем массив для 1 комнаты
+    guestOptions[countGuests[indexCountGuests][i]].setAttribute(`disabled`, `true`); // устанавливаем всеим полям гостей disabled
   }
   guestOptions[indexSelectedGuestOptions].selected = true; // покажется активный выриант колличества гостей
 };
@@ -108,19 +106,17 @@ const checkRoomAndGuest = function () {
     const ROOM_TWO = `2`;
     const ROOM_THREE = `3`;
 
+    window.main.removeAddDisabled(capacityOptions); // функция удаляет у всех полей disabled
+
     const roomValue = roomNumber.value; // нашли значение выбраного поля пользователем
     if (roomValue === ROOM_ONE) { // если значение 1 то это 1 комната выбрана
-      window.main.removeAddDisabled(capacityOptions); // функция удаляет у всех полей disabled
-      setDisabledGuest(0, СountGuests, capacityOptions, 2);
+      setDisabledGuest(0, CountGuests, capacityOptions, 2);
     } else if (roomValue === ROOM_TWO) { // если значение 1 то это 1 комната выбрана
-      window.main.removeAddDisabled(capacityOptions);
-      setDisabledGuest(1, СountGuests, capacityOptions, 1);
+      setDisabledGuest(1, CountGuests, capacityOptions, 1);
     } else if (roomValue === ROOM_THREE) { // если значение 1 то это 1 комната выбрана
-      window.main.removeAddDisabled(capacityOptions);
-      setDisabledGuest(2, СountGuests, capacityOptions, 0);
-    } else if (roomValue > СountGuests.length - 1) { // если значение 1 то это 1 комната выбрана. Исп
-      window.main.removeAddDisabled(capacityOptions);
-      setDisabledGuest(3, СountGuests, capacityOptions, 3);
+      setDisabledGuest(2, CountGuests, capacityOptions, 0);
+    } else if (roomValue > CountGuests.length - 1) { // если значение 1 то это 1 комната выбрана. Исп
+      setDisabledGuest(3, CountGuests, capacityOptions, 3);
     }
   };
   roomNumber.addEventListener(`change`, onRoomNumberChange);
@@ -128,16 +124,6 @@ const checkRoomAndGuest = function () {
 
 title.setAttribute(`minlength`, MIN_LENGTH);
 price.setAttribute(`max`, MAX_PRICE);
-
-const getArrValueFromHtml = function (arrHtml) {
-  const itemValues = [];
-  arrHtml.forEach((item) => {
-    itemValues.push(item.value);
-  });
-  return itemValues;
-};
-
-const titles = getArrValueFromHtml(types);
 
 // функция сравнения цены по типу жилья
 const onTypeChange = function () {
@@ -262,10 +248,6 @@ const onFormPressEnter = function (evt) {
   }
 };
 
-// добаить обработчик очистки формы
-adFormReset.addEventListener(`click`, onFormClick);
-adFormReset.addEventListener(`keydown`, onFormPressEnter);
-
 window.form = {
   setTimeinAndTimeout,
   capacityOptions,
@@ -275,4 +257,7 @@ window.form = {
   KEY_CODE_ENTER,
   START_ADDRESS_X,
   START_ADDRESS_Y,
+  adFormReset, // добавил
+  onFormClick, // добавил
+  onFormPressEnter // добавил
 };

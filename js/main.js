@@ -67,6 +67,10 @@ const onMapPinMainMousedown = function (evt) {
     window.form.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
     mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
     mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
+
+    // добаить обработчик очистки формы
+    window.form.adFormReset.addEventListener(`click`, window.form.onFormClick);
+    window.form.adFormReset.addEventListener(`keydown`, window.form.onFormPressEnter);
   }
 };
 
@@ -77,16 +81,22 @@ if (window.card.map.classList.contains(`map--faded`)) {
 
 // вызываем все теже функции что и при клике на главную метку
 const onMapPinMainKeydown = function (evt) {
-  if (evt.code === `Enter`) {
+  if (evt.keyCode === window.form.KEY_CODE_ENTER) {
     window.card.map.classList.remove(`map--faded`);
+
+    window.backend.load(window.filter.filterPin, window.error.showError); // делаем запрос для заполнения данных для метки
+    removeAdFormDisabled(form);
+    removeformFieldsetsDisabled();
+    window.form.checkRoomAndGuest();
+    window.form.onTypeChange();
+    window.form.setTimeinAndTimeout();
+    mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
+    mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
+
+    // добаить обработчик очистки формы
+    window.form.adFormReset.addEventListener(`click`, window.form.onFormClick);
+    window.form.adFormReset.addEventListener(`keydown`, window.form.onFormPressEnter);
   }
-  removeAdFormDisabled(form);
-  removeformFieldsetsDisabled();
-  window.form.checkRoomAndGuest();
-  window.form.onTypeChange();
-  window.form.setTimeinAndTimeout();
-  mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
-  mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
 };
 
 if (window.card.map.classList.contains(`map--faded`)) {
@@ -104,4 +114,5 @@ window.main = {
   mapFilterSelects,
   LEFT_KEY_MOUSE_CODE,
   removeAddDisabled,
+  onMapPinMainKeydown
 };

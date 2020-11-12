@@ -56,10 +56,28 @@ const disabledMapFilter = function () {
   window.main.addDisabled(window.main.formFieldsets);
 };
 
+// удаляем атрибут disabled в полученом массиве option
+const removeToArrDisabled = function (arr) {
+  arr.forEach((item) => {
+    item.removeAttribute(`disabled`);
+  });
+};
+
+
+const getArrValueFromHtml = function (arrHtml) {
+  const itemValues = [];
+  arrHtml.forEach((item) => {
+    itemValues.push(item.value);
+  });
+  return itemValues;
+};
+
 window.util = {
   getArrOfTextBeforeDash,
   getArrClassNameHtml,
   comparisonArrsAndAddClassNameHidden,
   disabledMapFilter,
+  removeToArrDisabled,
+  getArrValueFromHtml
 };
 
