@@ -90,7 +90,6 @@ const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
 window.card = {
   createCard,
   mapFiltersContainer,
-  card,
   renderCard,
   map,
 };

@@ -259,5 +259,6 @@ window.form = {
   START_ADDRESS_Y,
   adFormReset, // добавил
   onFormClick, // добавил
-  onFormPressEnter // добавил
+  onFormPressEnter, // добавил
+  mapPins
 };
