@@ -1,6 +1,6 @@
 'use strict';
 
-// + все что связано с формой
+// все что связано с формой
 const KEY_CODE_ESC = 27;
 const KEY_CODE_ENTER = 13;
 const MIN_LENGTH = 30;
@@ -29,30 +29,24 @@ const titles = window.util.getArrValueFromHtml(types);
 const price = document.querySelector(`#price`);
 const form = document.querySelector(`.ad-form`);
 const adFormReset = document.querySelector(`.ad-form__reset`); // клик по этой кнопке
-const imgPhotoFlat = window.photo.previewPhotoFlat.querySelector(`img`);
 let errorButton; // вынес кнопку в глобальную видимость т.к. нужно ее найти только после добавленя ее в DOM
 
-// функция которая удаляет все поля и возвращает сайт в начальное состояние
-const startSite = function () {
-  form.reset(); // удаление полей в форме подачи объявления
-  window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
-  window.main.addAdFormDisabled(form); // дизейбл формы
-  window.main.addMapFaded(window.card.map); // дизейбл карты
-  window.main.addDisabled(window.main.formFieldsets); // добавление к полям формы disabled
-  window.main.addDisabled(window.main.mapFilterSelects); //  к селектам карты добавил disabled
-
+const delOpenCard = function () {
   // удаление карточки если была открыта
   if (window.card.map.querySelector(`.map__card`)) {
     window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
   }
+};
+
+const setMainPinCenter = function () {
   // установка метки в центре
   if (window.card.map.classList.contains(`map--faded`)) { // если с карта содержит map--faded т.е. заблокирована
     window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP; // прописали стиль координат на данные с html
     window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
   }
+};
 
-  // возвращает начальное поле адреса
-  window.movePin.fillAddress(window.movePin.address, START_ADDRESS_X, START_ADDRESS_Y);
+const delAvatar = function () {
   // удаление аватара и устнановка старой картинки
   if (window.photo.previewAvatar.querySelector(`img`).src !== `img/muffin-grey.svg`) {
     window.photo.previewAvatar.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
@@ -65,11 +59,33 @@ const startSite = function () {
     window.photo.previewAvatar.appendChild(imgAvatar);
     imgAvatar.src = `img/muffin-grey.svg`;
   }
+};
 
+const delPhoto = function () {
+  const imgPhotoFlat = window.photo.previewPhotoFlat.querySelector(`img`); // нашли поле с фоткой квартиры
   // удаление старого фото квартииры
   if (imgPhotoFlat) {
     imgPhotoFlat.remove();
   }
+};
+
+// функция которая удаляет все поля и возвращает сайт в начальное состояние
+const startSite = function () {
+  form.reset(); // удаление полей в форме подачи объявления
+  window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+  window.main.addAdFormDisabled(form); // дизейбл формы
+  window.util.hideMap(window.card.map); // дизейбл карты
+  window.util.disableNodeElement(window.main.formFieldsets); // добавление к полям формы disabled
+  window.util.disableNodeElement(window.main.mapFilterSelects); //  к селектам карты добавил disabled
+
+  delOpenCard();
+  setMainPinCenter();
+  delAvatar();
+  delPhoto();
+  onTypeChange(); // добавил чистку т.к. нпч
+
+  // возвращает начальное поле адреса
+  window.movePin.fillAddress(window.movePin.address, START_ADDRESS_X, START_ADDRESS_Y);
 
   setGuestsDefault(); // функция делает по умолчанию поле с гостями
   delPinButtons(); // удалить все метки
@@ -125,6 +141,8 @@ const checkRoomAndGuest = function () {
 title.setAttribute(`minlength`, MIN_LENGTH);
 price.setAttribute(`max`, MAX_PRICE);
 
+// price.setAttribute(`placeholder`, `от ${Prices[1]}`); // установил по умолчанию цену в 1000 квартиры
+
 // функция сравнения цены по типу жилья
 const onTypeChange = function () {
   const titleValue = type.value;
@@ -135,6 +153,7 @@ const onTypeChange = function () {
     }
   }
 };
+onTypeChange();
 type.addEventListener(`change`, onTypeChange);
 
 price.setAttribute(`required`, `required`);
@@ -232,6 +251,7 @@ const onErrorButtonPressEsc = function (evt) {
     removeShowError();
   }
 };
+
 const onErrorButtonClick = function () {
   removeShowError();
 };
@@ -255,10 +275,9 @@ window.form = {
   checkRoomAndGuest,
   onTypeChange,
   KEY_CODE_ENTER,
-  START_ADDRESS_X,
-  START_ADDRESS_Y,
-  adFormReset, // добавил
-  onFormClick, // добавил
-  onFormPressEnter, // добавил
-  mapPins
+  adFormReset,
+  onFormClick,
+  onFormPressEnter,
+  mapPins,
+  KEY_CODE_ESC,
 };

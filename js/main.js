@@ -15,21 +15,10 @@ const onMapEscapePress = function (evt) {
 };
 window.card.map.addEventListener(`keydown`, onMapEscapePress); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
 
-// добавить к классу map--faded
-const addMapFaded = function (item) {
-  item.classList.add(`map--faded`);
-};
-addMapFaded(window.card.map); // дизэйбл карты
+window.util.hideMap(window.card.map); // дизэйбл карты
 
-// добавить disabled
-const addDisabled = function (arrItems) {
-  arrItems.forEach((item) => {
-    item.setAttribute(`disabled`, `true`);
-  });
-};
-
-addDisabled(formFieldsets);
-addDisabled(mapFilterSelects); //  к селектам карты добавил disabled
+window.util.disableNodeElement(formFieldsets);
+window.util.disableNodeElement(mapFilterSelects); //  к селектам карты добавил disabled
 
 // удаление disabled fieldset
 const removeAddDisabled = function (arr) {
@@ -55,22 +44,26 @@ const removeformFieldsetsDisabled = function () {
   });
 };
 
+const activateSite = function () {
+  window.card.map.classList.remove(`map--faded`); // карта становится активной
+  window.backend.load(window.filter.filterPin, window.error.showError); // делаем запрос для заполнения данных для метки
+  removeAdFormDisabled(form); // форма становится активной
+  removeformFieldsetsDisabled(); // удаляется где есть disabled в форме
+  window.form.checkRoomAndGuest(); // запускается проверка по гостям
+  window.form.onTypeChange(); // запускаемся проверка по типу жилья
+  window.form.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
+  mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
+  mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
+
+  // добаить обработчик очистки формы
+  window.form.adFormReset.addEventListener(`click`, window.form.onFormClick);
+  window.form.adFormReset.addEventListener(`keydown`, window.form.onFormPressEnter);
+};
+
 // если был клик левой кнопки мыши на клавную метку
 const onMapPinMainMousedown = function (evt) {
   if (evt.which === LEFT_KEY_MOUSE_CODE) { // было evt.which
-    window.card.map.classList.remove(`map--faded`); // карта становится активной
-    window.backend.load(window.filter.filterPin, window.error.showError); // делаем запрос для заполнения данных для метки
-    removeAdFormDisabled(form); // форма становится активной
-    removeformFieldsetsDisabled(); // удаляется где есть disabled в форме
-    window.form.checkRoomAndGuest(); // запускается проверка по гостям
-    window.form.onTypeChange(); // запускаемся проверка по типу жилья
-    window.form.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
-    mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
-    mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
-
-    // добаить обработчик очистки формы
-    window.form.adFormReset.addEventListener(`click`, window.form.onFormClick);
-    window.form.adFormReset.addEventListener(`keydown`, window.form.onFormPressEnter);
+    activateSite();
   }
 };
 
@@ -82,20 +75,7 @@ if (window.card.map.classList.contains(`map--faded`)) {
 // вызываем все теже функции что и при клике на главную метку
 const onMapPinMainKeydown = function (evt) {
   if (evt.keyCode === window.form.KEY_CODE_ENTER) {
-    window.card.map.classList.remove(`map--faded`);
-
-    window.backend.load(window.filter.filterPin, window.error.showError); // делаем запрос для заполнения данных для метки
-    removeAdFormDisabled(form);
-    removeformFieldsetsDisabled();
-    window.form.checkRoomAndGuest();
-    window.form.onTypeChange();
-    window.form.setTimeinAndTimeout();
-    mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
-    mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
-
-    // добаить обработчик очистки формы
-    window.form.adFormReset.addEventListener(`click`, window.form.onFormClick);
-    window.form.adFormReset.addEventListener(`keydown`, window.form.onFormPressEnter);
+    activateSite();
   }
 };
 
@@ -104,12 +84,10 @@ if (window.card.map.classList.contains(`map--faded`)) {
 }
 
 window.main = {
-  addMapFaded,
   addAdFormDisabled,
   mapFilter,
   mapPinMain,
   onMapPinMainMousedown,
-  addDisabled,
   formFieldsets,
   mapFilterSelects,
   LEFT_KEY_MOUSE_CODE,

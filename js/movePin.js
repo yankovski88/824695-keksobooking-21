@@ -3,9 +3,9 @@
 const MAIN_PIN_TIP = 22;
 const PIN_FIELD_MIN_Y = 130;
 const PIN_FIELD_HEIGHT = 630;
-const MAP_PIN_MAIN_TOP = `375px`;
-const MAP_PIN_MAIN_LEFT = `570px`;
 const mapPinMain = document.querySelector(`.map__pin--main`);
+const MAP_PIN_MAIN_TOP = `${mapPinMain.offsetTop}px`;
+const MAP_PIN_MAIN_LEFT = `${Math.round(mapPinMain.offsetLeft)}px`;
 const address = document.querySelector(`#address`);
 const mapPin = document.querySelector(`.map__pins`);
 const mainPinHeight = mapPinMain.offsetHeight + MAIN_PIN_TIP; // полная высота of pin

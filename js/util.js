@@ -33,12 +33,13 @@ const comparisonArrsAndAddClassNameHidden = function (arrFirst, arrSecond, htmlE
   if (arrFirst.length > 0) {
     for (let i = 0; i < arrFirst.length; i++) { // перебираем все список плюсов полученого из объекта
       for (let j = 0; j < arrSecond.length; j++) { // перебираем общий список плюсов полученный из шаблона
-        htmlElement[j].classList.add(`hidden`); // добавили всем скрыться полям сразу
         if (arrFirst[i] === arrSecond[j]) { // если есть вопадение плюсов
           htmlElement[j].textContent = arrFirst[i]; // то пишем textContent
         }
         if (htmlElement[j].textContent) {
           htmlElement[j].classList.remove(`hidden`);
+        } else {
+          htmlElement[j].classList.add(`hidden`); // добавили всем скрыться полям сразу
         }
       }
     }
@@ -51,9 +52,9 @@ const comparisonArrsAndAddClassNameHidden = function (arrFirst, arrSecond, htmlE
 
 // функция неактивного состояния сайта
 const disabledMapFilter = function () {
-  window.main.addMapFaded(window.card.map); // сделать карту неактивной
+  window.util.hideMap(window.card.map); // сделать карту неактивной
   window.main.addAdFormDisabled(window.filter.mapFilters);
-  window.main.addDisabled(window.main.formFieldsets);
+  window.main.disableNodeElement(window.main.formFieldsets);
 };
 
 // удаляем атрибут disabled в полученом массиве option
@@ -63,7 +64,6 @@ const removeToArrDisabled = function (arr) {
   });
 };
 
-
 const getArrValueFromHtml = function (arrHtml) {
   const itemValues = [];
   arrHtml.forEach((item) => {
@@ -72,12 +72,26 @@ const getArrValueFromHtml = function (arrHtml) {
   return itemValues;
 };
 
+// добавить к классу map--faded
+const hideMap = function (item) {
+  item.classList.add(`map--faded`);
+};
+
+// добавить disabled disableNodeElement
+const disableNodeElement = function (arrItems) {
+  arrItems.forEach((item) => {
+    item.setAttribute(`disabled`, `true`);
+  });
+};
+
 window.util = {
   getArrOfTextBeforeDash,
   getArrClassNameHtml,
   comparisonArrsAndAddClassNameHidden,
   disabledMapFilter,
   removeToArrDisabled,
-  getArrValueFromHtml
+  getArrValueFromHtml,
+  hideMap,
+  disableNodeElement
 };
 
