@@ -47,10 +47,8 @@ const createPin = function (objData) { // по этому макету созд�
     if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
       if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
         window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
-        openCard();
-      } else {
-        openCard();
       }
+      openCard();
     }
 
     const popupClose = window.card.map.querySelector(`.popup__close`);
@@ -121,6 +119,6 @@ window.pin = {
   createPin,
   delPin,
   renderPin,
-  renderNewPin
+  renderNewPin,
 };
 

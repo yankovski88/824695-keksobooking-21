@@ -141,8 +141,6 @@ const checkRoomAndGuest = function () {
 title.setAttribute(`minlength`, MIN_LENGTH);
 price.setAttribute(`max`, MAX_PRICE);
 
-// price.setAttribute(`placeholder`, `от ${Prices[1]}`); // установил по умолчанию цену в 1000 квартиры
-
 // функция сравнения цены по типу жилья
 const onTypeChange = function () {
   const titleValue = type.value;
