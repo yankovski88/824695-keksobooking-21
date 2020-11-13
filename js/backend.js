@@ -1,25 +1,27 @@
 'use strict';
+
 const URL_DATA = `https://21.javascript.pages.academy/keksobooking/data`;
+const URL_SAVE = `https://21.javascript.pages.academy/keksobooking`;
 const TIMEOUT_IN_MS = 10000;
-const STATUS = 200; // статус который означаем, что запрос прошел
+const STATUS_OK = 200; // статус который означаем, что запрос прошел
 
 // Делаем запрос по данным там вся информация по объявлениям и координатам меток
-const load = function (onLoad, onError) {
+const load = function (onLoad, showError) {
   const xhr = new XMLHttpRequest();
   xhr.responseType = `json`;
   xhr.addEventListener(`load`, function () {
-    if (xhr.status === STATUS) {
+    if (xhr.status === STATUS_OK) {
       onLoad(xhr.response); // в функцию поместили данные
     } else {
-      onError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);
+      showError(`Статус ответа:  ${xhr.status} ${xhr.statusText}`);
     }
   });
 
   xhr.addEventListener(`error`, function () {
-    onError(`Запрос не удался`);
+    showError(`Запрос не удался`);
   });
   xhr.addEventListener(`timeout`, function () {
-    onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+    showError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
   });
 
   xhr.timeout = TIMEOUT_IN_MS;
@@ -28,25 +30,24 @@ const load = function (onLoad, onError) {
 };
 
 // отправляю форму
-const save = function (data, onSuccess, onErrorSave) {
+const save = function (data, onSuccess, showErrorSave) {
   const xhr = new XMLHttpRequest();
-  const URL = `https://21.javascript.pages.academy/keksobooking`;
   xhr.responseType = `json`;
   xhr.addEventListener(`load`, function () {
-    if (xhr.status === STATUS) {
+    if (xhr.status === STATUS_OK) {
       onSuccess();
     } else {
-      onErrorSave();
+      showErrorSave();
     }
   });
   xhr.addEventListener(`timeout`, function () {
-    onErrorSave();
+    showErrorSave();
   });
   xhr.addEventListener(`error`, function () {
-    onErrorSave();
+    showErrorSave();
   });
   xhr.timeout = TIMEOUT_IN_MS;
-  xhr.open(`POST`, URL);
+  xhr.open(`POST`, URL_SAVE);
   xhr.send(data);
 };
 

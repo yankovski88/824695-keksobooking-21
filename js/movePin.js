@@ -3,10 +3,9 @@
 const MAIN_PIN_TIP = 22;
 const PIN_FIELD_MIN_Y = 130;
 const PIN_FIELD_HEIGHT = 630;
-const MAP_PIN_MAIN_TOP = `375px`;
-const MAP_PIN_MAIN_LEFT = `570px`;
-
 const mapPinMain = document.querySelector(`.map__pin--main`);
+const MAP_PIN_MAIN_TOP = `${mapPinMain.offsetTop}px`;
+const MAP_PIN_MAIN_LEFT = `${Math.round(mapPinMain.offsetLeft)}px`;
 const address = document.querySelector(`#address`);
 const mapPin = document.querySelector(`.map__pins`);
 const mainPinHeight = mapPinMain.offsetHeight + MAIN_PIN_TIP; // полная высота of pin
@@ -26,8 +25,6 @@ setCoords(); // первичная установка адреса
 
 mapPinMain.addEventListener(`mousedown`, function (evt) {
   if (evt.which === window.main.LEFT_KEY_MOUSE_CODE) {
-
-
     evt.preventDefault();
     if (window.card.map.classList.contains(`map--faded`)) {
       mapPinMain.style.top = MAP_PIN_MAIN_TOP;
@@ -75,8 +72,7 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
       if (currentX <= 0) {
         mapPinMain.style.left = `${-mapPinMain.offsetWidth / 2}px`;
         fillAddress(address, 0, currentY);
-      }
-      if (currentX >= mapPin.offsetWidth) {
+      } else if (currentX >= mapPin.offsetWidth) { // необходимо добавить else if вместо if, чтобы избежать дополнительного сранения
         mapPinMain.style.left = `${mapPin.offsetWidth - mapPinMain.offsetWidth / 2}px`;
         fillAddress(address, mapPin.offsetWidth, currentY);
       }
@@ -84,8 +80,7 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
       if (currentY <= PIN_FIELD_MIN_Y) {
         mapPinMain.style.top = `${PIN_FIELD_MIN_Y - mainPinHeight}px`;
         fillAddress(address, currentX, PIN_FIELD_MIN_Y);
-      }
-      if (currentY >= PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT) {
+      } else if (currentY >= PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT) {
         mapPinMain.style.top = `${PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT - mainPinHeight}px`;
         fillAddress(address, currentX, PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT);
       }
@@ -93,7 +88,6 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
 
     const onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-
       document.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);
     };
@@ -102,11 +96,13 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
     document.addEventListener(`mouseup`, onMouseUp);
   }
 });
+
 window.movePin = {
   mapPinMain,
   MAP_PIN_MAIN_TOP,
   MAP_PIN_MAIN_LEFT,
   fillAddress,
   address,
-  mainPinHeight
+  mainPinHeight,
+  mapPin
 };

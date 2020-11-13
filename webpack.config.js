@@ -8,13 +8,13 @@ module.exports = {
     `/js/error.js`,
     `/js/backend.js`,
     `/js/movePin.js`,
+    `/js/photo.js`,
     `/js/form.js`,
     `/js/card.js`,
     `/js/pin.js`,
 
     `/js/main.js`,
     `/js/filter.js`,
-    `/js/foto.js`,
   ],
   // свойство вывод т.е. куда сложить файлы
   output: {

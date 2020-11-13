@@ -1,10 +1,12 @@
 'use strict';
 
+const photoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
+const previewPhotoFlat = document.querySelector(`.ad-form__photo`);
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
-
 const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
 const previewAvatar = document.querySelector(`.ad-form-header__preview`); // картинка, куда мы будем выставлять превью загруженного изображения
-const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
+
+const loadFile = function (fileChooserLoad, previewPhoto, fileTypes) {
   fileChooserLoad.addEventListener(`change`, () => { // обработчик, пользователь кликает поле для загрузки
     const file = fileChooserLoad.files[0]; // получаем из списка загруженный один файл
     const fileName = file.name.toLowerCase(); // имя файла приводим к нижнему регистру это понадобится для сравнения файла с расширением
@@ -20,16 +22,15 @@ const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
       const reader = new FileReader();
 
       reader.addEventListener(`load`, () => {
-        previewFoto.replaceChildren(); // replaceChildren()предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
-
-        previewFoto.style.display = `flex`;
-        previewFoto.style.alignItems = `center`;
-        previewFoto.style.justifyContent = `center`;
-        const imgFoto = document.createElement(`img`);
-        imgFoto.style.width = `40px`;
-        imgFoto.style.height = `44px`;
-        previewFoto.appendChild(imgFoto);
-        imgFoto.src = reader.result; // В обработчике результат чтения файла — изображение — мы положим в атрибут src DOM-узла с превью картинки.
+        previewPhoto.replaceChildren(); // replaceChildren предоставляет очень удобный механизм для очистки узла от всех его дочерних элементов
+        previewPhoto.style.display = `flex`;
+        previewPhoto.style.alignItems = `center`;
+        previewPhoto.style.justifyContent = `center`;
+        const imgPhoto = document.createElement(`img`);
+        imgPhoto.style.width = `40px`;
+        imgPhoto.style.height = `44px`;
+        previewPhoto.appendChild(imgPhoto);
+        imgPhoto.src = reader.result; // В обработчике результат чтения файла — изображение — мы положим в атрибут src DOM-узла с превью картинки.
       });
       reader.readAsDataURL(file); // просим ридер прочитать наш файл
     }
@@ -37,12 +38,10 @@ const loadFile = function (fileChooserLoad, previewFoto, fileTypes) {
 };
 
 loadFile(fileChooser, previewAvatar, FILE_TYPES);
-const fotoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
-const previewFotoFlat = document.querySelector(`.ad-form__photo`);
-loadFile(fotoFlat, previewFotoFlat, FILE_TYPES);
+loadFile(photoFlat, previewPhotoFlat, FILE_TYPES);
 
-window.foto = {
+window.photo = {
   previewAvatar,
-  previewFotoFlat
+  previewPhotoFlat
 };
 

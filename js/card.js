@@ -3,97 +3,96 @@
 // + прорисовка карты объявления
 const card = document.querySelector(`#card`).content.querySelector(`.map__card`); // нашел шаблон и подключился к нему
 const mapFiltersContainer = document.querySelector(`.map__filters-container`); // перед каким html элементов вставка
+const map = document.querySelector(`.map`); // находим место в которое надо вставить карточку
+
+const hideElement = function (elementHtml) {
+  elementHtml.classList.add(`hidden`);
+};
+
+const checkFieldOfObj = function (fieldOfObj, classNameOfFieldHtml) {
+  if (fieldOfObj) {
+    classNameOfFieldHtml.textContent = fieldOfObj;
+  } else {
+    hideElement(classNameOfFieldHtml);
+  }
+};
 
 // создание карточки заполнение всех полей по шаблону
-const createCard = function (obj) { // помещаем в функцию объект с которого возьмем данные
+const createCard = function (objData) { // помещаем в функцию объект с которого возьмем данные
   const cardTemplate = card.cloneNode(true); // клонируем шаблон т.к. много объявлений и без клона не вставить в html
-  if (obj.offer) { // если есть описание offer
-    if (obj.offer.title) { // заходим в поле объекта заголовок
-      cardTemplate.querySelector(`.popup__title`).textContent = obj.offer.title; // переименовываем заголовок на заголовок с объекта
-    } else {
-      cardTemplate.querySelector(`.popup__title`).classList.add(`hidden`); // если нет заголовка, то скрываем эту строку карточки
-    }
-    if (obj.offer.address[0] && obj.offer.address[1]) { // если есть текст адреса то вставляем
-      cardTemplate.querySelector(`.popup__text--address`).textContent = `${window.util.getFirstItemOfString(obj.offer.address)} Tōkyō-to, Chiyoda-ku, Ichibanchō, ${window.util.getLastItemOfString(obj.offer.address)}`;
-    } else {
-      cardTemplate.querySelector(`.popup__text--address`).classList.add(`hidden`);
-    }
-    if (obj.offer.price) {
-      cardTemplate.querySelector(`.popup__text--price`).textContent = obj.offer.price; // заполняем поле цены
-    } else {
-      cardTemplate.querySelector(`.popup__text--price`).classList.add(`hidden`);
-    }
-    if (obj.offer.type) {
-      cardTemplate.querySelector(`.popup__type`).textContent = obj.offer.type;
-    } else {
-      cardTemplate.querySelector(`.popup__type`).classList.add(`hidden`);
-    }
-    if (obj.offer.rooms && obj.offer.guests) {
-      cardTemplate.querySelector(`.popup__text--capacity`).textContent = `${obj.offer.rooms} комнатa(ы) для ${obj.offer.guests} гостя(ей)`;
-    } else {
-      cardTemplate.querySelector(`.popup__text--capacity`).classList.add(`hidden`);
-    }
-    if (obj.offer.checkin && obj.offer.checkout) {
-      cardTemplate.querySelector(`.popup__text--time`).textContent = `Заезд после ${obj.offer.checkin}, выезд до ${obj.offer.checkout}`;
-    } else {
-      cardTemplate.querySelector(`.popup__text--time`).classList.add(`hidden`);
-    }
-  } else {
-    obj.remove(); // иначе удаляем объект с объявлением. мысль если нет объекта, то он и не будет показываться
-  }
+  if (objData && objData.offer) {
+    const popupTitle = cardTemplate.querySelector(`.popup__title`);
+    const popupTextAddress = cardTemplate.querySelector(`.popup__text--address`);
+    const popupTextPrice = cardTemplate.querySelector(`.popup__text--price`);
+    const popupType = cardTemplate.querySelector(`.popup__type`);
+    const popupTextCapacity = cardTemplate.querySelector(`.popup__text--capacity`);
+    const popupTextTime = cardTemplate.querySelector(`.popup__text--time`);
+    const popupDescription = cardTemplate.querySelector(`.popup__description`);
 
-  const cardTemplateLis = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`); // находим все li теги с плюсами квартиры
-  const classNames = window.util.getArrClassNameHtml(cardTemplateLis); // получаем все названия классов массива li
-  const copyClassNames = classNames.slice(); // копируем полученный массив классов по приимуществам квартиры
-  const htmlOfferFeatures = window.util.getArrOfTextBeforeDash(copyClassNames); // получили массив плюсов квартиры
-  window.util.comparisonArrsAndAddClassNameHidden(obj.offer.features, htmlOfferFeatures, cardTemplateLis); // сравниваем 2 массива плюсов что есть с наличием по факту и добавляем название в html Элемент
+    checkFieldOfObj(objData.offer.title, popupTitle);
+    checkFieldOfObj(objData.offer.address, popupTextAddress);
+    checkFieldOfObj(objData.offer.price, popupTextPrice);
+    checkFieldOfObj(objData.offer.type, popupType);
 
-  if (obj.offer.description) {
-    cardTemplate.querySelector(`.popup__description`).textContent = `${obj.offer.description}`;
-  } else {
-    cardTemplate.querySelector(`.popup__description`).classList.add(`hidden`);
-  }
-
-  const popupPhoto = cardTemplate.querySelector(`.popup__photos`); // находим в карточке обертку тега Img в которую будем все вставлять
-  const popupPhotoImg = cardTemplate.querySelector(`.popup__photos`).querySelector(`img`); // находим сам тег img
-
-  if (obj.offer.photos) { // если фото есть
-    for (let i = 0; i < obj.offer.photos.length; i++) { // перебираем фото
-      const popupPhotoImgClone = popupPhotoImg.cloneNode(); // клонируем тег img для вставки фото
-      popupPhotoImgClone.src = obj.offer.photos[i]; // в тег img вставляем ссылку
-      popupPhotoImgClone.textContent = `clone`; // между тегом img пишем clone
-      popupPhoto.appendChild(popupPhotoImgClone); // добавляем в обертку все теги img
+    if (objData.offer.rooms && objData.offer.guests) {
+      const text = `${objData.offer.rooms} комнатa(ы) для ${objData.offer.guests} гостя(ей)`;
+      checkFieldOfObj(text, popupTextCapacity);
     }
-    popupPhoto.removeChild(popupPhotoImg); // удаляем  шаблонное фото
-  } else {
-    popupPhoto.classList.add(`hidden`); // если нет фото то скрываем поле
-  }
 
-  if (obj.author.avatar) {
-    cardTemplate.querySelector(`.popup__avatar`).src = obj.author.avatar; // добавляем аватар
-  } else {
-    cardTemplate.querySelector(`.popup__avatar`).classList.add(`hidden`);
+    if (objData.offer.checkin && objData.offer.checkout) {
+      const text = `Заезд после ${objData.offer.checkin}, выезд до ${objData.offer.checkout}`;
+      checkFieldOfObj(text, popupTextTime);
+    }
+
+    const cardTemplateLiTegs = cardTemplate.querySelector(`.popup__features`).querySelectorAll(`li`); // находим все li теги с плюсами квартиры
+    const classNames = window.util.getArrClassNameHtml(cardTemplateLiTegs); // получаем все названия классов массива li
+
+    const htmlOfferFeatures = window.util.getArrOfTextBeforeDash(classNames); // получили массив плюсов квартиры
+    window.util.comparisonArrsAndAddClassNameHidden(objData.offer.features, htmlOfferFeatures, cardTemplateLiTegs); // сравниваем 2 массива плюсов что есть с наличием по факту и добавляем название в html Элемент
+
+    checkFieldOfObj(objData.offer.description, popupDescription);
+
+    const popupPhoto = cardTemplate.querySelector(`.popup__photos`); // находим в карточке обертку тега Img в которую будем все вставлять
+    const popupPhotoImg = popupPhoto.querySelector(`img`); // находим сам тег img
+
+    if (objData.offer.photos) { // если фото есть
+      for (let i = 0; i < objData.offer.photos.length; i++) { // перебираем фото
+        const popupPhotoImgClone = popupPhotoImg.cloneNode(); // клонируем тег img для вставки фото
+        popupPhotoImgClone.src = objData.offer.photos[i]; // в тег img вставляем ссылку
+        popupPhoto.appendChild(popupPhotoImgClone); // добавляем в обертку все теги img
+      }
+      popupPhoto.removeChild(popupPhotoImg); // удаляем  шаблонное фото
+    } else {
+      popupPhoto.removeChild(popupPhotoImg); // удаляем  поле img если нет фото
+    }
+
+    const popupAvatar = cardTemplate.querySelector(`.popup__avatar`);
+    if (objData.author.avatar) {
+      popupAvatar.src = objData.author.avatar; // добавляем аватар
+    } else {
+      hideElement(popupAvatar);
+    }
   }
   return cardTemplate; // возвращаем полностью заполненую карточку по шаблону
 };
 
-const map = document.querySelector(`.map`); // находим место в которое надо вставить карточку
-
 // функция по вставке элемента перед другим элементом
 const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
-  map.insertBefore(fragmentCardItem, mapFiltersContainerItem);
+  map.insertBefore(fragmentCardItem, mapFiltersContainerItem); // map это родитель для нового элемента, fragmentCardItem это элемент для вставки, mapFiltersContainerItem перед этим элементом вставится элемент
+};
 
-  // map это родитель для нового элемента
-  // insertBefore(newElement, referenceElement)
-  // newElement это элемент для вставки
-  // referenceElement элемент перед которым будет вставлен newElement
+// функция которая проверяет или карточка открыта, если открыта и есть измения фильтра то карточка закрывается
+const delCard = function () {
+  const mapCardItem = window.card.map.querySelector(`.map__card`);
+  if (mapCardItem) { // если карточка открыта
+    mapCardItem.remove(); // удаляем карточку т.к. условие при клике любого фильтра удаляем карточку
+  }
 };
 
 window.card = {
   createCard,
   mapFiltersContainer,
-  card,
   renderCard,
   map,
+  delCard,
 };
-
