@@ -28,8 +28,7 @@ const createPin = function (objData) { // по этому макету созд�
     }
 
     // код установки активной метки
-    const mapItemPins = document.querySelectorAll(`.map__pin`); // находим все метки после рендера
-    itemPins = mapItemPins;
+    itemPins = document.querySelectorAll(`.map__pin`); // находим все метки после рендера
 
     // функция по установке активной метки
     const setMapPinActive = function () {
