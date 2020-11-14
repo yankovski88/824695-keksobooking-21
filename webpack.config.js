@@ -9,12 +9,12 @@ module.exports = {
     `/js/backend.js`,
     `/js/movePin.js`,
     `/js/photo.js`,
-    `/js/form.js`,
-    `/js/card.js`,
-    `/js/pin.js`,
+    `/js/formOfAdvert.js`,
+    `/js/propertyDescription.js`,
+    `/js/label.js`,
 
-    `/js/main.js`,
-    `/js/filter.js`,
+    `/js/head.js`,
+    `/js/sort.js`,
   ],
   // свойство вывод т.е. куда сложить файлы
   output: {

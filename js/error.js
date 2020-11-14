@@ -1,6 +1,6 @@
 'use strict';
 
-const showError = function (errorMessage) { // всплывающее окно с ошибкой
+const showProblem = function (errorMessage) { // всплывающее окно с ошибкой
   const node = document.createElement(`div`);
   node.style = `
     position: absolute;
@@ -19,9 +19,9 @@ const showError = function (errorMessage) { // всплывающее окно �
   `;
 
   node.textContent = errorMessage;
-  window.card.map.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
+  window.propertyDescription.map.appendChild(node); // вставили окно с ошибкой, ПОКА не знаю в чем разница между appendChild и append
 };
 window.error = {
-  showError,
+  showProblem,
 };
 

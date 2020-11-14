@@ -9,20 +9,20 @@ const form = document.querySelector(`.ad-form`);
 
 // функция по закрытию карточки через esc
 const onMapEscapePress = function (evt) {
-  if ((evt.key === `Escape`) && (window.card.map.querySelector(`.map__card`))) {
-    window.card.map.removeChild(window.card.map.querySelector(`.map__card`));
+  if ((evt.key === `Escape`) && (window.propertyDescription.map.querySelector(`.map__card`))) {
+    window.propertyDescription.map.removeChild(window.propertyDescription.map.querySelector(`.map__card`));
   }
 };
-window.card.map.addEventListener(`keydown`, onMapEscapePress); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
+window.propertyDescription.map.addEventListener(`keydown`, onMapEscapePress); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
 
-window.util.hideMap(window.card.map); // дизэйбл карты
+window.util.hideMap(window.propertyDescription.map); // дизэйбл карты
 
 window.util.disableNodeElement(formFieldsets);
 window.util.disableNodeElement(mapFilterSelects); //  к селектам карты добавил disabled
 
 // удаление disabled fieldset
-const removeAddDisabled = function (arr) {
-  arr.forEach((item) => {
+const removeAddDisabled = function (items) {
+  items.forEach((item) => {
     item.removeAttribute(`disabled`);
   });
 };
@@ -45,19 +45,19 @@ const removeformFieldsetsDisabled = function () {
 };
 
 const activateSite = function () {
-  window.card.map.classList.remove(`map--faded`); // карта становится активной
-  window.backend.load(window.filter.filterPin, window.error.showError); // делаем запрос для заполнения данных для метки
+  window.propertyDescription.map.classList.remove(`map--faded`); // карта становится активной
+  window.backend.load(window.sort.filterPin, window.error.showProblem); // делаем запрос для заполнения данных для метки
   removeAdFormDisabled(form); // форма становится активной
   removeformFieldsetsDisabled(); // удаляется где есть disabled в форме
-  window.form.checkRoomAndGuest(); // запускается проверка по гостям
-  window.form.onTypeChange(); // запускаемся проверка по типу жилья
-  window.form.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
+  window.formOfAdvert.checkRoomAndGuest(); // запускается проверка по гостям
+  window.formOfAdvert.onTypeChange(); // запускаемся проверка по типу жилья
+  window.formOfAdvert.setTimeinAndTimeout(); // запускается проверка по въеду и выезду
   mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown); // удаляем обработчик на клик и кнопку на главную метку
   mapPinMain.removeEventListener(`keydown`, onMapPinMainKeydown); // удаляем обработчик на кнопку,
 
   // добаить обработчик очистки формы
-  window.form.adFormReset.addEventListener(`click`, window.form.onFormClick);
-  window.form.adFormReset.addEventListener(`keydown`, window.form.onFormPressEnter);
+  window.formOfAdvert.adFormReset.addEventListener(`click`, window.formOfAdvert.onFormClick);
+  window.formOfAdvert.adFormReset.addEventListener(`keydown`, window.formOfAdvert.onFormPressEnter);
 };
 
 // если был клик левой кнопки мыши на клавную метку
@@ -68,22 +68,22 @@ const onMapPinMainMousedown = function (evt) {
 };
 
 // добавление обработчика на главную метку
-if (window.card.map.classList.contains(`map--faded`)) {
+if (window.propertyDescription.map.classList.contains(`map--faded`)) {
   mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
 }
 
 // вызываем все теже функции что и при клике на главную метку
 const onMapPinMainKeydown = function (evt) {
-  if (evt.keyCode === window.form.KEY_CODE_ENTER) {
+  if (evt.keyCode === window.formOfAdvert.KEY_CODE_ENTER) {
     activateSite();
   }
 };
 
-if (window.card.map.classList.contains(`map--faded`)) {
+if (window.propertyDescription.map.classList.contains(`map--faded`)) {
   mapPinMain.addEventListener(`keydown`, onMapPinMainKeydown);
 }
 
-window.main = {
+window.head = {
   addAdFormDisabled,
   mapFilter,
   mapPinMain,

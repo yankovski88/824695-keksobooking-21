@@ -40,21 +40,21 @@ const createPin = function (objData) { // по этому макету созд�
     const openCard = function () {
       removePinActive(itemPins);
       setMapPinActive();
-      window.card.renderCard(window.card.createCard(objData), window.card.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
+      window.propertyDescription.renderCard(window.propertyDescription.createCard(objData), window.propertyDescription.mapFiltersContainer); // если был клик по метке, то он записывается в target и создаем карточку с того же объекта что и метку
     };
     // код по открытию карточки квартир
     if ((target.classList.contains(`map__pin`)) && (!target.classList.contains(`map__pin--main`))) { // делаем проверку или это не главная метка
-      if (window.card.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
-        window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // и удаляем ее
+      if (window.propertyDescription.map.querySelector(`.map__card`)) { // если наша карточка находится в map это означает, что она открыта
+        window.propertyDescription.map.removeChild(window.propertyDescription.map.querySelector(`.map__card`)); // и удаляем ее
       }
       openCard();
     }
 
-    const popupClose = window.card.map.querySelector(`.popup__close`);
-    const mapCard = window.card.map.querySelector(`.map__card`);
+    const popupClose = window.propertyDescription.map.querySelector(`.popup__close`);
+    const mapCard = window.propertyDescription.map.querySelector(`.map__card`);
     // удаление карточки
     const removeChildMapCard = function () {
-      window.card.map.removeChild(mapCard);
+      window.propertyDescription.map.removeChild(mapCard);
     };
     const onPopupCloseClick = function () {
       removeChildMapCard(); // удаление карточки
@@ -63,7 +63,7 @@ const createPin = function (objData) { // по этому макету созд�
     popupClose.addEventListener(`click`, onPopupCloseClick);
 
     const onPopupCloseEnterPress = function () {
-      if (evt.target.code === window.form.KEY_CODE_ENTER) {
+      if (evt.target.code === window.formOfAdvert.KEY_CODE_ENTER) {
         removeChildMapCard(); // удаление карточки
         removePinActive(itemPins); // удаление активной метки
       }
@@ -76,16 +76,16 @@ const createPin = function (objData) { // по этому макету созд�
 
 // функция по удалению активной метки через esc
 const onMapEscapePressRemovePinActive = function (evt) {
-  if ((evt.keyCode === window.form.KEY_CODE_ESC) && (window.card.map.querySelector(`.map__pin--active`))) {
+  if ((evt.keyCode === window.formOfAdvert.KEY_CODE_ESC) && (window.propertyDescription.map.querySelector(`.map__pin--active`))) {
     removePinActive(itemPins);
   }
 };
-window.card.map.addEventListener(`keydown`, onMapEscapePressRemovePinActive); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
+window.propertyDescription.map.addEventListener(`keydown`, onMapEscapePressRemovePinActive); // отслеживаем нажатие esc (также мне кажется нужно удалять колбек)
 
 // удаление меток если было изменения фильтра
 const delPin = function () {
   // удаление всех меток кроме главной
-  const arrMapPins = window.form.mapPins.querySelectorAll(`.map__pin`); // найти все метки
+  const arrMapPins = window.formOfAdvert.mapPins.querySelectorAll(`.map__pin`); // найти все метки
   arrMapPins.forEach(function (item) { // перебрать все метки
     if (!item.classList.contains(`map__pin--main`)) { // все метки которой нет главной
       item.remove(); // удалить все метки кроме главной
@@ -94,7 +94,7 @@ const delPin = function () {
 };
 
 const renderPin = function (fragment) { // отрисовать метки
-  window.form.mapPins.appendChild(fragment); // одним фрагментом Pin вствили в html
+  window.formOfAdvert.mapPins.appendChild(fragment); // одним фрагментом Pin вствили в html
 };
 
 // функция которая отрисовывает pin после изменения фильтра
@@ -104,16 +104,16 @@ const renderNewPin = function (newPins) {
   const pinsWithOffer = newPins.filter(function (item) { // фильтр который возвращает все булевое значение всех объектов в котороых етсь поле offer
     return !!item.offer;
   });
-  window.pin.delPin();
-  const pinsCount = pinsWithOffer.length < window.pin.MAX_PIN ? pinsWithOffer.length : window.pin.MAX_PIN;
+  window.label.delPin();
+  const pinsCount = pinsWithOffer.length < window.label.MAX_PIN ? pinsWithOffer.length : window.label.MAX_PIN;
   for (let i = 0; i < pinsCount; i++) { // перебрать все данные которые получены и перенесены в переменную
-    const fragmentPin = window.pin.createPin(pinsWithOffer[i]); // создаем метку через функцию выше
+    const fragmentPin = window.label.createPin(pinsWithOffer[i]); // создаем метку через функцию выше
     fragment.appendChild(fragmentPin); // в созданный фрагмент вставляем все наши метки
-    window.pin.renderPin(fragment); // прорисовываем метки
+    window.label.renderPin(fragment); // прорисовываем метки
   }
 };
 
-window.pin = {
+window.label = {
   MAX_PIN,
   createPin,
   delPin,

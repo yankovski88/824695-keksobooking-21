@@ -6,7 +6,7 @@ const KEY_CODE_ENTER = 13;
 const MIN_LENGTH = 30;
 const MAX_PRICE = 1000000;
 const START_ADDRESS_X = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_LEFT, 10) + window.movePin.mapPinMain.offsetWidth / 2);
-const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mainPinHeight);
+const START_ADDRESS_Y = Math.round(parseInt(window.movePin.MAP_PIN_MAIN_TOP, 10) + window.movePin.mapPinMain.offsetHeight / 2);
 const CountGuests = [[0, 1, 3], [0, 3], [3], [0, 1, 2]]; // это перечисление дляустановки определенным полям гостей disabled
 const Prices = [0, 1000, 5000, 10000]; // тоже идет как перечисление
 const capacity = document.querySelector(`#capacity`); // нашли id формы по гостям
@@ -33,14 +33,14 @@ let errorButton; // вынес кнопку в глобальную видимо
 
 const delOpenCard = function () {
   // удаление карточки если была открыта
-  if (window.card.map.querySelector(`.map__card`)) {
-    window.card.map.removeChild(window.card.map.querySelector(`.map__card`)); // если карточка открта то удалить
+  if (window.propertyDescription.map.querySelector(`.map__card`)) {
+    window.propertyDescription.map.removeChild(window.propertyDescription.map.querySelector(`.map__card`)); // если карточка открта то удалить
   }
 };
 
 const setMainPinCenter = function () {
   // установка метки в центре
-  if (window.card.map.classList.contains(`map--faded`)) { // если с карта содержит map--faded т.е. заблокирована
+  if (window.propertyDescription.map.classList.contains(`map--faded`)) { // если с карта содержит map--faded т.е. заблокирована
     window.movePin.mapPinMain.style.top = window.movePin.MAP_PIN_MAIN_TOP; // прописали стиль координат на данные с html
     window.movePin.mapPinMain.style.left = window.movePin.MAP_PIN_MAIN_LEFT; // прописали стиль координат на данные с html
   }
@@ -62,7 +62,7 @@ const delAvatar = function () {
 };
 
 const delPhoto = function () {
-  const imgPhotoFlat = window.photo.previewPhotoFlat.querySelector(`img`); // нашли поле с фоткой квартиры
+  const imgPhotoFlat = window.photo.previewFlat.querySelector(`img`); // нашли поле с фоткой квартиры
   // удаление старого фото квартииры
   if (imgPhotoFlat) {
     imgPhotoFlat.remove();
@@ -72,11 +72,11 @@ const delPhoto = function () {
 // функция которая удаляет все поля и возвращает сайт в начальное состояние
 const startSite = function () {
   form.reset(); // удаление полей в форме подачи объявления
-  window.filter.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
-  window.main.addAdFormDisabled(form); // дизейбл формы
-  window.util.hideMap(window.card.map); // дизейбл карты
-  window.util.disableNodeElement(window.main.formFieldsets); // добавление к полям формы disabled
-  window.util.disableNodeElement(window.main.mapFilterSelects); //  к селектам карты добавил disabled
+  window.sort.mapFilters.reset(); // удаление всех данных фильтра ПОЧЕМУ ФОРМА УДАЛЯЕТСЯ 1 РАЗ
+  window.head.addAdFormDisabled(form); // дизейбл формы
+  window.util.hideMap(window.propertyDescription.map); // дизейбл карты
+  window.util.disableNodeElement(window.head.formFieldsets); // добавление к полям формы disabled
+  window.util.disableNodeElement(window.head.mapFilterSelects); //  к селектам карты добавил disabled
 
   delOpenCard();
   setMainPinCenter();
@@ -92,8 +92,8 @@ const startSite = function () {
   adFormReset.removeEventListener(`click`, onFormClick); // удалить обработчик на reset form через клик
   adFormReset.removeEventListener(`click`, onFormPressEnter); // удалить обработчик на reset form через enter
   // добавил обработчик клика по главной метке, если будет клик, то все отрисуется обратно как в начале загрузки сайта
-  window.main.mapPinMain.addEventListener(`mousedown`, window.main.onMapPinMainMousedown);
-  window.main.mapPinMain.addEventListener(`keydown`, window.main.onMapPinMainKeydown); // добавил обработчик на загрузку главной страницы через enter
+  window.head.mapPinMain.addEventListener(`mousedown`, window.head.onMapPinMainMousedown);
+  window.head.mapPinMain.addEventListener(`keydown`, window.head.onMapPinMainKeydown); // добавил обработчик на загрузку главной страницы через enter
 };
 
 window.util.removeToArrDisabled(capacityOptions);
@@ -122,7 +122,7 @@ const checkRoomAndGuest = function () {
     const ROOM_TWO = `2`;
     const ROOM_THREE = `3`;
 
-    window.main.removeAddDisabled(capacityOptions); // функция удаляет у всех полей disabled
+    window.head.removeAddDisabled(capacityOptions); // функция удаляет у всех полей disabled
 
     const roomValue = roomNumber.value; // нашли значение выбраного поля пользователем
     if (roomValue === ROOM_ONE) { // если значение 1 то это 1 комната выбрана
@@ -266,7 +266,7 @@ const onFormPressEnter = function (evt) {
   }
 };
 
-window.form = {
+window.formOfAdvert = {
   setTimeinAndTimeout,
   capacityOptions,
   capacity,
