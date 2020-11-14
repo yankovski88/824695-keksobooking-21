@@ -21,8 +21,8 @@ window.util.disableNodeElement(formFieldsets);
 window.util.disableNodeElement(mapFilterSelects); //  к селектам карты добавил disabled
 
 // удаление disabled fieldset
-const removeAddDisabled = function (arr) {
-  arr.forEach((item) => {
+const removeAddDisabled = function (items) {
+  items.forEach((item) => {
     item.removeAttribute(`disabled`);
   });
 };

@@ -17,7 +17,8 @@ const fillAddress = function (elementHtml, currentX, currentY) {
 const setCoords = function () {
   // высчитываем изначальные точки c учетом ширин и высот
   let activeMainPinX = Math.round(mapPinMain.offsetLeft + mapPinMain.offsetWidth / 2);
-  let activeMainPinY = Math.round(mapPinMain.offsetTop + mainPinHeight);
+  let activeMainPinY = Math.round(mapPinMain.offsetTop + mapPinMain.offsetHeight / 2); // стартовое поле адреса по вертикали
+
 
   fillAddress(address, activeMainPinX, activeMainPinY);
 };
@@ -80,9 +81,9 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
       if (currentY <= PIN_FIELD_MIN_Y) {
         mapPinMain.style.top = `${PIN_FIELD_MIN_Y - mainPinHeight}px`;
         fillAddress(address, currentX, PIN_FIELD_MIN_Y);
-      } else if (currentY >= PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT) {
-        mapPinMain.style.top = `${PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT - mainPinHeight}px`;
-        fillAddress(address, currentX, PIN_FIELD_MIN_Y + PIN_FIELD_HEIGHT);
+      } else if (currentY >= PIN_FIELD_HEIGHT) {
+        mapPinMain.style.top = `${PIN_FIELD_HEIGHT - mainPinHeight}px`;
+        fillAddress(address, currentX, PIN_FIELD_HEIGHT);
       }
     };
 

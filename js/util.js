@@ -29,23 +29,23 @@ const getArrOfTextBeforeDash = function (arr) {
 };
 
 // сравниваем два массива и если есть совпадение то не скрываем, а если совпадение то к html элементу добавляем название плюса
-const comparisonArrsAndAddClassNameHidden = function (arrFirst, arrSecond, htmlElement) {
-  if (arrFirst.length > 0) {
-    for (let i = 0; i < arrFirst.length; i++) { // перебираем все список плюсов полученого из объекта
-      for (let j = 0; j < arrSecond.length; j++) { // перебираем общий список плюсов полученный из шаблона
-        if (arrFirst[i] === arrSecond[j]) { // если есть вопадение плюсов
-          htmlElement[j].textContent = arrFirst[i]; // то пишем textContent
+const comparisonArrsAndAddClassNameHidden = function (firstItems, secondItems, elements) {
+  if (firstItems.length > 0) {
+    for (let i = 0; i < firstItems.length; i++) { // перебираем все список плюсов полученого из объекта
+      for (let j = 0; j < secondItems.length; j++) { // перебираем общий список плюсов полученный из шаблона
+        if (firstItems[i] === secondItems[j]) { // если есть вопадение плюсов
+          elements[j].textContent = firstItems[i]; // то пишем textContent
         }
-        if (htmlElement[j].textContent) {
-          htmlElement[j].classList.remove(`hidden`);
+        if (elements[j].textContent) {
+          elements[j].classList.remove(`hidden`);
         } else {
-          htmlElement[j].classList.add(`hidden`); // добавили всем скрыться полям сразу
+          elements[j].classList.add(`hidden`); // добавили всем скрыться полям сразу
         }
       }
     }
   } else {
-    for (let j = 0; j < arrSecond.length; j++) { // перебираем общий список плюсов полученный из шаблона
-      htmlElement[j].classList.add(`hidden`); // и добавляем всем скрыться
+    for (let j = 0; j < secondItems.length; j++) { // перебираем общий список плюсов полученный из шаблона
+      elements[j].classList.add(`hidden`); // и добавляем всем скрыться
     }
   }
 };
@@ -58,15 +58,15 @@ const disabledMapFilter = function () {
 };
 
 // удаляем атрибут disabled в полученом массиве option
-const removeToArrDisabled = function (arr) {
-  arr.forEach((item) => {
+const removeToArrDisabled = function (items) {
+  items.forEach((item) => {
     item.removeAttribute(`disabled`);
   });
 };
 
-const getArrValueFromHtml = function (arrHtml) {
+const getArrValueFromHtml = function (items) {
   const itemValues = [];
-  arrHtml.forEach((item) => {
+  items.forEach((item) => {
     itemValues.push(item.value);
   });
   return itemValues;
