@@ -25,9 +25,9 @@ const setCoords = function () {
 setCoords(); // первичная установка адреса
 
 mapPinMain.addEventListener(`mousedown`, function (evt) {
-  if (evt.which === window.main.LEFT_KEY_MOUSE_CODE) {
+  if (evt.which === window.head.LEFT_KEY_MOUSE_CODE) {
     evt.preventDefault();
-    if (window.card.map.classList.contains(`map--faded`)) {
+    if (window.propertyDescription.map.classList.contains(`map--faded`)) {
       mapPinMain.style.top = MAP_PIN_MAIN_TOP;
       mapPinMain.style.left = MAP_PIN_MAIN_LEFT;
     }

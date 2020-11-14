@@ -52,9 +52,9 @@ const comparisonArrsAndAddClassNameHidden = function (firstItems, secondItems, e
 
 // функция неактивного состояния сайта
 const disabledMapFilter = function () {
-  window.util.hideMap(window.card.map); // сделать карту неактивной
-  window.main.addAdFormDisabled(window.filter.mapFilters);
-  window.main.disableNodeElement(window.main.formFieldsets);
+  window.util.hideMap(window.propertyDescription.map); // сделать карту неактивной
+  window.head.addAdFormDisabled(window.sort.mapFilters);
+  window.head.disableNodeElement(window.head.formFieldsets);
 };
 
 // удаляем атрибут disabled в полученом массиве option

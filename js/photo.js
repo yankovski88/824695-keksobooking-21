@@ -1,7 +1,7 @@
 'use strict';
 
 const photoFlat = document.querySelector(`.ad-form__upload input[type=file]`);
-const previewPhotoFlat = document.querySelector(`.ad-form__photo`);
+const previewFlat = document.querySelector(`.ad-form__photo`);
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const fileChooser = document.querySelector(`.ad-form__field input[type=file]`); // находим элемент загрузки фото внутри которго input
 const previewAvatar = document.querySelector(`.ad-form-header__preview`); // картинка, куда мы будем выставлять превью загруженного изображения
@@ -38,10 +38,10 @@ const loadFile = function (fileChooserLoad, previewPhoto, fileTypes) {
 };
 
 loadFile(fileChooser, previewAvatar, FILE_TYPES);
-loadFile(photoFlat, previewPhotoFlat, FILE_TYPES);
+loadFile(photoFlat, previewFlat, FILE_TYPES);
 
 window.photo = {
   previewAvatar,
-  previewPhotoFlat
+  previewFlat
 };
 

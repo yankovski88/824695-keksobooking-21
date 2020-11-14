@@ -83,13 +83,13 @@ const renderCard = function (fragmentCardItem, mapFiltersContainerItem) {
 
 // функция которая проверяет или карточка открыта, если открыта и есть измения фильтра то карточка закрывается
 const delCard = function () {
-  const mapCardItem = window.card.map.querySelector(`.map__card`);
+  const mapCardItem = window.propertyDescription.map.querySelector(`.map__card`);
   if (mapCardItem) { // если карточка открыта
     mapCardItem.remove(); // удаляем карточку т.к. условие при клике любого фильтра удаляем карточку
   }
 };
 
-window.card = {
+window.propertyDescription = {
   createCard,
   mapFiltersContainer,
   renderCard,

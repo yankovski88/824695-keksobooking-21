@@ -19,7 +19,7 @@ const mapFilters = document.querySelector(`.map__filters`); // выбрал вс
 let lastTimeout;
 
 const filterPin = function (arr) {
-  window.main.removeAddDisabled(window.main.mapFilterSelects); // удалили disabled из фильтра на карте ТОЛЬКО после загрузки меток
+  window.head.removeAddDisabled(window.head.mapFilterSelects); // удалили disabled из фильтра на карте ТОЛЬКО после загрузки меток
 
   const copyDataFlats = arr; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
 
@@ -40,7 +40,6 @@ const filterPin = function (arr) {
   });
   const housingRoom = document.querySelector(`#housing-rooms`); // находим поле с ценой
   housingRoom.addEventListener(`change`, function (evt) {
-    // window.pin.delPin();
     flatRoom = evt.target.value;
   });
   const housingGuest = document.querySelector(`#housing-guests`); // находим поле с ценой
@@ -50,8 +49,8 @@ const filterPin = function (arr) {
 
   // удаление карточки если она была открыта
   mapFilters.addEventListener(`change`, function () { // если в каждом фильтре есть изменения
-    window.pin.delPin(); // вставили функцию удаления меток
-    window.card.delCard(); // вставили функцию удаления карточки
+    window.label.delPin(); // вставили функцию удаления меток
+    window.propertyDescription.delCard(); // вставили функцию удаления карточки
     const filterTypeFlat = copyDataFlats.filter(function (item) { // фильтр. copyDataFlats - сортируем этот фильтр. copyDataFlats это item типа [q, w] item = q и т.д.
       if (item.offer.type === flatName) { // заходим в каждую строку объекта тип и если он равен значению пользователя то
         return item.offer.type === flatName; //  возвращаем все объекты в которых нашли схожесть
@@ -152,13 +151,13 @@ const filterPin = function (arr) {
       clearTimeout(lastTimeout); // то мы удаляем timeout
     } // т.е. если есть какоето действие мы должны его выждать, а потом только удалить
     lastTimeout = setTimeout(function () { // setTimeout возвращает идентификатор усановленного timeouta
-      window.pin.renderNewPin(filteredFeatures);
+      window.label.renderNewPin(filteredFeatures);
     }, DEBOUNCE_INTERVAL);
   });
-  window.pin.renderNewPin(copyDataFlats);
+  window.label.renderNewPin(copyDataFlats);
 };
 
-window.filter = {
+window.sort = {
   mapFilters,
   filterPin,
 };
