@@ -18,10 +18,10 @@ const PriceValue = {
 const mapFilters = document.querySelector(`.map__filters`); // выбрал все фильтры
 let lastTimeout;
 
-const filterPin = function (arr) {
+const filterPin = function (items) {
   window.head.removeAddDisabled(window.head.mapFilterSelects); // удалили disabled из фильтра на карте ТОЛЬКО после загрузки меток
 
-  const copyDataFlats = arr; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
+  const copyDataFlats = items; // скопировали запрос по массиву, чтобы не делать каждый раз запрос
 
   let flatName = `any`; // будет значение которое выбрал пользователь по квартире
   let flatPrice = `any`; // будет значение которое выбрал пользователь по цене

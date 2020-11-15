@@ -10,18 +10,18 @@ const getArrClassNameHtml = function (elementHtml) {
 };
 
 // получить массив слов до тире
-const getArrOfTextBeforeDash = function (arr) {
+const getArrOfTextBeforeDash = function (items) {
   const texts = [];
   const allTexts = [];
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = arr[i].length - 1; j > 0; j--) {
-      if (arr[i][j] === `-`) {
+  for (let i = 0; i < items.length; i++) {
+    for (let j = items[i].length - 1; j > 0; j--) {
+      if (items[i][j] === `-`) {
         texts.reverse();
         allTexts.push(texts.join(``));
         texts.splice(0, texts.length);
         break;
       } else {
-        texts.push(arr[i][j]);
+        texts.push(items[i][j]);
       }
     }
   }
